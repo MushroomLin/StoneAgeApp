@@ -25,7 +25,10 @@
     <string name="desc_firebase_lockup">Firebase logo and name</string>
     <string name="sign_out">Sign Out</string>
     <string name="disconnect">Disconnect</string>
+    <string name="title_activity_user_information">UserInformation</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
