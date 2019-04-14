@@ -1,6 +1,10 @@
 package com.example.miniresearchdatabase.models;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @IgnoreExtraProperties
@@ -8,10 +12,10 @@ public class User {
 
     public String username;
     public String email;
-    public String address = "null";
-    public String phone = "null";
-    public String intro = "null";
-    public double rate = 5.0;
+    public String address;
+    public String phone;
+    public String intro;
+    public double rate;
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
@@ -20,7 +24,15 @@ public class User {
         this.username = username;
         this.email = email;
     }
-
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("address", address);
+        result.put("phone", phone);
+        result.put("intro", intro);
+        result.put("rate", rate);
+        return result;
+    }
     public void setUsername(String username){
         this.username = username;
     }

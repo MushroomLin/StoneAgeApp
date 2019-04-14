@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="194dp">
+        tools:layout_editor_absoluteY="0dp">
 
         <TextView
             android:id="@+id/TitleTextView"
@@ -39,30 +39,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="UserID:"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:id="@+id/UserIDTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_weight="1"
-                    android:text="12345678"
-                    android:textSize="24sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
-
-                <TextView
                     android:id="@+id/AvatarTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -76,6 +52,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     tools:srcCompat="@tools:sample/avatars" />
+
+                <Button
+                    android:id="@+id/SaveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Save" />
 
             </LinearLayout>
 
@@ -92,15 +75,47 @@
                     android:text="Name:"
                     android:textSize="24sp" />
 
-                <EditText
+                <TextView
                     android:id="@+id/UserNameEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="Tom Cluise"
-                    android:textSize="24sp" />
+                    android:text=" "
+                    android:textSize="24sp"
+                    tools:text="Tom" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/EmailTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/EmailEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:textSize="24sp"
+                        tools:text="123@gmail.com" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -122,32 +137,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="123-456-7890"
-                    android:textSize="24sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/EmailTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Email"
-                    android:textSize="24sp" />
-
-                <EditText
-                    android:id="@+id/EmailEditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_weight="1"
-                    android:text="qwerty@76.com"
-                    android:textSize="24sp" />
+                    android:text=" "
+                    android:textSize="24sp"
+                    tools:text="123-456-7890" />
 
             </LinearLayout>
 
@@ -170,8 +162,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="Apt. 123, 175 Freeman St."
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    tools:text="Apt. 123, 175 Freeman St." />
 
             </LinearLayout>
 
@@ -194,8 +186,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="Hi! I love Computer Games and seeking for trading."
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    tools:text="Hi! I love Computer Games and seeking for trading." />
 
             </LinearLayout>
 
