@@ -31,6 +31,9 @@ public class NewPostActivity extends BaseActivity {
 
     private EditText mTitleField;
     private EditText mBodyField;
+    private EditText mAddressField;
+    private EditText mLatitudeField;
+    private EditText mLongitudeField;
     private FloatingActionButton mSubmitButton;
 
     @Override
@@ -45,6 +48,9 @@ public class NewPostActivity extends BaseActivity {
         mTitleField = findViewById(R.id.fieldTitle);
         mBodyField = findViewById(R.id.fieldBody);
         mSubmitButton = findViewById(R.id.fabSubmitPost);
+        mAddressField = findViewById(R.id.fieldAddress);
+        mLatitudeField = findViewById(R.id.fieldLatitude);
+        mLongitudeField = findViewById(R.id.fieldLongitude);
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +63,9 @@ public class NewPostActivity extends BaseActivity {
     private void submitPost() {
         final String title = mTitleField.getText().toString();
         final String body = mBodyField.getText().toString();
+        final String address = mAddressField.getText().toString();
+        final String latitude = mLatitudeField.getText().toString();
+        final String longitude = mLongitudeField.getText().toString();
 
         // Title is required
         if (TextUtils.isEmpty(title)) {
@@ -92,7 +101,7 @@ public class NewPostActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username, title, body);
+                            writeNewPost(userId, user.username, title, body, address, latitude, longitude);
                         }
 
                         // Finish this Activity, back to the stream
@@ -123,11 +132,12 @@ public class NewPostActivity extends BaseActivity {
     }
 
     // write_fan_out
-    private void writeNewPost(String userId, String username, String title, String body) {
+    private void writeNewPost(String userId, String username, String title, String body,
+                              String address, String latitude, String longitude) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
-        Post post = new Post(userId, username, title, body);
+        Post post = new Post(userId, username, title, body, address, latitude, longitude);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

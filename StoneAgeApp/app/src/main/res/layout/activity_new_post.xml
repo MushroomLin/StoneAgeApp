@@ -5,6 +5,48 @@
     android:layout_height="match_parent">
 
     <EditText
+        android:id="@+id/fieldLongitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fieldTitle"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="195dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="5dp"
+        android:hint="Write your longitude..."
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:scrollHorizontally="false" />
+
+    <EditText
+        android:id="@+id/fieldLatitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fieldTitle"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="5dp"
+        android:hint="Write your latitude..."
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:scrollHorizontally="false" />
+
+    <EditText
+        android:id="@+id/fieldAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fieldTitle"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="5dp"
+        android:hint="Write your address..."
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:scrollHorizontally="false" />
+
+    <EditText
         android:id="@+id/fieldTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

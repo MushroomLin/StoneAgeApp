@@ -92,37 +92,25 @@ public class MapsActivity extends AppCompatActivity
         mPostReference = FirebaseDatabase.getInstance().getReference()
                 .child("posts");
 
-        mPostReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Post post = postSnapshot.getValue(Post.class);
-                    System.out.println(post);
-                    Log.w("posts", post.author + post.body + post.title);
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        // get post info from firebase
-//        ValueEventListener postListener = new ValueEventListener() {
+        // get posts info from firebase
+//        mPostReference.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                Post post = dataSnapshot.getValue(Post.class);
-//
-//                Log.e("test", post.author + post.body + post.title);
-//                Toast.makeText(MapsActivity.this, post.author + post.body + post.title, Toast.LENGTH_SHORT);
+//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+//                    Post post = postSnapshot.getValue(Post.class);
+//                    System.out.println(post);
+//                    Log.w("posts", post.author + post.body + post.title);
+//                }
 //            }
 //
 //            @Override
 //            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.w("eeee", "loadPost:onCancelled", databaseError.toException());
+//
 //            }
-//        };
+//        });
+
+
 
         latlngs.add(new LatLng(12.334343, 33.43434)); //some latitude and logitude value
         latlngs.add(new LatLng(12.3344, 33.6)); //some latitude and logitude value
@@ -157,6 +145,25 @@ public class MapsActivity extends AppCompatActivity
         //Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
+
+        // when users enable their location, this method will read the
+        // posts from firebase then show nearby posts on the map
+        mPostReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Post post = postSnapshot.getValue(Post.class);
+                    System.out.println(post);
+                    Log.w("posts", post.author + post.body + post.title);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         return false;
     }

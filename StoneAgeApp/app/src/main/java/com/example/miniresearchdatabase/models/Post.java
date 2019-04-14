@@ -16,16 +16,24 @@ public class Post {
     public String body;
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
+    public double latitude;
+    public double longitude;
+    public String address;
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Post(String uid, String author, String title, String body) {
+
+    public Post(String uid, String author, String title, String body,
+                String address, String latitude, String longitude) {
         this.uid = uid;
         this.author = author;
         this.title = title;
         this.body = body;
+        this.address = address;
+        this.latitude = Double.parseDouble(latitude);
+        this.longitude = Double.parseDouble(longitude);
     }
 
     // post_to_map
@@ -38,6 +46,9 @@ public class Post {
         result.put("body", body);
         result.put("starCount", starCount);
         result.put("stars", stars);
+        result.put("address", address);
+        result.put("latitude", latitude);
+        result.put("longitude", longitude);
 
         return result;
     }
