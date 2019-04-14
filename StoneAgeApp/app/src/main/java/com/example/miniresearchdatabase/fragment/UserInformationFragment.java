@@ -33,9 +33,9 @@ public class UserInformationFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private TextView UserNameTextView;
     private TextView UserSignTextView;
-    private TextView UserInterestingTextView;
-    private RatingBar ratingBar;
-    private TextView ScoreTextView;
+//    private TextView UserInterestingTextView;
+//    private RatingBar ratingBar;
+//    private TextView ScoreTextView;
     public UserInformationFragment() {
         // Required empty public constructor
     }
