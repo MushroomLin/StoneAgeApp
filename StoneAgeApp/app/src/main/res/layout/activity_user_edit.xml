@@ -134,6 +134,30 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/EmailTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/EmailEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:text="qwerty@76.com"
+                    android:textSize="24sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
                     android:id="@+id/AddressTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -158,7 +182,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/SignTextView"
+                    android:id="@+id/IntroductionTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Introduction"
@@ -171,30 +195,6 @@
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
                     android:text="Hi! I love Computer Games and seeking for trading."
-                    android:textSize="24sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/InterestTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Interest"
-                    android:textSize="24sp" />
-
-                <EditText
-                    android:id="@+id/InterestEditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_weight="1"
-                    android:text="Electronics, Cars, Food"
                     android:textSize="24sp" />
 
             </LinearLayout>

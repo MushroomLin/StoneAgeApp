@@ -15,15 +15,54 @@
             android:id="@+id/UserNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="UserName"
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/UserSignTextView"
+            android:id="@+id/UserEmailTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_below="@+id/UserNameTextView"/>
+            android:layout_below="@+id/UserNameTextView"
+            android:text="Email"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/UserPhoneTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/UserEmailTextView"
+            android:text="Phone"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/UserAddressTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/UserPhoneTextView"
+            android:text="Address"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/UserIntroductionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/UserAddressTextView"
+            android:text="Introduction"
+            android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/UserRateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/UserIntroductionTextView"
+            android:text="Rate"
+            android:textSize="24sp"/>
+
+        <Button
+            android:id="@+id/EditButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/UserRateTextView"
+            android:text="Edit" />
     </RelativeLayout>
 
 </FrameLayout>

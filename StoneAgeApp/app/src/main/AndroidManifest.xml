@@ -9,7 +9,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".UserEditActivity"></activity>
-        <activity android:name=".UserInformationActivity" />
         <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

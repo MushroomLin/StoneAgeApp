@@ -1,6 +1,7 @@
 package com.example.miniresearchdatabase.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,10 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.miniresearchdatabase.MainActivity;
+import com.example.miniresearchdatabase.NewPostActivity;
 import com.example.miniresearchdatabase.R;
+import com.example.miniresearchdatabase.UserEditActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.example.miniresearchdatabase.models.User;
+
+import org.w3c.dom.Text;
 
 public class UserInformationFragment extends Fragment {
 
@@ -32,10 +39,12 @@ public class UserInformationFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private TextView UserNameTextView;
-    private TextView UserSignTextView;
-//    private TextView UserInterestingTextView;
-//    private RatingBar ratingBar;
-//    private TextView ScoreTextView;
+    private TextView UserEmailTextView;
+    private TextView UserAddressTextView;
+    private TextView UserPhoneTextView;
+    private TextView UserIntroductionTextView;
+    private TextView UserRateTextView;
+    private Button EditButton;
     public UserInformationFragment() {
         // Required empty public constructor
     }
@@ -50,11 +59,21 @@ public class UserInformationFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_user_information, container, false);
         UserNameTextView = rootView.findViewById(R.id.UserNameTextView);
-        Log.w("TAG", UserNameTextView.getText().toString());
-        UserSignTextView = rootView.findViewById(R.id.UserSignTextView);
+        UserEmailTextView = rootView.findViewById(R.id.UserEmailTextView);
+        UserAddressTextView = rootView.findViewById(R.id.UserAddressTextView);
+        UserPhoneTextView = rootView.findViewById(R.id.UserPhoneTextView);
+        UserIntroductionTextView = rootView.findViewById(R.id.UserIntroductionTextView);
+        UserRateTextView = rootView.findViewById(R.id.UserRateTextView);
+        EditButton =  rootView.findViewById(R.id.EditButton);
         // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(getUid());
         // [END create_database_reference]
+        EditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), UserEditActivity.class));
+            }
+        });
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -62,10 +81,15 @@ public class UserInformationFragment extends Fragment {
                 User user = dataSnapshot.getValue(User.class);
                 //Now you have an object of the User class and can use its getters like this
                 if (user!=null){
-                    UserNameTextView.setText(user.username);
-                    UserSignTextView.setText(user.email);
                     Log.w("TAG", user.email);
                     Log.w("TAG", user.username);
+                    Log.w("TAG",Double.toString(user.rate));
+                    UserNameTextView.setText("UserName: "+user.username);
+                    UserEmailTextView.setText("Email: "+user.email);
+                    UserAddressTextView.setText("Address: "+user.address);
+                    UserPhoneTextView.setText("Phone: "+user.phone);
+                    UserIntroductionTextView.setText("Introduction: "+user.intro);
+                    UserRateTextView.setText("Rate: "+Double.toString(user.rate));
                 }
 
             }
