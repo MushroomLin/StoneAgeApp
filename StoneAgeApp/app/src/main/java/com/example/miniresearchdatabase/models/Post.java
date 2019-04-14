@@ -9,7 +9,6 @@ import java.util.Map;
 
 @IgnoreExtraProperties
 public class Post {
-
     public String uid;
     public String author;
     public String title;
@@ -38,7 +37,6 @@ public class Post {
         result.put("body", body);
         result.put("starCount", starCount);
         result.put("stars", stars);
-
         return result;
     }
 }

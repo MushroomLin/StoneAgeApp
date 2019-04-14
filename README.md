@@ -1,8 +1,9 @@
 # StoneAgeApp
 StoneAgeApp Project
-'''
-	git pull
-	git add .
-	git commit -m "Comment"
-	git push
-'''
+
+```
+	git pull  
+	git add .  
+	git commit -m "Comment"  
+	git push   
+```    

@@ -2,19 +2,27 @@ package com.example.miniresearchdatabase;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.miniresearchdatabase.fragment.MessageListFragment;
+import com.example.miniresearchdatabase.fragment.RecentMessageFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.example.miniresearchdatabase.R;
 import com.example.miniresearchdatabase.fragment.MyPostsFragment;
 import com.example.miniresearchdatabase.fragment.MyTopPostsFragment;
 import com.example.miniresearchdatabase.fragment.RecentPostsFragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 
 /**
  * Based on the quickstart codes provided by Google.
@@ -29,56 +37,24 @@ import com.example.miniresearchdatabase.fragment.RecentPostsFragment;
  * View all the offers in the discover tab and view your own offers in My Offers or My top Offers tab.
  * Click the top-right corner to sign-out.
  */
-public class  MainActivity extends BaseActivity {
+public class  MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     private static final String TAG = "MainActivity";
 
-    private FragmentPagerAdapter mPagerAdapter;
-    private ViewPager mViewPager;
-
+    Fragment currentFragment = null;
+    FragmentTransaction ft;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Create the adapter that will return a fragment for each section
-        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-            private final Fragment[] mFragments = new Fragment[] {
-                    new RecentPostsFragment(),
-                    new MyPostsFragment(),
-                    new MyTopPostsFragment(),
-            };
-            private final String[] mFragmentNames = new String[] {
-                    getString(R.string.heading_recent),
-                    getString(R.string.heading_my_posts),
-                    getString(R.string.heading_my_top_posts)
-            };
-            @Override
-            public Fragment getItem(int position) {
-                return mFragments[position];
-            }
-            @Override
-            public int getCount() {
-                return mFragments.length;
-            }
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return mFragmentNames[position];
-            }
-        };
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mPagerAdapter);
-        TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-
-        // Button launches NewPostActivity
-        findViewById(R.id.fabNewPost).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, NewPostActivity.class));
-            }
-        });
+        ft = getSupportFragmentManager().beginTransaction();
+        currentFragment = new RecentPostsFragment();
+        ft.replace(R.id.container, currentFragment);
+        ft.commit();
+        // Set up the BottomNavigationView
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -99,5 +75,31 @@ public class  MainActivity extends BaseActivity {
             return super.onOptionsItemSelected(item);
         }
     }
-
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                currentFragment = new RecentPostsFragment();
+                ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.container, currentFragment);
+                ft.commit();
+                break;
+            case R.id.navigation_map:
+                break;
+            case R.id.navigation_post:
+                startActivity(new Intent(MainActivity.this, NewPostActivity.class));
+                break;
+            case R.id.navigation_message:
+                currentFragment = new RecentMessageFragment();
+                ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.container, currentFragment);
+                ft.commit();
+                break;
+            case R.id.navigation_me:
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
 }
