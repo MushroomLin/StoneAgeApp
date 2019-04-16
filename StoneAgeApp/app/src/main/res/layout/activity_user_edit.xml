@@ -53,12 +53,26 @@
                     android:layout_weight="2"
                     app:srcCompat="@drawable/ic_action_account_circle_40" />
 
-                <Button
-                    android:id="@+id/SaveButton"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Save" />
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/TakePhotoButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Take" />
+
+                    <Button
+                        android:id="@+id/SaveButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Save" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -72,7 +86,7 @@
                     android:id="@+id/UserNameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name:"
+                    android:text="Name"
                     android:textSize="24sp" />
 
                 <TextView
@@ -93,29 +107,22 @@
                 android:layout_margin="5dp"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/EmailTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/EmailEditText"
+                    android:layout_width="274dp"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:orientation="horizontal">
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:textSize="24sp"
+                    tools:text="123@gmail.com" />
 
-                    <TextView
-                        android:id="@+id/EmailTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Email"
-                        android:textSize="24sp" />
-
-                    <TextView
-                        android:id="@+id/EmailEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_weight="1"
-                        android:textSize="24sp"
-                        tools:text="123@gmail.com" />
-
-                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout

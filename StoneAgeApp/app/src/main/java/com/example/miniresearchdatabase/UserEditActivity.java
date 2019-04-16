@@ -1,7 +1,10 @@
 package com.example.miniresearchdatabase;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
@@ -43,8 +46,10 @@ public class UserEditActivity extends AppCompatActivity {
     private EditText AddressEditText;
     private EditText IntroductionEditText;
     private Button SaveButton;
+    private Button TakePhotoButton;
     private Uri filePath;
-    private final int PICK_IMAGE_REQUEST = 71;
+    private static final int PICK_IMAGE_REQUEST = 71;
+    private static final int CAMERA_REQUEST = 1888;
     private Bitmap bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,7 @@ public class UserEditActivity extends AppCompatActivity {
         AddressEditText = findViewById(R.id.AddressEditText);
         IntroductionEditText = findViewById(R.id.IntroductionEditText);
         SaveButton = findViewById(R.id.SaveButton);
+        TakePhotoButton = findViewById(R.id.TakePhotoButton);
         // Load the data from the Database
         // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(getUid());
@@ -80,6 +86,14 @@ public class UserEditActivity extends AppCompatActivity {
                             chooseImage();
                         }
                     });
+                    TakePhotoButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                        }
+                    });
+
                     UserNameEditText.setText(user.username);
                     EmailEditText.setText(user.email);
                     AddressEditText.setText(user.address);
@@ -105,7 +119,10 @@ public class UserEditActivity extends AppCompatActivity {
                 childUpdates.put("address", address);
                 childUpdates.put("phone", phone);
                 childUpdates.put("intro", intro);
-                childUpdates.put("avatar", convertImage());
+                String avatar = convertImage();
+                if (avatar!=null) {
+                    childUpdates.put("avatar", avatar);
+                }
                 mDatabase.updateChildren(childUpdates);
 
                 Toast.makeText(getApplicationContext(), "Success!",
@@ -128,6 +145,7 @@ public class UserEditActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.w("TAG", String.valueOf(requestCode)+" "+String.valueOf(resultCode));
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null )
         {
@@ -140,6 +158,12 @@ public class UserEditActivity extends AppCompatActivity {
             {
                 e.printStackTrace();
             }
+        }
+        else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null)
+        {
+            Log.w("TAG", data.toString());
+            bitmap = (Bitmap) data.getExtras().get("data");
+            AvatarImageView.setImageBitmap(bitmap);
         }
     }
 
