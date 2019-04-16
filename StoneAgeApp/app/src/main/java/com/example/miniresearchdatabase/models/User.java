@@ -1,5 +1,8 @@
 package com.example.miniresearchdatabase.models;
 
+import android.graphics.Bitmap;
+
+import com.example.miniresearchdatabase.ImageUtils;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -16,6 +19,7 @@ public class User {
     public String phone;
     public String intro;
     public double rate;
+    public String avatar;
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
@@ -51,6 +55,11 @@ public class User {
     public void setRate(double rate){
         this.rate = rate;
     }
-
+    public void setAvatar(String avatar){
+        this.avatar = avatar;
+    }
+    public Bitmap getAvatar(){
+        return ImageUtils.stringToBitmap(this.avatar);
+    }
 }
 

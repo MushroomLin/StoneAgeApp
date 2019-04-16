@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -45,6 +46,7 @@ public class UserInformationFragment extends Fragment {
     private TextView UserIntroductionTextView;
     private TextView UserRateTextView;
     private Button EditButton;
+    private ImageView UserAvatarImageView;
     public UserInformationFragment() {
         // Required empty public constructor
     }
@@ -64,6 +66,7 @@ public class UserInformationFragment extends Fragment {
         UserPhoneTextView = rootView.findViewById(R.id.UserPhoneTextView);
         UserIntroductionTextView = rootView.findViewById(R.id.UserIntroductionTextView);
         UserRateTextView = rootView.findViewById(R.id.UserRateTextView);
+        UserAvatarImageView = rootView.findViewById(R.id.AvatarImageView);
         EditButton =  rootView.findViewById(R.id.EditButton);
         // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(getUid());
@@ -90,6 +93,7 @@ public class UserInformationFragment extends Fragment {
                     UserPhoneTextView.setText("Phone: "+user.phone);
                     UserIntroductionTextView.setText("Introduction: "+user.intro);
                     UserRateTextView.setText("Rate: "+Double.toString(user.rate));
+                    if(user.avatar!=null) UserAvatarImageView.setImageBitmap(user.getAvatar());
                 }
 
             }
