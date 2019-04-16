@@ -4,6 +4,7 @@ import com.example.miniresearchdatabase.PermissionUtils;
 import com.example.miniresearchdatabase.R;
 import com.example.miniresearchdatabase.models.Post;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
@@ -14,6 +15,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowCloseListener;
 
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -41,9 +45,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class MapsActivity extends AppCompatActivity
         implements
+        OnInfoWindowClickListener,
         OnMyLocationButtonClickListener,
         OnMyLocationClickListener,
         OnMapReadyCallback,
@@ -66,9 +74,11 @@ public class MapsActivity extends AppCompatActivity
     // used to set multiple markers on the map
     private MarkerOptions options = new MarkerOptions();
     private ArrayList<LatLng> latlngs = new ArrayList<>();
-    private Location myLocation;
     private DatabaseReference mPostReference;
-    private FirebaseAuth mAuth;
+    private HashMap<Marker, String> marker2post = new HashMap<Marker, String>();
+    private HashMap<String, Marker> post2marker = new HashMap<String, Marker>();
+    private double currentLatitude = 0.0;
+    private double currentLongitude = 0.0;
 
 
     @Override
@@ -84,45 +94,18 @@ public class MapsActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
+        // set default map location
+        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(42.3496,-71.0997) , 14.0f) );
 
+        // initialize listener for users locate
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
+        mMap.setOnInfoWindowClickListener(this);
         enableMyLocation();
 
+        // connect to firebase for posts collection
         mPostReference = FirebaseDatabase.getInstance().getReference()
                 .child("posts");
-
-
-        // get posts info from firebase
-//        mPostReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                    Post post = postSnapshot.getValue(Post.class);
-//                    System.out.println(post);
-//                    Log.w("posts", post.author + post.body + post.title);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
-
-
-        latlngs.add(new LatLng(12.334343, 33.43434)); //some latitude and logitude value
-        latlngs.add(new LatLng(12.3344, 33.6)); //some latitude and logitude value
-        latlngs.add(new LatLng(12.44343, 33.53434)); //some latitude and logitude value
-        latlngs.add(new LatLng(12.534343, 33.3434)); //some latitude and logitude value
-        latlngs.add(new LatLng(12.234343, 33.43434)); //some latitude and logitude value
-        for (LatLng point : latlngs) {
-            options.position(point);
-            options.title("someTitle");
-            options.snippet("someDesc");
-            mMap.addMarker(options);
-        }
     }
 
     /**
@@ -148,13 +131,43 @@ public class MapsActivity extends AppCompatActivity
 
         // when users enable their location, this method will read the
         // posts from firebase then show nearby posts on the map
+        // get the self-location info
+        mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                // get current location
+                currentLatitude = mMap.getCameraPosition().target.latitude;
+                currentLongitude = mMap.getCameraPosition().target.longitude;
+                Log.w("distance", String.valueOf(currentLatitude));
+                Log.w("distance", String.valueOf(currentLongitude));
+                //Toast.makeText(MapsActivity.this, "Current location:\n" + mMap.getCameraPosition().target.latitude, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // get posts and extract some key info
         mPostReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Post post = postSnapshot.getValue(Post.class);
-                    System.out.println(post);
-                    Log.w("posts", post.author + post.body + post.title);
+                    // get the key of current post and store for future use
+                    DatabaseReference marker2postReference =  postSnapshot.getRef();
+                    final String postkey = marker2postReference.getKey();
+                    // get current position for distance computing
+                    double postLatitude = post.latitude;
+                    double postLongitude = post.longitude;
+                    if (!marker2post.containsValue(postkey)) {
+                        LatLng postPoint = new LatLng(postLatitude, postLongitude);
+                        options.position(postPoint);
+                        options.title(post.title);
+                        options.snippet("Author: " + post.author + " Address: " + post.address
+                                + " " + post.body);
+                        Marker mId = mMap.addMarker(options);
+                        // store marker id and post key for future use
+                        Log.w("marker", mId.getId() + " " + postkey);
+                        marker2post.put(mId, postkey);
+                        post2marker.put(postkey, mId);
+                    }
                 }
             }
 
@@ -170,12 +183,62 @@ public class MapsActivity extends AppCompatActivity
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
-        Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG).show();
-        // get current latitude and longitude
-        double myLat = location.getLatitude();
-        double myLng = location.getLongitude();
+        mPostReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Post post = postSnapshot.getValue(Post.class);
+                    double postLatitude = post.latitude;
+                    double postLongitude = post.longitude;
 
+                    // judge whether this post is near to current location or not
+                    if (!computeDistance(currentLatitude,currentLongitude,postLatitude,postLongitude,2000)) {
+                        // get the key of current post and store for future use
+                        DatabaseReference marker2postReference = postSnapshot.getRef();
+                        final String postkey = marker2postReference.getKey();
+                        if (marker2post.containsValue(postkey)) {
+                            post2marker.get(postkey).setVisible(false);
+                        } else {
+                            // if near the current then draw the marker on the map
+                            LatLng postPoint = new LatLng(postLatitude, postLongitude);
+                            options.position(postPoint);
+                            options.title(post.title);
+                            options.snippet("Author: " + post.author + " Address: " + post.address
+                                    + " " + post.body);
+                            mMap.addMarker(options);
+                            Marker mId = mMap.addMarker(options);
+                            // store marker id and post key for future use
+                            marker2post.put(mId, postkey);
+                            post2marker.put(postkey, mId);
+                            Log.w("marker", mId.getId() + " " + postkey);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
+
+
+    /*
+     * when users click the info window of a marker, this click will
+     * direct users to the postDetail page of the stuff so that users
+     * can add a comment to the stuff or review the comment of the stuff
+     */
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Log.w("marker", marker.getId() + " " + marker2post.get(marker));
+        String postKey = marker2post.get(marker);
+        Intent intent = new Intent(MapsActivity.this, PostDetailActivity.class);
+        intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
+        startActivity(intent);
+    }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -220,7 +283,6 @@ public class MapsActivity extends AppCompatActivity
         return d * Math.PI / 180.0;
     }
 
-
     /**
      * compute distance (meters)
      */
@@ -236,10 +298,10 @@ public class MapsActivity extends AppCompatActivity
         s = s * EARTH_RADIUS;
         s = Math.round(s * 10000d) / 10000d;
         s = s*1000;
+
+        Log.w("distance", String.valueOf(s));
         if (s > distanceRestrict) return false;
         else return true;
     }
-
-
 }
 

@@ -42,6 +42,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     private TextView mAuthorView;
     private TextView mTitleView;
     private TextView mBodyView;
+    private TextView mAddressView;
     private EditText mCommentField;
     private Button mCommentButton;
     private RecyclerView mCommentsRecycler;
@@ -67,6 +68,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mAuthorView = findViewById(R.id.postAuthor);
         mTitleView = findViewById(R.id.postTitle);
         mBodyView = findViewById(R.id.postBody);
+        mAddressView = findViewById(R.id.postAddress);
         mCommentField = findViewById(R.id.fieldCommentText);
         mCommentButton = findViewById(R.id.buttonPostComment);
         mCommentsRecycler = findViewById(R.id.recyclerPostComments);
@@ -91,6 +93,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 mAuthorView.setText(post.author);
                 mTitleView.setText(post.title);
                 mBodyView.setText(post.body);
+                mAddressView.setText(post.address);
             }
 
             @Override
