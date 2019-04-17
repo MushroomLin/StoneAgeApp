@@ -54,15 +54,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         mGoogleButton.setOnClickListener(this);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // Check auth on Activity start
-        if (mAuth.getCurrentUser() != null) {
-            onAuthSuccess(mAuth.getCurrentUser(), false);
-        }
-    }
 
     private void signIn() {
         Log.d(TAG, "signIn");
@@ -82,7 +73,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                         hideProgressDialog();
 
                         if (task.isSuccessful()) {
-                            onAuthSuccess(task.getResult().getUser(), false);
+                            onAuthSuccess(task.getResult().getUser());
                         } else {
                             Toast.makeText(SignInActivity.this, "Sign In Failed",
                                     Toast.LENGTH_SHORT).show();
@@ -91,39 +82,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 });
     }
 
-    private void signUp() {
-        Log.d(TAG, "signUp");
-        if (!validateForm()) {
-            return;
-        }
 
-        showProgressDialog();
-        String email = mEmailField.getText().toString();
-        String password = mPasswordField.getText().toString();
-
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUser:onComplete:" + task.isSuccessful());
-                        hideProgressDialog();
-
-                        if (task.isSuccessful()) {
-                            onAuthSuccess(task.getResult().getUser(), true);
-                        } else {
-                            Toast.makeText(SignInActivity.this, "Sign Up Failed",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void onAuthSuccess(FirebaseUser user, boolean signup) {
+    private void onAuthSuccess(FirebaseUser user) {
         String username = usernameFromEmail(user.getEmail());
-        if (signup){
-            // Write new user
-            writeNewUser(user.getUid(), username, user.getEmail());
-        }
 
         // Go to MainActivity
         startActivity(new Intent(SignInActivity.this, MainActivity.class));
@@ -158,11 +119,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     }
 
     // basic write
-    private void writeNewUser(String userId, String name, String email) {
-        User user = new User(name, email);
-
-        mDatabase.child("users").child(userId).setValue(user);
-    }
 
 
     @Override
@@ -171,7 +127,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         if (i == R.id.buttonSignIn) {
             signIn();
         } else if (i == R.id.buttonSignUp) {
-            signUp();
+            Intent intent = new Intent(SignInActivity.this,SignupActivity.class);
+            startActivity(intent);
         } else if (i == R.id.buttonGoogle) {
             Intent intent = new Intent(SignInActivity.this,GoogleSignInActivity.class);
             startActivity(intent);

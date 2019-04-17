@@ -20,43 +20,32 @@ public class User {
     public String intro;
     public double rate;
     public String avatar;
+
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String username, String email) {
+    public User(String username, String email, String address, String phone, String intro, double rate, String avatar) {
         this.username = username;
         this.email = email;
+        this.address = address;
+        this.phone = phone;
+        this.intro = intro;
+        this.rate = rate;
+        this.avatar = avatar;
     }
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
+        result.put("username", username);
+        result.put("email", email);
         result.put("address", address);
         result.put("phone", phone);
         result.put("intro", intro);
         result.put("rate", rate);
+        result.put("avatar", avatar);
+
         return result;
-    }
-    public void setUsername(String username){
-        this.username = username;
-    }
-    public void setEmail(String email){
-        this.email = email;
-    }
-    public void setAddress(String address){
-        this.address = address;
-    }
-    public void setPhone(String phone){
-        this.phone = phone;
-    }
-    public void setIntro(String intro){
-        this.intro = intro;
-    }
-    public void setRate(double rate){
-        this.rate = rate;
-    }
-    public void setAvatar(String avatar){
-        this.avatar = avatar;
     }
     public Bitmap getAvatar(){
         return ImageUtils.stringToBitmap(this.avatar);

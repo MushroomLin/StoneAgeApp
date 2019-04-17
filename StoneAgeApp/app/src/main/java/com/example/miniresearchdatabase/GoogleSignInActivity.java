@@ -1,18 +1,3 @@
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 package com.example.miniresearchdatabase;
 
@@ -24,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.miniresearchdatabase.models.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -37,6 +23,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.example.miniresearchdatabase.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 // Firebase Authentication using a Google ID Token.
 
@@ -48,6 +39,7 @@ public class GoogleSignInActivity extends BaseActivity implements
 
     // declare auth
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
 
     private GoogleSignInClient mGoogleSignInClient;
@@ -62,6 +54,8 @@ public class GoogleSignInActivity extends BaseActivity implements
         // Views
         mStatusTextView = findViewById(R.id.status);
         mDetailTextView = findViewById(R.id.detail);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Button listeners
         findViewById(R.id.signInButton).setOnClickListener(this);
@@ -85,14 +79,6 @@ public class GoogleSignInActivity extends BaseActivity implements
     }
 
     // check user
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-
 
     // onactivityresult
     @Override
@@ -122,7 +108,6 @@ public class GoogleSignInActivity extends BaseActivity implements
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         showProgressDialog();
 
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -132,6 +117,24 @@ public class GoogleSignInActivity extends BaseActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            //check if uid exist in database
+                            final String userId = getUid();
+                            final String email = user.getEmail();
+                            final String username = usernameFromEmail(email);
+                            mDatabase.child("users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if(!dataSnapshot.exists()) {
+                                        writeNewUser(userId,username,email,"","","",0,"");
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError firebaseError) {
+
+                                }
+                            });
+
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -184,11 +187,6 @@ public class GoogleSignInActivity extends BaseActivity implements
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
-
-            findViewById(R.id.signInButton).setVisibility(View.GONE);
-            findViewById(R.id.signOutAndDisconnect).setVisibility(View.VISIBLE);
 
             startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
             finish();
@@ -198,6 +196,23 @@ public class GoogleSignInActivity extends BaseActivity implements
 
             findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
             findViewById(R.id.signOutAndDisconnect).setVisibility(View.GONE);
+        }
+    }
+
+    private void writeNewUser(String userId, String name, String email, String address, String phone, String intro, double rate, String avatar) {
+        User user = new User(name, email, address, phone, intro, rate, avatar);
+        mDatabase.child("users").child(userId).setValue(user);
+    }
+
+    public String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    private String usernameFromEmail(String email) {
+        if (email.contains("@")) {
+            return email.split("@")[0];
+        } else {
+            return email;
         }
     }
 
@@ -213,3 +228,4 @@ public class GoogleSignInActivity extends BaseActivity implements
         }
     }
 }
+

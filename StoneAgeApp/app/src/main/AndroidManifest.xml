@@ -48,6 +48,7 @@
         <activity android:name=".NewPostActivity" />
         <activity android:name=".PostDetailActivity" />
         <activity android:name=".GoogleSignInActivity" />
+        <activity android:name=".SignupActivity" />
     </application>
 
 </manifest>
