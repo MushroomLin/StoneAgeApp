@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -10,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/fieldTitle"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="195dp"
+        android:layout_marginTop="394dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="5dp"
         android:hint="Write your longitude..."
@@ -24,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/fieldTitle"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="335dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="5dp"
         android:hint="Write your latitude..."
@@ -38,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/fieldTitle"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="282dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="5dp"
         android:hint="Write your address..."
@@ -48,24 +49,31 @@
 
     <EditText
         android:id="@+id/fieldTitle"
-        android:layout_width="match_parent"
+        android:layout_width="71dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="297dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="5dp"
         android:hint="Title"
         android:maxLines="1" />
 
     <EditText
         android:id="@+id/fieldBody"
-        android:layout_width="match_parent"
+        android:layout_width="92dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/fieldTitle"
-        android:layout_marginBottom="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="70dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:hint="Write your post..."
         android:inputType="textMultiLine"
         android:maxLines="10"
@@ -79,5 +87,41 @@
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
         android:src="@drawable/ic_navigation_check_24"/>
+
+    <EditText
+        android:id="@+id/editText_description"
+        android:layout_width="352dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="93dp"
+        android:layout_marginEnd="14dp"
+        android:ems="10"
+        android:hint="description"
+        android:inputType="textPersonName" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="177dp"
+        android:layout_marginEnd="196dp"
+        tools:srcCompat="@tools:sample/avatars[0]" />
+
+    <Button
+        android:id="@+id/button_addImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="217dp"
+        android:layout_marginEnd="-16dp"
+        android:layout_toStartOf="@+id/fabSubmitPost"
+        android:text="Add" />
 
 </RelativeLayout>

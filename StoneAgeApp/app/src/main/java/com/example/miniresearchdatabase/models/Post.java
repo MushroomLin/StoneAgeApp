@@ -20,13 +20,19 @@ public class Post {
     public double longitude;
     public String address;
 
+    public String description;
+    public String originalType;
+    public String targetType;
+    public String avatar;
+
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
 
     public Post(String uid, String author, String title, String body,
-                String address, String latitude, String longitude) {
+                String address, String latitude, String longitude,
+                String description, String originalType, String targetType, String avatar) {
         this.uid = uid;
         this.author = author;
         this.title = title;
@@ -34,6 +40,11 @@ public class Post {
         this.address = address;
         this.latitude = Double.parseDouble(latitude);
         this.longitude = Double.parseDouble(longitude);
+
+        this.description = description;
+        this.originalType = originalType;
+        this.targetType = targetType;
+        this.avatar = avatar;
     }
 
     // post_to_map
@@ -49,6 +60,11 @@ public class Post {
         result.put("address", address);
         result.put("latitude", latitude);
         result.put("longitude", longitude);
+
+        result.put("description", description);
+        result.put("originalType", originalType);
+        result.put("targetType", targetType);
+        result.put("avatar", avatar);
 
         return result;
     }
