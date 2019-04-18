@@ -50,6 +50,7 @@
         <activity android:name=".GoogleSignInActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".MyPostActivity" />
+        <activity android:name=".ChatActivity" />
     </application>
 
 </manifest>
