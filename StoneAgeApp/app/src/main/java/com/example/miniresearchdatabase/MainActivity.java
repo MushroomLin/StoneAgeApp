@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.miniresearchdatabase.fragment.MessageListFragment;
 import com.example.miniresearchdatabase.fragment.UserInformationFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.example.miniresearchdatabase.R;
@@ -88,6 +89,11 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
                 startActivity(new Intent(MainActivity.this, NewPostActivity.class));
                 break;
             case R.id.navigation_message:
+                currentFragment = new MessageListFragment();
+                ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.container, currentFragment);
+                ft.commit();
+
                 break;
             case R.id.navigation_me:
                 currentFragment = new UserInformationFragment();
