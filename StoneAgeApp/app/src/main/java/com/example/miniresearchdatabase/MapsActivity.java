@@ -161,7 +161,7 @@ public class MapsActivity extends AppCompatActivity
                         options.position(postPoint);
                         options.title(post.title);
                         options.snippet("Author: " + post.author + " Address: " + post.address
-                                + " " + post.body);
+                                + " " + post.description);
                         Marker mId = mMap.addMarker(options);
                         // store marker id and post key for future use
                         Log.w("marker", mId.getId() + " " + postkey);
@@ -204,7 +204,7 @@ public class MapsActivity extends AppCompatActivity
                             options.position(postPoint);
                             options.title(post.title);
                             options.snippet("Author: " + post.author + " Address: " + post.address
-                                    + " " + post.body);
+                                    + " " + post.description);
                             mMap.addMarker(options);
                             Marker mId = mMap.addMarker(options);
                             // store marker id and post key for future use

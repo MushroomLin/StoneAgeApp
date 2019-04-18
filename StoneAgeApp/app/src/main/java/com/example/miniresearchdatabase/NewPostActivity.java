@@ -37,7 +37,6 @@ public class NewPostActivity extends BaseActivity {
 
 
     private EditText mTitleField;
-    private EditText mBodyField;
     private EditText mAddressField;
     private EditText mLatitudeField;
     private EditText mLongitudeField;
@@ -62,7 +61,6 @@ public class NewPostActivity extends BaseActivity {
 
 
         mTitleField = findViewById(R.id.fieldTitle);
-        mBodyField = findViewById(R.id.fieldBody);
         mSubmitButton = findViewById(R.id.fabSubmitPost);
         mAddressField = findViewById(R.id.fieldAddress);
         mLatitudeField = findViewById(R.id.fieldLatitude);
@@ -125,7 +123,6 @@ public class NewPostActivity extends BaseActivity {
 
     private void submitPost() {
         final String title = mTitleField.getText().toString();
-        final String body = mBodyField.getText().toString();
         final String address = mAddressField.getText().toString();
         final String latitude = mLatitudeField.getText().toString();
         final String longitude = mLongitudeField.getText().toString();
@@ -140,11 +137,7 @@ public class NewPostActivity extends BaseActivity {
             return;
         }
 
-        // Body is required
-        if (TextUtils.isEmpty(body)) {
-            mBodyField.setError(REQUIRED);
-            return;
-        }
+
 
         // Disable button so there are no multi-posts
         setEditingEnabled(false);
@@ -172,7 +165,7 @@ public class NewPostActivity extends BaseActivity {
                             if (picture == null) {
                                 picture = "";
                             }
-                            writeNewPost(userId, user.username, title, body, address, latitude, longitude,
+                            writeNewPost(userId, user.username, title, address, latitude, longitude,
                                     description, originalType, targetType, picture);
                         }
 
@@ -195,7 +188,6 @@ public class NewPostActivity extends BaseActivity {
 
     private void setEditingEnabled(boolean enabled) {
         mTitleField.setEnabled(enabled);
-        mBodyField.setEnabled(enabled);
         if (enabled) {
             mSubmitButton.show();
         } else {
@@ -204,13 +196,13 @@ public class NewPostActivity extends BaseActivity {
     }
 
     // write_fan_out
-    private void writeNewPost(String userId, String username, String title, String body,
+    private void writeNewPost(String userId, String username, String title,
                               String address, String latitude, String longitude,
                               String description, String originalType, String targetType, String picture) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
-        Post post = new Post(userId, username, title, body, address, latitude, longitude,
+        Post post = new Post(userId, username, title, address, latitude, longitude,
                 description, originalType, targetType, picture);
         Map<String, Object> postValues = post.toMap();
 

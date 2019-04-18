@@ -36,7 +36,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         titleView.setText(post.title);
         authorView.setText(post.author);
         numStarsView.setText(String.valueOf(post.starCount));
-        bodyView.setText(post.body);
+        bodyView.setText(post.description);
         addressView.setText(post.address);
         if (post.picture!=null)
             pictureView.setImageBitmap(ImageUtils.stringToBitmap(post.picture));

@@ -54,6 +54,14 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         mGoogleButton.setOnClickListener(this);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check auth on Activity start
+        if (mAuth.getCurrentUser() != null) {
+            onAuthSuccess(mAuth.getCurrentUser());
+        }
+    }
 
     private void signIn() {
         Log.d(TAG, "signIn");

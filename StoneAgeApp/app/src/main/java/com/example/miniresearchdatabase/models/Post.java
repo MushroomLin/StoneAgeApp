@@ -13,7 +13,6 @@ public class Post {
     public String uid;
     public String author;
     public String title;
-    public String body;
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
     public double latitude;
@@ -30,13 +29,12 @@ public class Post {
     }
 
 
-    public Post(String uid, String author, String title, String body,
+    public Post(String uid, String author, String title,
                 String address, String latitude, String longitude,
                 String description, String originalType, String targetType, String picture) {
         this.uid = uid;
         this.author = author;
         this.title = title;
-        this.body = body;
         this.address = address;
         this.latitude = Double.parseDouble(latitude);
         this.longitude = Double.parseDouble(longitude);
@@ -54,7 +52,6 @@ public class Post {
         result.put("uid", uid);
         result.put("author", author);
         result.put("title", title);
-        result.put("body", body);
         result.put("starCount", starCount);
         result.put("stars", stars);
         result.put("address", address);

@@ -12,7 +12,7 @@
         android:id="@+id/postAuthorLayout"
         layout="@layout/include_post_author"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:layout_alignParentLeft="true" />
 
     <include
@@ -20,10 +20,19 @@
         layout="@layout/include_post_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_below="@+id/postAuthorLayout"
+        android:layout_alignParentLeft="true"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/button_offer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/postAuthorLayout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="29dp"
+        android:text="Offer to trade" />
 
     <LinearLayout
         android:id="@+id/commentForm"
