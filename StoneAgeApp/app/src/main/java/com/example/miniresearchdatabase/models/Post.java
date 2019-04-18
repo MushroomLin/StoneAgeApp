@@ -23,7 +23,7 @@ public class Post {
     public String description;
     public String originalType;
     public String targetType;
-    public String avatar;
+    public String picture;
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -32,7 +32,7 @@ public class Post {
 
     public Post(String uid, String author, String title, String body,
                 String address, String latitude, String longitude,
-                String description, String originalType, String targetType, String avatar) {
+                String description, String originalType, String targetType, String picture) {
         this.uid = uid;
         this.author = author;
         this.title = title;
@@ -44,7 +44,7 @@ public class Post {
         this.description = description;
         this.originalType = originalType;
         this.targetType = targetType;
-        this.avatar = avatar;
+        this.picture = picture;
     }
 
     // post_to_map
@@ -64,7 +64,7 @@ public class Post {
         result.put("description", description);
         result.put("originalType", originalType);
         result.put("targetType", targetType);
-        result.put("avatar", avatar);
+        result.put("picture", picture);
 
         return result;
     }

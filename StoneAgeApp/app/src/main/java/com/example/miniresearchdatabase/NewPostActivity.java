@@ -168,12 +168,12 @@ public class NewPostActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            String avatar = convertImage();
-                            if (avatar == null) {
-                                avatar = "";
+                            String picture = convertImage();
+                            if (picture == null) {
+                                picture = "";
                             }
                             writeNewPost(userId, user.username, title, body, address, latitude, longitude,
-                                    description, originalType, targetType, avatar);
+                                    description, originalType, targetType, picture);
                         }
 
                         // Finish this Activity, back to the stream
@@ -206,12 +206,12 @@ public class NewPostActivity extends BaseActivity {
     // write_fan_out
     private void writeNewPost(String userId, String username, String title, String body,
                               String address, String latitude, String longitude,
-                              String description, String originalType, String targetType, String avatar) {
+                              String description, String originalType, String targetType, String picture) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
         Post post = new Post(userId, username, title, body, address, latitude, longitude,
-                description, originalType, targetType, avatar);
+                description, originalType, targetType, picture);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
