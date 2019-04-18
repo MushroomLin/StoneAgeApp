@@ -13,7 +13,6 @@ public class Post {
     public String uid;
     public String author;
     public String title;
-    public String body;
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
     public double latitude;
@@ -23,20 +22,19 @@ public class Post {
     public String description;
     public String originalType;
     public String targetType;
-    public String avatar;
+    public String picture;
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
 
-    public Post(String uid, String author, String title, String body,
+    public Post(String uid, String author, String title,
                 String address, String latitude, String longitude,
-                String description, String originalType, String targetType, String avatar) {
+                String description, String originalType, String targetType, String picture) {
         this.uid = uid;
         this.author = author;
         this.title = title;
-        this.body = body;
         this.address = address;
         this.latitude = Double.parseDouble(latitude);
         this.longitude = Double.parseDouble(longitude);
@@ -44,7 +42,7 @@ public class Post {
         this.description = description;
         this.originalType = originalType;
         this.targetType = targetType;
-        this.avatar = avatar;
+        this.picture = picture;
     }
 
     // post_to_map
@@ -54,7 +52,6 @@ public class Post {
         result.put("uid", uid);
         result.put("author", author);
         result.put("title", title);
-        result.put("body", body);
         result.put("starCount", starCount);
         result.put("stars", stars);
         result.put("address", address);
@@ -64,7 +61,7 @@ public class Post {
         result.put("description", description);
         result.put("originalType", originalType);
         result.put("targetType", targetType);
-        result.put("avatar", avatar);
+        result.put("picture", picture);
 
         return result;
     }
