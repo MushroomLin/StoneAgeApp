@@ -15,6 +15,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.miniresearchdatabase.MainActivity;
+import com.example.miniresearchdatabase.MyPostActivity;
 import com.example.miniresearchdatabase.NewPostActivity;
 import com.example.miniresearchdatabase.R;
 import com.example.miniresearchdatabase.UserEditActivity;
@@ -46,6 +47,7 @@ public class UserInformationFragment extends Fragment {
     private TextView UserIntroductionTextView;
     private TextView UserRateTextView;
     private Button EditButton;
+    private Button button_mypost;
     private ImageView UserAvatarImageView;
     public UserInformationFragment() {
         // Required empty public constructor
@@ -68,6 +70,7 @@ public class UserInformationFragment extends Fragment {
         UserRateTextView = rootView.findViewById(R.id.UserRateTextView);
         UserAvatarImageView = rootView.findViewById(R.id.AvatarImageView);
         EditButton =  rootView.findViewById(R.id.EditButton);
+        button_mypost = rootView.findViewById(R.id.button_mypost);
         // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(getUid());
         // [END create_database_reference]
@@ -75,6 +78,12 @@ public class UserInformationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), UserEditActivity.class));
+            }
+        });
+        button_mypost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MyPostActivity.class));
             }
         });
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -87,12 +96,12 @@ public class UserInformationFragment extends Fragment {
                     Log.w("TAG", user.email);
                     Log.w("TAG", user.username);
                     Log.w("TAG",Double.toString(user.rate));
-                    UserNameTextView.setText("UserName: "+user.username);
+                    UserNameTextView.setText(user.username);
                     UserEmailTextView.setText("Email: "+user.email);
                     UserAddressTextView.setText("Address: "+user.address);
                     UserPhoneTextView.setText("Phone: "+user.phone);
-                    UserIntroductionTextView.setText("Introduction: "+user.intro);
-                    UserRateTextView.setText("Rate: "+Double.toString(user.rate));
+                    UserIntroductionTextView.setText('"'+user.intro+'"');
+                    UserRateTextView.setText("Rate: "+Double.toString(user.rate)+"/5");
                     if(user.avatar!=null) UserAvatarImageView.setImageBitmap(user.getAvatar());
                 }
 
