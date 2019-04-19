@@ -1,6 +1,7 @@
 package com.example.miniresearchdatabase;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +28,7 @@ import com.example.miniresearchdatabase.models.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostDetailActivity extends BaseActivity implements View.OnClickListener {
+public class PostDetailActivity extends BaseActivity {
 
     private static final String TAG = "PostDetailActivity";
 
@@ -75,7 +76,21 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mOfferButton = findViewById(R.id.button_offer);
         mCommentsRecycler = findViewById(R.id.recyclerPostComments);
 
-        mCommentButton.setOnClickListener(this);
+        mCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postComment();
+            }
+        });
+
+        mOfferButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostDetailActivity.this, SendOfferActivity.class);
+                intent.putExtra(SendOfferActivity.OFFER_POST_KEY, mPostKey);
+                startActivity(intent);
+            }
+        });
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
 
     }
@@ -131,13 +146,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mAdapter.cleanupListener();
     }
 
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.buttonPostComment) {
-            postComment();
-        }
-    }
 
     private void postComment() {
         final String uid = getUid();
