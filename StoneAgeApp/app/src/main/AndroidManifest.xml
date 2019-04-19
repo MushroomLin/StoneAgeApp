@@ -51,6 +51,7 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".MyPostActivity" />
         <activity android:name=".ChatActivity" />
+        <activity android:name=".SendOfferActivity" />
     </application>
 
 </manifest>

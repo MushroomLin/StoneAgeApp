@@ -7,15 +7,23 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.miniresearchdatabase.models.Offer;
 import com.example.miniresearchdatabase.models.Post;
+import com.example.miniresearchdatabase.models.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,6 +31,7 @@ import java.util.Map;
 
 public class SendOfferActivity extends AppCompatActivity {
     private static final String TAG = "SendOfferActivity";
+    private static final String REQUIRED = "Required";
     private DatabaseReference mDatabase;
     private EditText offerTitle;
     private EditText offerdescription;
@@ -35,6 +44,7 @@ public class SendOfferActivity extends AppCompatActivity {
     private Bitmap bitmap_offer;
     private String offerPostKey;
     public static final String OFFER_POST_KEY = "post_key";
+    private DatabaseReference offerReference;
 
 
     @Override
@@ -51,10 +61,20 @@ public class SendOfferActivity extends AppCompatActivity {
         offerimageView = findViewById(R.id.imageView_offer);
         button_back = findViewById(R.id.button_back3);
 
+        offerReference = FirebaseDatabase.getInstance().getReference()
+                .child("post-offers").child(offerPostKey);
+
         button_addofferImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseImage();
+            }
+        });
+
+        offerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitOffer();
             }
         });
 
@@ -86,9 +106,56 @@ public class SendOfferActivity extends AppCompatActivity {
         return data;
     }
 
-    private void submitPost() {
+    private void submitOffer() {
         final String title = offerTitle.getText().toString();
         final String description = offerdescription.getText().toString();
+
+        if (TextUtils.isEmpty(title)) {
+            offerTitle.setError(REQUIRED);
+            return;
+        }
+        setEditingEnabled(false);
+        Toast.makeText(this, offerPostKey, Toast.LENGTH_SHORT).show();
+
+        final String userId = getUid();
+        mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user value
+                        User user = dataSnapshot.getValue(User.class);
+                        String author = user.username;
+
+                        if (user == null) {
+                            // User is null, error out
+                            Log.e(TAG, "Post " + offerPostKey + " is unexpectedly null");
+                            Toast.makeText(SendOfferActivity.this,
+                                    "Error: could not fetch user.",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Write new post
+                            String picture = convertImage();
+                            if (picture == null) {
+                                picture = "";
+                            }
+                            Offer offer = new Offer(userId,author,title,description,picture);
+                            offerReference.push().setValue(offer);
+                        }
+
+                        // Finish this Activity, back to the stream
+                        setEditingEnabled(true);
+                        finish();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w(TAG, "getPost:onCancelled", databaseError.toException());
+                        // [START_EXCLUDE]
+                        setEditingEnabled(true);
+                        // [END_EXCLUDE]
+                    }
+                });
     }
 
     @Override
@@ -121,5 +188,19 @@ public class SendOfferActivity extends AppCompatActivity {
         childUpdates.put("/post-offers/" + offerPostKey + "/" + key, offerValues);
 
         mDatabase.updateChildren(childUpdates);
+    }
+
+    public String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+
+    private void setEditingEnabled(boolean enabled) {
+        offerTitle.setEnabled(enabled);
+        if (enabled) {
+            offerButton.show();
+        } else {
+            offerButton.hide();
+        }
     }
 }
