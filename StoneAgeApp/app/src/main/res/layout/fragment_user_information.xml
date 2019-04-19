@@ -18,7 +18,7 @@
             android:layout_height="160dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_action_account_circle_40" />
+            tools:srcCompat="@drawable/ic_action_account_circle_40" />
 
         <TextView
             android:id="@+id/UserNameTextView"
@@ -26,21 +26,21 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="184dp"
             android:layout_marginTop="16dp"
-            android:text="UserName"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="UserName" />
 
         <TextView
             android:id="@+id/UserEmailTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="328dp"
-            android:text="Email"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Email" />
 
         <TextView
             android:id="@+id/UserPhoneTextView"
@@ -48,10 +48,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="380dp"
-            android:text="Phone"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Phone" />
 
         <TextView
             android:id="@+id/UserAddressTextView"
@@ -59,10 +59,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="248dp"
-            android:text="Address"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Address" />
 
         <TextView
             android:id="@+id/UserIntroductionTextView"
@@ -70,10 +70,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="172dp"
-            android:text="Introduction"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Introduction" />
 
         <TextView
             android:id="@+id/UserRateTextView"
@@ -81,10 +81,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="184dp"
             android:layout_marginTop="68dp"
-            android:text="Rate"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Rate" />
 
         <Button
             android:id="@+id/EditButton"

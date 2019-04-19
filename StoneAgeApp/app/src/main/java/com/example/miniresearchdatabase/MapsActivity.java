@@ -49,6 +49,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+// Google Map API: AIzaSyBBIbyzLuUdIpCMO1hl5QK-gRPRNHf5Ryw
+
+
 public class MapsActivity extends AppCompatActivity
         implements
         OnInfoWindowClickListener,
