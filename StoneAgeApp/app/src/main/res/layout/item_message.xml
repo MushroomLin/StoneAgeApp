@@ -5,14 +5,12 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        android:id="@+id/imgUsers"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:id="@+id/imgUsers"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"
-        />
+        android:src="@drawable/ic_action_account_circle_40"
+        android:layout_weight="1"/>
+
     <TextView
         android:layout_width="0dp"
         android:paddingLeft="20dp"
