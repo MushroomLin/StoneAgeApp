@@ -23,7 +23,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -99,17 +102,21 @@ public class ChatActivity extends BaseActivity{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 sentMessage.clear();
+
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Message message = snapshot.getValue(Message.class);
                     assert  message != null;
 //                    Log.w("TAG", message.message);
                     Log.w("USER", message.sender);
-                    if(message.receiver.equals(userId) && getUid().equals(message.sender)) {
+                    if(userId.equals(message.receiver) && getUid().equals(message.sender)) {
                         sentMessage.add(message.message);
-//                        Log.w("TAG", snapshot.getKey());
+                    }
+                    if(getUid().equals(message.receiver) && userId.equals(message.sender)){
+                        receivedMessage.add(message.message);
                     }
                 }
                 Log.w("Mess", sentMessage.toString());
+                Log.w("Mess", receivedMessage.toString());
 
 
             }
@@ -125,9 +132,13 @@ public class ChatActivity extends BaseActivity{
     private void sendMessage(String sender, String receiver, String message) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         HashMap<String, Object> hashMap = new HashMap<>();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
+        Date date = new Date();
+        String time = dateFormat.format(date);
         hashMap.put("sender", sender);
         hashMap.put("receiver", receiver);
         hashMap.put("message", message);
+        hashMap.put("time", time);
         reference.child("chats").push().setValue(hashMap);
 
     }
