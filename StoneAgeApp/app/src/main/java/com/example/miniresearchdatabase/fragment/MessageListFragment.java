@@ -42,6 +42,7 @@ public class MessageListFragment extends Fragment {
 
     private LinearLayoutManager mManager;
     private List<User> mUsers;
+    private List<String> userKeys;
 
     public MessageListFragment() {}
 
@@ -60,6 +61,7 @@ public class MessageListFragment extends Fragment {
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecycler.setHasFixedSize(true);
         mUsers = new ArrayList<>();
+        userKeys = new ArrayList<>();
         readUsers();
 
 
@@ -82,15 +84,20 @@ public class MessageListFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
+                userKeys.clear();
 
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
                     assert  user != null;
                     assert firebaseUser != null;
-                    if(!snapshot.getKey().equals(getUid()))
+                    if(!snapshot.getKey().equals(getUid())) {
+//                        Log.w("TAG", snapshot.getKey());
                         mUsers.add(user);
+                        userKeys.add(snapshot.getKey());
+                    }
                 }
-                messageAdapter = new MessageAdapter(getContext(), mUsers);
+                Log.w("TAG", userKeys.toString());
+                messageAdapter = new MessageAdapter(getContext(), mUsers, userKeys);
                 mRecycler.setAdapter(messageAdapter);
                 RecyclerView.ItemDecoration decor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
                 mRecycler.addItemDecoration(decor);

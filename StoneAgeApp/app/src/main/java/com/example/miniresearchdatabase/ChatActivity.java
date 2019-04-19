@@ -3,7 +3,11 @@ package com.example.miniresearchdatabase;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,23 +28,46 @@ public class ChatActivity extends BaseActivity{
     private FirebaseUser firebaseUser;
     private EditText mMessageEditText;
     private Button mSendButton;
+    private String userId;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         Intent intent = getIntent();
-        final String userId = intent.getStringExtra("userId");
-
+        userId = intent.getStringExtra("userId");
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = findViewById(R.id.sendButton);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("posts").child(userId);
+        reference = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        username = intent.getStringExtra("username");
+        this.setTitle(username);
+
+        mMessageEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.toString().trim().length() > 0) {
+                    mSendButton.setEnabled(true);
+                } else {
+                    mSendButton.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
 
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String msg = mMessageEditText.getText().toString();
+
                 if(!msg.equals("")) {
                     sendMessage(firebaseUser.getUid(), userId, msg);
                 }
@@ -57,7 +84,6 @@ public class ChatActivity extends BaseActivity{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-
             }
 
             @Override

@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.miniresearchdatabase.ChatActivity;
 import com.example.miniresearchdatabase.R;
-import com.example.miniresearchdatabase.models.Post;
+
 import com.example.miniresearchdatabase.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,12 +22,15 @@ import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.MessageViewHolder>{
     private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
     private Context mContext;
     private List<User> mUsers;
-    public MessageAdapter(Context mContext, List<User> mUsers) {
+    private List<String> userKeys;
+    private String currKey;
+    private String username;
+    public MessageAdapter(Context mContext, List<User> mUsers, List<String> userKeys) {
         this.mUsers = mUsers;
         this.mContext = mContext;
+        this.userKeys = userKeys;
     }
 
     @NonNull
@@ -38,14 +41,18 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageViewHolder messageViewHolder, int position) {
-        User user = mUsers.get(position);
+    public void onBindViewHolder(@NonNull MessageViewHolder messageViewHolder, final int position) {
+        final User user = mUsers.get(position);
         messageViewHolder.tvSender.setText(user.username);
         messageViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currKey = userKeys.get(position);
+                username = user.username;
+//                Log.w("TAG", currKey);
                 Intent intent = new Intent(mContext, ChatActivity.class);
-                intent.putExtra("userId", mFirebaseUser.getUid());
+                intent.putExtra("userId", currKey);
+                intent.putExtra("username",username);
                 mContext.startActivity(intent);
             }
         });
