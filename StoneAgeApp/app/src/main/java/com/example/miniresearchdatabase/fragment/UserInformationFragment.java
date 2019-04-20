@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.miniresearchdatabase.MainActivity;
@@ -51,6 +52,7 @@ public class UserInformationFragment extends Fragment {
     private Button EditButton;
     private Button button_mypost;
     private ImageView UserAvatarImageView;
+    private RelativeLayout UserInformationLayout;
     public UserInformationFragment() {
         // Required empty public constructor
     }
@@ -64,14 +66,16 @@ public class UserInformationFragment extends Fragment {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_user_information, container, false);
-        UserNameTextView = rootView.findViewById(R.id.UserNameTextView);
-        UserEmailTextView = rootView.findViewById(R.id.UserEmailTextView);
+        UserInformationLayout  = rootView.findViewById(R.id.UserInformationLayout);
 //        UserAddressTextView = rootView.findViewById(R.id.UserAddressTextView);
 //        UserPhoneTextView = rootView.findViewById(R.id.UserPhoneTextView);
 //        UserIntroductionTextView = rootView.findViewById(R.id.UserIntroductionTextView);
 //        UserRateTextView = rootView.findViewById(R.id.UserRateTextView);
-        UserRatingBar = rootView.findViewById(R.id.ratingBar);
-        UserAvatarImageView = rootView.findViewById(R.id.AvatarImageView);
+
+        UserNameTextView = UserInformationLayout.findViewById(R.id.UserNameTextView);
+        UserEmailTextView = UserInformationLayout.findViewById(R.id.UserEmailTextView);
+        UserRatingBar = UserInformationLayout.findViewById(R.id.ratingBar);
+        UserAvatarImageView = UserInformationLayout.findViewById(R.id.AvatarImageView);
         EditButton =  rootView.findViewById(R.id.EditButton);
         button_mypost = rootView.findViewById(R.id.button_mypost);
         // [START create_database_reference]
@@ -100,7 +104,7 @@ public class UserInformationFragment extends Fragment {
                     Log.w("TAG", user.username);
                     Log.w("TAG",Double.toString(user.rate));
                     UserNameTextView.setText(user.username);
-                    UserEmailTextView.setText("Email: "+user.email);
+                    UserEmailTextView.setText(user.email);
 //                    UserAddressTextView.setText("Address: "+user.address);
 //                    UserPhoneTextView.setText("Phone: "+user.phone);
 //                    UserIntroductionTextView.setText('"'+user.intro+'"');
