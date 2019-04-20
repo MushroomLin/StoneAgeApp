@@ -3,6 +3,7 @@ package com.example.miniresearchdatabase;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.miniresearchdatabase.models.Message;
 import com.example.miniresearchdatabase.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,28 +23,45 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+
 
 public class ChatActivity extends BaseActivity{
     private DatabaseReference reference;
     private FirebaseUser firebaseUser;
+    private DatabaseReference mDatabase;
     private EditText mMessageEditText;
     private Button mSendButton;
     private String userId;
     private String username;
+    private RecyclerView messageRecyclerView;
+    private List<String> sentMessage;
+    private List<String> receivedMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         Intent intent = getIntent();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("chats");
+        username = intent.getStringExtra("username");
+        this.setTitle(username);
+        sentMessage = new ArrayList<>();
+        receivedMessage = new ArrayList<>();
+
         userId = intent.getStringExtra("userId");
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = findViewById(R.id.sendButton);
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("users").child(userId);
-        username = intent.getStringExtra("username");
-        this.setTitle(username);
+        messageRecyclerView = findViewById(R.id.messageRecyclerView);
+
+
+
 
         mMessageEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -83,7 +102,24 @@ public class ChatActivity extends BaseActivity{
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
+                sentMessage.clear();
+
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Message message = snapshot.getValue(Message.class);
+                    assert  message != null;
+//                    Log.w("TAG", message.message);
+                    Log.w("USER", message.sender);
+                    if(userId.equals(message.receiver) && getUid().equals(message.sender)) {
+                        sentMessage.add(message.message);
+                    }
+                    if(getUid().equals(message.receiver) && userId.equals(message.sender)){
+                        receivedMessage.add(message.message);
+                    }
+                }
+                Log.w("Mess", sentMessage.toString());
+                Log.w("Mess", receivedMessage.toString());
+
+
             }
 
             @Override
@@ -97,9 +133,13 @@ public class ChatActivity extends BaseActivity{
     private void sendMessage(String sender, String receiver, String message) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         HashMap<String, Object> hashMap = new HashMap<>();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
+        Date date = new Date();
+        String time = dateFormat.format(date);
         hashMap.put("sender", sender);
         hashMap.put("receiver", receiver);
         hashMap.put("message", message);
+        hashMap.put("time", time);
         reference.child("chats").push().setValue(hashMap);
 
     }

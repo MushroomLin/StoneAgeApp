@@ -46,6 +46,7 @@ import java.util.HashMap;
 public class MapsActivity extends AppCompatActivity
         implements
         OnInfoWindowClickListener,
+
         OnMyLocationButtonClickListener,
         OnMyLocationClickListener,
         OnMapReadyCallback,

@@ -30,6 +30,7 @@ public class MyPostActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
     private RecyclerView mRecycler;
+
     private LinearLayoutManager mManager;
 
 

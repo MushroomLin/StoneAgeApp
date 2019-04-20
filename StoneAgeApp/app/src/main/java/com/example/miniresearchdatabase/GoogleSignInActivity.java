@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 // Firebase Authentication using a Google ID Token.
 
 public class GoogleSignInActivity extends BaseActivity implements
