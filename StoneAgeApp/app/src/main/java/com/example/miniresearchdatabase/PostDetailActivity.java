@@ -38,6 +38,7 @@ public class PostDetailActivity extends BaseActivity {
     private DatabaseReference mCommentsReference;
     private ValueEventListener mPostListener;
     private String mPostKey;
+
     private CommentAdapter mAdapter;
 
     private TextView mAuthorView;

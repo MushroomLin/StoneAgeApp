@@ -38,6 +38,7 @@ public class MessageListFragment extends Fragment {
     private static final String TAG = "MessageListFragment";
     private DatabaseReference mDatabase;
     private RecyclerView mRecycler;
+
     private MessageAdapter messageAdapter;
 
     private LinearLayoutManager mManager;

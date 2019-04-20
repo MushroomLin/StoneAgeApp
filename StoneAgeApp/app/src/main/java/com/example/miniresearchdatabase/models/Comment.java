@@ -7,6 +7,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class Comment {
 
     public String uid;
+
     public String author;
     public String text;
 

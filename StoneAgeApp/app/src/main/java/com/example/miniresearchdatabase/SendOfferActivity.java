@@ -38,6 +38,7 @@ public class SendOfferActivity extends AppCompatActivity {
     private FloatingActionButton offerButton;
     private Button button_addofferImage;
     private Button button_back;
+
     private final int PICK_IMAGE_REQUEST = 71;
     private ImageView offerimageView;
     private Uri filePath;

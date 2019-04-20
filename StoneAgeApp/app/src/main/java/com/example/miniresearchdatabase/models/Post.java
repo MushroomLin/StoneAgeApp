@@ -14,6 +14,7 @@ public class Post {
 
     public String uid;
     public String author;
+
     public String title;
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();

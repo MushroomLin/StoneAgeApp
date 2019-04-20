@@ -67,6 +67,7 @@ public class GetPostUrl {
         try {
 //            HttpEntity requestHttpEntity = new UrlEncodedFormEntity(pairList);
             // URL使用基本URL即可，其中不需要加参数
+
             HttpPost httpPost = new HttpPost(baseURL);
             // 将请求体内容加入请求中
 //            httpPost.setEntity(requestHttpEntity);

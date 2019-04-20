@@ -8,6 +8,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class Message {
 
     public String sender;
+
     public String receiver;
     public String message;
     public String time;

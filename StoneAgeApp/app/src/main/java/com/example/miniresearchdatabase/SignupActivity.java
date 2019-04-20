@@ -31,6 +31,7 @@ public class SignupActivity extends BaseActivity{
     private TextView textView_phone;
     private TextView textView_intro;
     private Button button_signup2;
+
     private Button button_back2;
     private EditText editText_name;
     private EditText editText_pwd;

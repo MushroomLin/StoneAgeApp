@@ -13,7 +13,6 @@ import com.google.maps.model.GeocodingResult;
 import java.io.IOException;
 
 
-
 public class AddressToLocation {
     public double lat;
     public double lng;

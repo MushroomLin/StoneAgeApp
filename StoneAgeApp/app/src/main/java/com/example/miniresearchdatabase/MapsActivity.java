@@ -55,6 +55,7 @@ import java.util.Map;
 public class MapsActivity extends AppCompatActivity
         implements
         OnInfoWindowClickListener,
+
         OnMyLocationButtonClickListener,
         OnMyLocationClickListener,
         OnMapReadyCallback,
