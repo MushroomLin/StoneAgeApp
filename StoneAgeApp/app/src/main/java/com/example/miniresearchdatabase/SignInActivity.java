@@ -29,6 +29,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     private EditText mEmailField;
     private EditText mPasswordField;
+
     private Button mSignInButton;
     private Button mSignUpButton;
     private Button mGoogleButton;

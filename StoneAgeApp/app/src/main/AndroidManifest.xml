@@ -8,6 +8,7 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-feature android:name="android.hardware.camera" />
@@ -51,6 +52,7 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".MyPostActivity" />
         <activity android:name=".ChatActivity" />
+        <activity android:name=".SendOfferActivity" />
     </application>
 
 </manifest>

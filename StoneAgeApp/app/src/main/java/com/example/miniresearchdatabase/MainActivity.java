@@ -41,6 +41,7 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
 
     Fragment currentFragment = null;
     FragmentTransaction ft;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

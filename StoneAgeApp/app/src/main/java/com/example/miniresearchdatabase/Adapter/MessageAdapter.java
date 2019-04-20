@@ -21,9 +21,9 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.MessageViewHolder>{
-    private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     private Context mContext;
     private List<User> mUsers;
+
     private List<String> userKeys;
     private String currKey;
     private String username;

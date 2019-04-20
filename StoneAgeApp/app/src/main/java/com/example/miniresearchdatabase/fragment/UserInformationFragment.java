@@ -39,6 +39,7 @@ public class UserInformationFragment extends Fragment {
     // [END define_database_reference]
 
 
+
     private OnFragmentInteractionListener mListener;
     private TextView UserNameTextView;
     private TextView UserEmailTextView;

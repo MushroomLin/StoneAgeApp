@@ -1,26 +1,24 @@
 package com.example.miniresearchdatabase;
 
-import com.example.miniresearchdatabase.PermissionUtils;
-import com.example.miniresearchdatabase.R;
+
 import com.example.miniresearchdatabase.models.Post;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
-import com.google.android.gms.maps.GoogleMap.OnInfoWindowCloseListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
 
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,33 +26,27 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.service.autofill.Dataset;
 import android.support.annotation.NonNull;
-import android.support.constraint.solver.widgets.Snapshot;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
-
-// Google Map API: AIzaSyBBIbyzLuUdIpCMO1hl5QK-gRPRNHf5Ryw
 
 
 public class MapsActivity extends AppCompatActivity
         implements
         OnInfoWindowClickListener,
+
         OnMyLocationButtonClickListener,
         OnMyLocationClickListener,
         OnMapReadyCallback,
@@ -76,7 +68,6 @@ public class MapsActivity extends AppCompatActivity
     private GoogleMap mMap;
     // used to set multiple markers on the map
     private MarkerOptions options = new MarkerOptions();
-    private ArrayList<LatLng> latlngs = new ArrayList<>();
     private DatabaseReference mPostReference;
     private HashMap<Marker, String> marker2post = new HashMap<Marker, String>();
     private HashMap<String, Marker> post2marker = new HashMap<String, Marker>();
@@ -84,13 +75,44 @@ public class MapsActivity extends AppCompatActivity
     private double currentLongitude = 0.0;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+
+
+        // initialize api key
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), "AIzaSyCaUcdLLm4ifpW9ZYMhcCm_6RMvArAz-hA");
+        }
+
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull com.google.android.libraries.places.api.model.Place place) {
+                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 14.0f));
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.e("Map", "An error occurred: " + status);
+            }
+        });
+
         SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                (SupportMapFragment) getSupportFragmentManager().findFragmentByTag("map_tag");
+
+
+
+
         mapFragment.getMapAsync(this);
     }
 
