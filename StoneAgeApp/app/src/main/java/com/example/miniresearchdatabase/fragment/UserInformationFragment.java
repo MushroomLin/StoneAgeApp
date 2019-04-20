@@ -42,10 +42,11 @@ public class UserInformationFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private TextView UserNameTextView;
     private TextView UserEmailTextView;
-    private TextView UserAddressTextView;
-    private TextView UserPhoneTextView;
-    private TextView UserIntroductionTextView;
-    private TextView UserRateTextView;
+    private RatingBar UserRatingBar;
+//    private TextView UserAddressTextView;
+//    private TextView UserPhoneTextView;
+//    private TextView UserIntroductionTextView;
+//    private TextView UserRateTextView;
     private Button EditButton;
     private Button button_mypost;
     private ImageView UserAvatarImageView;
@@ -64,10 +65,11 @@ public class UserInformationFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_user_information, container, false);
         UserNameTextView = rootView.findViewById(R.id.UserNameTextView);
         UserEmailTextView = rootView.findViewById(R.id.UserEmailTextView);
-        UserAddressTextView = rootView.findViewById(R.id.UserAddressTextView);
-        UserPhoneTextView = rootView.findViewById(R.id.UserPhoneTextView);
-        UserIntroductionTextView = rootView.findViewById(R.id.UserIntroductionTextView);
-        UserRateTextView = rootView.findViewById(R.id.UserRateTextView);
+//        UserAddressTextView = rootView.findViewById(R.id.UserAddressTextView);
+//        UserPhoneTextView = rootView.findViewById(R.id.UserPhoneTextView);
+//        UserIntroductionTextView = rootView.findViewById(R.id.UserIntroductionTextView);
+//        UserRateTextView = rootView.findViewById(R.id.UserRateTextView);
+        UserRatingBar = rootView.findViewById(R.id.ratingBar);
         UserAvatarImageView = rootView.findViewById(R.id.AvatarImageView);
         EditButton =  rootView.findViewById(R.id.EditButton);
         button_mypost = rootView.findViewById(R.id.button_mypost);
@@ -98,10 +100,11 @@ public class UserInformationFragment extends Fragment {
                     Log.w("TAG",Double.toString(user.rate));
                     UserNameTextView.setText(user.username);
                     UserEmailTextView.setText("Email: "+user.email);
-                    UserAddressTextView.setText("Address: "+user.address);
-                    UserPhoneTextView.setText("Phone: "+user.phone);
-                    UserIntroductionTextView.setText('"'+user.intro+'"');
-                    UserRateTextView.setText("Rate: "+Double.toString(user.rate)+"/5");
+//                    UserAddressTextView.setText("Address: "+user.address);
+//                    UserPhoneTextView.setText("Phone: "+user.phone);
+//                    UserIntroductionTextView.setText('"'+user.intro+'"');
+//                    UserRateTextView.setText("Rate: "+Double.toString(user.rate)+"/5");
+                    UserRatingBar.setRating((float)user.rate);
                     if(user.avatar!=null) UserAvatarImageView.setImageBitmap(user.getAvatar());
                 }
 
