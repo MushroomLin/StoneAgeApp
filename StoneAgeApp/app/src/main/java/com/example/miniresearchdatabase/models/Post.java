@@ -1,9 +1,11 @@
 package com.example.miniresearchdatabase.models;
 
+import com.example.miniresearchdatabase.AddressToLocation;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,25 +26,38 @@ public class Post {
     public String targetType;
     public String picture;
 
+    public List<Double> estimatedPrices;
+
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
 
     public Post(String uid, String author, String title,
-                String address, String latitude, String longitude,
-                String description, String originalType, String targetType, String picture) {
+                String address,
+                String description, String originalType, String targetType, String picture,
+                List<Double> estimatedPrices) {
         this.uid = uid;
         this.author = author;
         this.title = title;
         this.address = address;
-        this.latitude = Double.parseDouble(latitude);
-        this.longitude = Double.parseDouble(longitude);
+
+        // TO_BE_FIXED
+        double[] coordinates = null;
+//        double[] coordinates = getCoordinates(address);
+        if(coordinates == null) {
+            coordinates = new double[]{0.0, 0.0};
+        }
+
+        this.latitude = coordinates[0];
+        this.longitude = coordinates[1];
 
         this.description = description;
         this.originalType = originalType;
         this.targetType = targetType;
         this.picture = picture;
+
+        this.estimatedPrices = estimatedPrices;
     }
 
     // post_to_map
@@ -63,6 +78,18 @@ public class Post {
         result.put("targetType", targetType);
         result.put("picture", picture);
 
+        result.put("estimatedPrices", estimatedPrices);
+
+        return result;
+    }
+
+    public double[] getCoordinates(String address) {
+        double[] result = null;
+        try{
+            result = new AddressToLocation().getLocation(address);
+        } catch(Exception e){
+
+        }
         return result;
     }
 }
