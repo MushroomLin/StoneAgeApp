@@ -1,111 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.UserInformationFragment">
 
-
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/relativeLayout"
+    <include
+        android:id="@+id/UserInformationLayout"
+        layout="@layout/item_user_information"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+    <Button
+        android:id="@+id/EditButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/UserInformationLayout"
+        android:text="Edit" />
 
-        <ImageView
-            android:id="@+id/AvatarImageView"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/ic_action_account_circle_40" />
+    <Button
+        android:id="@+id/button_mypost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/UserInformationLayout"
+        android:layout_toRightOf="@id/EditButton"
+        android:text="My Post" />
 
-        <TextView
-            android:id="@+id/UserNameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="184dp"
-            android:layout_marginTop="16dp"
-            android:textSize="30sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="UserName" />
-
-        <TextView
-            android:id="@+id/UserEmailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="328dp"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Email" />
-
-        <TextView
-            android:id="@+id/UserPhoneTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="380dp"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Phone" />
-
-        <TextView
-            android:id="@+id/UserAddressTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="248dp"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Address" />
-
-        <TextView
-            android:id="@+id/UserIntroductionTextView"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="172dp"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Introduction" />
-
-        <TextView
-            android:id="@+id/UserRateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="184dp"
-            android:layout_marginTop="68dp"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Rate" />
-
-        <Button
-            android:id="@+id/EditButton"
-            android:layout_width="99dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="184dp"
-            android:layout_marginTop="116dp"
-            android:text="Edit"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/button_mypost"
-            android:layout_width="189dp"
-            android:layout_height="72dp"
-            android:layout_marginTop="436dp"
-            android:layout_marginEnd="204dp"
-            android:text="My Post"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-
-</FrameLayout>
+</RelativeLayout>

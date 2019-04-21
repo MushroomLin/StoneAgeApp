@@ -19,7 +19,7 @@ public class User {
     public String address;
     public String phone;
     public String intro;
-    public double rate;
+    public double rate = 5.0;
     public String avatar;
 
     public User() {

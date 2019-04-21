@@ -1,9 +1,7 @@
 package com.example.miniresearchdatabase.fragment;
 
-import android.content.Context;
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,21 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.miniresearchdatabase.Adapter.MessageAdapter;
-import com.example.miniresearchdatabase.ChatActivity;
 import com.example.miniresearchdatabase.R;
-import com.example.miniresearchdatabase.models.Post;
 import com.example.miniresearchdatabase.models.User;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +36,8 @@ public class MessageListFragment extends Fragment {
     private LinearLayoutManager mManager;
     private List<User> mUsers;
     private List<String> userKeys;
+    private List<String> otherAvatar;
+    private String userAvatar;
 
     public MessageListFragment() {}
 
@@ -63,6 +57,7 @@ public class MessageListFragment extends Fragment {
         mRecycler.setHasFixedSize(true);
         mUsers = new ArrayList<>();
         userKeys = new ArrayList<>();
+        otherAvatar = new ArrayList<>();
         readUsers();
 
 
@@ -86,6 +81,7 @@ public class MessageListFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
                 userKeys.clear();
+                otherAvatar.clear();
 
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
@@ -95,10 +91,21 @@ public class MessageListFragment extends Fragment {
 //                        Log.w("TAG", snapshot.getKey());
                         mUsers.add(user);
                         userKeys.add(snapshot.getKey());
+                        if(user.avatar != null) {
+                            otherAvatar.add(user.avatar);
+                        }
+                        else {
+                            otherAvatar.add("");
+                        }
+
+                    }
+                    else {
+                        userAvatar = user.avatar;
+//                        Log.w("AVA", userAvatar);
                     }
                 }
-                Log.w("TAG", userKeys.toString());
-                messageAdapter = new MessageAdapter(getContext(), mUsers, userKeys);
+//                Log.w("AVA", otherAvatar.toString());
+                messageAdapter = new MessageAdapter(getContext(), mUsers, userKeys,userAvatar, otherAvatar);
                 mRecycler.setAdapter(messageAdapter);
                 RecyclerView.ItemDecoration decor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
                 mRecycler.addItemDecoration(decor);
