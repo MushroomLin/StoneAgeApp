@@ -1,54 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/AvatarImageView"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:layout_centerVertical="true"
-        app:civ_border_color="#55000000"
-        app:civ_border_width="5dp"
-        tools:src="@drawable/ic_action_account_circle_40" />
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="20dp"
-        android:padding="5dp"
-        android:layout_toRightOf="@+id/AvatarImageView">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/UserNameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            tools:text="John Doe" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/AvatarImageView"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:src="@drawable/ic_action_account_circle_40"
+            app:civ_border_color="#55000000"
+            app:civ_border_width="5dp" />
 
-        <TextView
-            android:id="@+id/UserEmailTextView"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:textSize="22sp"
-            tools:text="Email"
-            />
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleX="0.7"
-            android:scaleY="0.7"
-            android:transformPivotX="0dp"
-            android:transformPivotY="0dp"
-            android:isIndicator="true"
-            android:theme="@style/RatingBar_CustomColor"
-            android:rating="3"
-            />
-    </LinearLayout>
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/AvatarImageView"
+            android:orientation="vertical"
+            android:padding="5dp">
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/UserNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                tools:text="John Doe" />
+
+            <TextView
+                android:id="@+id/UserEmailTextView"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:textSize="22sp"
+                tools:text="Email" />
+
+            <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:rating="3"
+                android:theme="@style/RatingBar_CustomColor" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

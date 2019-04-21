@@ -2,9 +2,11 @@ package com.example.miniresearchdatabase.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +54,7 @@ public class UserInformationFragment extends Fragment {
     private Button EditButton;
     private Button button_mypost;
     private ImageView UserAvatarImageView;
-    private RelativeLayout UserInformationLayout;
+    private CardView UserInformationLayout;
     public UserInformationFragment() {
         // Required empty public constructor
     }
@@ -110,7 +112,12 @@ public class UserInformationFragment extends Fragment {
 //                    UserIntroductionTextView.setText('"'+user.intro+'"');
 //                    UserRateTextView.setText("Rate: "+Double.toString(user.rate)+"/5");
                     UserRatingBar.setRating((float)user.rate);
-                    if(user.avatar!=null) UserAvatarImageView.setImageBitmap(user.getAvatar());
+
+                    // Set the user profile picture
+                    if(user.avatar!=null) {
+                        UserAvatarImageView.setImageBitmap(user.getAvatar());
+                    }
+
                 }
 
             }
