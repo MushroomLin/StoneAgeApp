@@ -1,8 +1,10 @@
 package com.example.miniresearchdatabase;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,8 +13,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.miniresearchdatabase.Adapter.MessageAdapter;
+import com.example.miniresearchdatabase.Adapter.MessageContentAdapter;
 import com.example.miniresearchdatabase.models.Message;
 import com.example.miniresearchdatabase.models.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,8 +29,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,11 +45,13 @@ public class ChatActivity extends BaseActivity{
     private DatabaseReference mDatabase;
     private EditText mMessageEditText;
     private Button mSendButton;
+    private MessageContentAdapter messageContentAdapter;
     private String userId;
     private String username;
     private RecyclerView messageRecyclerView;
-    private List<String> sentMessage;
-    private List<String> receivedMessage;
+    private List<Message> messageList;
+    private ProgressBar mProgressBar;
+    private LinearLayoutManager mLinearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +62,19 @@ public class ChatActivity extends BaseActivity{
         reference = FirebaseDatabase.getInstance().getReference("chats");
         username = intent.getStringExtra("username");
         this.setTitle(username);
-        sentMessage = new ArrayList<>();
-        receivedMessage = new ArrayList<>();
+        messageList = new ArrayList<>();
 
         userId = intent.getStringExtra("userId");
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = findViewById(R.id.sendButton);
         messageRecyclerView = findViewById(R.id.messageRecyclerView);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+
+        mLinearLayoutManager = new LinearLayoutManager(this);
+//        mLinearLayoutManager.setStackFromEnd(true);
+        messageRecyclerView.setLayoutManager(mLinearLayoutManager);
+        messageRecyclerView.setHasFixedSize(true);
 
 
 
@@ -102,31 +118,59 @@ public class ChatActivity extends BaseActivity{
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                sentMessage.clear();
-
+                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                messageList.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Message message = snapshot.getValue(Message.class);
                     assert  message != null;
-//                    Log.w("TAG", message.message);
-                    Log.w("USER", message.sender);
-                    if(userId.equals(message.receiver) && getUid().equals(message.sender)) {
-                        sentMessage.add(message.message);
-                    }
-                    if(getUid().equals(message.receiver) && userId.equals(message.sender)){
-                        receivedMessage.add(message.message);
+                    if((userId.equals(message.receiver) && getUid().equals(message.sender))
+                            || (getUid().equals(message.receiver) && userId.equals(message.sender))) {
+                        messageList.add(message);
+
                     }
                 }
-                Log.w("Mess", sentMessage.toString());
-                Log.w("Mess", receivedMessage.toString());
+                Collections.sort(messageList, new Comparator<Message>() {
+                    @Override
+                    public int compare(Message o1, Message o2) {
+                        try{
+                            return o1.time.compareTo(o2.time);
+                        }
+                        catch (IllegalArgumentException e) {
+                            throw new IllegalArgumentException(e);
+                        }
+                    }
+                });
 
+                messageContentAdapter = new MessageContentAdapter(ChatActivity.this, messageList);
+                messageContentAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onItemRangeInserted(int positionStart, int itemCount) {
+                        super.onItemRangeInserted(positionStart, itemCount);
+                        int friendlyMessageCount = messageContentAdapter.getItemCount();
+                        int lastVisiblePosition =
+                                mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
+                        // If the recycler view is initially being loaded or the
+                        // user is at the bottom of the list, scroll to the bottom
+                        // of the list to show the newly added message.
+                        if (lastVisiblePosition == -1 ||
+                                (positionStart >= (friendlyMessageCount - 1) &&
+                                        lastVisiblePosition == (positionStart - 1))) {
+                            messageRecyclerView.scrollToPosition(positionStart);
+                        }
+                    }
+                });
+                messageRecyclerView.setAdapter(messageContentAdapter);
 
             }
+
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
 
     }
 
