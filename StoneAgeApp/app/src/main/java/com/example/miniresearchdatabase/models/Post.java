@@ -44,8 +44,8 @@ public class Post {
         this.address = address;
 
         // TO_BE_FIXED
-        double[] coordinates = null;
-//        double[] coordinates = getCoordinates(address);
+//        double[] coordinates = null;
+        double[] coordinates = getCoordinates(address);
         if(coordinates == null) {
             coordinates = new double[]{0.0, 0.0};
         }
