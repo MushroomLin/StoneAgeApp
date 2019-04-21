@@ -23,10 +23,10 @@ import java.util.List;
 public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.MessageViewHolder>{
     private Context mContext;
     private List<User> mUsers;
-
     private List<String> userKeys;
     private String currKey;
     private String username;
+
     public MessageAdapter(Context mContext, List<User> mUsers, List<String> userKeys) {
         this.mUsers = mUsers;
         this.mContext = mContext;
