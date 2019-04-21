@@ -9,6 +9,7 @@ import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -26,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -35,12 +37,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static com.example.miniresearchdatabase.R.id.seekbar_distance;
 
 
 public class MapsActivity extends AppCompatActivity
@@ -65,7 +69,9 @@ public class MapsActivity extends AppCompatActivity
      */
     private boolean mPermissionDenied = false;
 
+    private SeekBar sbDistance;
     private GoogleMap mMap;
+    private int restrictDistance = 2000;
     // used to set multiple markers on the map
     private MarkerOptions options = new MarkerOptions();
     private DatabaseReference mPostReference;
@@ -73,16 +79,38 @@ public class MapsActivity extends AppCompatActivity
     private HashMap<String, Marker> post2marker = new HashMap<String, Marker>();
     private double currentLatitude = 0.0;
     private double currentLongitude = 0.0;
+    Location mLastKnownLocation;
+
+    Marker lastLocation = null;
+    private int onlyShowNearby = 0; // click my location button again will show the far away posts
+    private boolean savedState = false; // To record whether this activity has been initialized yet
+    private final String KEY_LOCATION = "loc";
 
 
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        sbDistance = findViewById(R.id.seekbar_distance);
+        sbDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                restrictDistance = progress;
+            }
 
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(MapsActivity.this, "restrict distance: "+String.valueOf(restrictDistance), Toast.LENGTH_SHORT).show();
+            }
+        });
         // initialize api key
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), "AIzaSyCaUcdLLm4ifpW9ZYMhcCm_6RMvArAz-hA");
@@ -92,12 +120,19 @@ public class MapsActivity extends AppCompatActivity
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME));
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull com.google.android.libraries.places.api.model.Place place) {
+                // change the color of the marker
+                Marker tem = mMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                 mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 14.0f));
+                if (lastLocation != null) {
+                    // once enter a new address the last marker will disappear
+                    lastLocation.setVisible(false);
+                }
+                lastLocation = tem;
             }
 
             @Override
@@ -110,17 +145,17 @@ public class MapsActivity extends AppCompatActivity
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentByTag("map_tag");
 
-
-
-
         mapFragment.getMapAsync(this);
+
+        if (savedInstanceState != null) {
+            mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+            savedState = true;
+        }
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-        // set default map location
-        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(42.3496,-71.0997) , 14.0f) );
 
         // initialize listener for users locate
         mMap.setOnMyLocationButtonClickListener(this);
@@ -128,9 +163,50 @@ public class MapsActivity extends AppCompatActivity
         mMap.setOnInfoWindowClickListener(this);
         enableMyLocation();
 
+
+        if (savedState) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), 14.0f));
+        }
+        else {
+            // set default map location
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(42.3496, -71.0997), 14.0f));
+        }
         // connect to firebase for posts collection
         mPostReference = FirebaseDatabase.getInstance().getReference()
                 .child("posts");
+
+        // get posts and extract some key info
+        mPostReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Post post = postSnapshot.getValue(Post.class);
+                    // get the key of current post and store for future use
+                    DatabaseReference marker2postReference =  postSnapshot.getRef();
+                    final String postkey = marker2postReference.getKey();
+                    // get current position for distance computing
+                    double postLatitude = post.latitude;
+                    double postLongitude = post.longitude;
+                    if (!marker2post.containsValue(postkey)) {
+                        LatLng postPoint = new LatLng(postLatitude, postLongitude);
+                        options.position(postPoint);
+                        options.title(post.title);
+                        options.snippet("Author: " + post.author + " Address: " + post.address
+                                + " " + post.description);
+                        Marker mId = mMap.addMarker(options);
+                        // store marker id and post key for future use
+                        // Log.w("marker", mId.getId() + " " + postkey);
+                        marker2post.put(mId, postkey);
+                        post2marker.put(postkey, mId);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     /**
@@ -169,38 +245,38 @@ public class MapsActivity extends AppCompatActivity
             }
         });
 
-        // get posts and extract some key info
-        mPostReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Post post = postSnapshot.getValue(Post.class);
-                    // get the key of current post and store for future use
-                    DatabaseReference marker2postReference =  postSnapshot.getRef();
-                    final String postkey = marker2postReference.getKey();
-                    // get current position for distance computing
-                    double postLatitude = post.latitude;
-                    double postLongitude = post.longitude;
-                    if (!marker2post.containsValue(postkey)) {
-                        LatLng postPoint = new LatLng(postLatitude, postLongitude);
-                        options.position(postPoint);
-                        options.title(post.title);
-                        options.snippet("Author: " + post.author + " Address: " + post.address
-                                + " " + post.description);
-                        Marker mId = mMap.addMarker(options);
-                        // store marker id and post key for future use
-                        Log.w("marker", mId.getId() + " " + postkey);
-                        marker2post.put(mId, postkey);
-                        post2marker.put(postkey, mId);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+//        // get posts and extract some key info
+//        mPostReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+//                    Post post = postSnapshot.getValue(Post.class);
+//                    // get the key of current post and store for future use
+//                    DatabaseReference marker2postReference =  postSnapshot.getRef();
+//                    final String postkey = marker2postReference.getKey();
+//                    // get current position for distance computing
+//                    double postLatitude = post.latitude;
+//                    double postLongitude = post.longitude;
+//                    if (!marker2post.containsValue(postkey)) {
+//                        LatLng postPoint = new LatLng(postLatitude, postLongitude);
+//                        options.position(postPoint);
+//                        options.title(post.title);
+//                        options.snippet("Author: " + post.author + " Address: " + post.address
+//                                + " " + post.description);
+//                        Marker mId = mMap.addMarker(options);
+//                        // store marker id and post key for future use
+//                        Log.w("marker", mId.getId() + " " + postkey);
+//                        marker2post.put(mId, postkey);
+//                        post2marker.put(postkey, mId);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
         return false;
@@ -208,44 +284,48 @@ public class MapsActivity extends AppCompatActivity
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
-        mPostReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Post post = postSnapshot.getValue(Post.class);
-                    double postLatitude = post.latitude;
-                    double postLongitude = post.longitude;
+            mPostReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Post post = postSnapshot.getValue(Post.class);
+                        double postLatitude = post.latitude;
+                        double postLongitude = post.longitude;
 
-                    // judge whether this post is near to current location or not
-                    if (!computeDistance(currentLatitude,currentLongitude,postLatitude,postLongitude,2000)) {
-                        // get the key of current post and store for future use
-                        DatabaseReference marker2postReference = postSnapshot.getRef();
-                        final String postkey = marker2postReference.getKey();
-                        if (marker2post.containsValue(postkey)) {
-                            post2marker.get(postkey).setVisible(false);
-                        } else {
-                            // if near the current then draw the marker on the map
-                            LatLng postPoint = new LatLng(postLatitude, postLongitude);
-                            options.position(postPoint);
-                            options.title(post.title);
-                            options.snippet("Author: " + post.author + " Address: " + post.address
-                                    + " " + post.description);
-                            mMap.addMarker(options);
-                            Marker mId = mMap.addMarker(options);
-                            // store marker id and post key for future use
-                            marker2post.put(mId, postkey);
-                            post2marker.put(postkey, mId);
-                            Log.w("marker", mId.getId() + " " + postkey);
+                        // judge whether this post is near to current location or not
+                        if (!computeDistance(currentLatitude, currentLongitude, postLatitude, postLongitude, restrictDistance)) {
+                            // get the key of current post and store for future use
+                            DatabaseReference marker2postReference = postSnapshot.getRef();
+                            final String postkey = marker2postReference.getKey();
+                            if (marker2post.containsValue(postkey)) {
+                                if (onlyShowNearby % 2 == 0)
+                                    post2marker.get(postkey).setVisible(false);
+                                else
+                                    post2marker.get(postkey).setVisible(true);
+                            } else {
+                                // if near the current then draw the marker on the map
+                                LatLng postPoint = new LatLng(postLatitude, postLongitude);
+                                options.position(postPoint);
+                                options.title(post.title);
+                                options.snippet("Author: " + post.author + " Address: " + post.address
+                                        + " " + post.description);
+                                mMap.addMarker(options);
+                                Marker mId = mMap.addMarker(options);
+                                // store marker id and post key for future use
+                                marker2post.put(mId, postkey);
+                                post2marker.put(postkey, mId);
+                                //Log.w("marker", mId.getId() + " " + postkey);
+                            }
                         }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+            ++onlyShowNearby;
     }
 
 
@@ -301,6 +381,15 @@ public class MapsActivity extends AppCompatActivity
     }
 
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (mMap != null) {
+            outState.putParcelable(KEY_LOCATION, mMap.getMyLocation());
+            super.onSaveInstanceState(outState);
+        }
+    }
+
+
     // these codes are for computing distance of two locations
     private static double EARTH_RADIUS = 6378.137;
 
@@ -324,7 +413,7 @@ public class MapsActivity extends AppCompatActivity
         s = Math.round(s * 10000d) / 10000d;
         s = s*1000;
 
-        Log.w("distance", String.valueOf(s));
+//        Log.w("distance", String.valueOf(s));
         if (s > distanceRestrict) return false;
         else return true;
     }
