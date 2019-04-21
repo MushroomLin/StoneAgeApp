@@ -7,9 +7,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:id="@+id/receiverLayout" >
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/messengerImageView"
@@ -22,12 +23,15 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/messageTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_alignLeft="@+id/timeTextView"
                 android:layout_weight="0"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
@@ -36,17 +40,67 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
+                android:layout_gravity="left"
                 android:background="@color/colorPrimary"
                 android:scaleType="fitCenter"/>
 
             <TextView
-                android:id="@+id/messengerTextView"
+                android:id="@+id/timeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:layout_weight="0"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
         </LinearLayout>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:id="@+id/senderLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/sendTextView"
+                android:layout_alignLeft="@+id/sendTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="0"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+            <ImageView
+                android:id="@+id/sendImageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:layout_gravity="right"
+                android:background="@color/colorPrimary"
+                android:scaleType="fitCenter"/>
+
+            <TextView
+                android:id="@+id/sendTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="0"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+        </LinearLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/messengerImageView2"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_action_account_circle_40"/>
     </LinearLayout>
 
 
