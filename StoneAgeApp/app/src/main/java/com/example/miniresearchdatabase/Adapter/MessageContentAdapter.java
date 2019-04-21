@@ -2,6 +2,7 @@ package com.example.miniresearchdatabase.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.miniresearchdatabase.ChatActivity;
+import com.example.miniresearchdatabase.ImageUtils;
 import com.example.miniresearchdatabase.R;
 import com.example.miniresearchdatabase.models.Message;
 import com.example.miniresearchdatabase.models.User;
@@ -50,13 +52,16 @@ public class MessageContentAdapter extends RecyclerView.Adapter<MessageContentAd
                 messageViewHolder.senderLayout.setVisibility(LinearLayout.GONE);
                 messageViewHolder.timeTextView.setText(messageRead.get(position).time);
                 messageViewHolder.messageTextView.setText(messageRead.get(position).message);
+//                messageViewHolder.messengerImageView.setImageBitmap(getAvatar(otherAvatar));
                 messageViewHolder.messageImageView.setVisibility(ImageView.GONE);
+
             }
             else if(user.equals(messageRead.get(position).sender)) {
                 messageViewHolder.receiverLayout.setVisibility(LinearLayout.GONE);
                 messageViewHolder.senderLayout.setVisibility(LinearLayout.VISIBLE);
                 messageViewHolder.sendTimeTextView.setText(messageRead.get(position).time);
                 messageViewHolder.sendTextView.setText(messageRead.get(position).message);
+//                messageViewHolder.senderImageView.setImageBitmap(getAvatar(userAvatar));
                 messageViewHolder.sendImageView.setVisibility(ImageView.GONE);
             }
 //            else {
@@ -86,6 +91,7 @@ public class MessageContentAdapter extends RecyclerView.Adapter<MessageContentAd
         private TextView sendTextView;
         private ImageView sendImageView;
         private TextView sendTimeTextView;
+        private CircleImageView senderImageView;
 
 
         public MessageViewHolder(View itemView) {
@@ -99,6 +105,10 @@ public class MessageContentAdapter extends RecyclerView.Adapter<MessageContentAd
             sendTextView = (TextView) itemView.findViewById(R.id.sendTextView);
             sendImageView = (ImageView) itemView.findViewById(R.id.sendImageView);
             sendTimeTextView = (TextView) itemView.findViewById(R.id.sendTimeTextView);
+            senderImageView = (CircleImageView) itemView.findViewById(R.id.senderImageView);
         }
+    }
+    public Bitmap getAvatar(String avatar){
+        return ImageUtils.stringToBitmap(avatar);
     }
 }

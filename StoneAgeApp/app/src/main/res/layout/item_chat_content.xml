@@ -97,7 +97,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
         </LinearLayout>
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/messengerImageView2"
+            android:id="@+id/senderImageView"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_action_account_circle_40"/>

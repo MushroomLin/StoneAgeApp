@@ -1,6 +1,9 @@
 package com.example.miniresearchdatabase.models;
 
 
+import android.graphics.Bitmap;
+
+import com.example.miniresearchdatabase.ImageUtils;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 
@@ -22,6 +25,7 @@ public class Message {
         this.receiver = receiver;
         this.message = message;
         this.time = time;
+
     }
 
 }

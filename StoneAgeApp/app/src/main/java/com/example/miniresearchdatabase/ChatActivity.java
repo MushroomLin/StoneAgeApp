@@ -52,6 +52,7 @@ public class ChatActivity extends BaseActivity{
     private List<Message> messageList;
     private ProgressBar mProgressBar;
     private LinearLayoutManager mLinearLayoutManager;
+    private String userAvatar, otherAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +62,14 @@ public class ChatActivity extends BaseActivity{
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("chats");
         username = intent.getStringExtra("username");
+        userId = intent.getStringExtra("userId");
+//        userAvatar = intent.getStringExtra("userAvatar");
+//        otherAvatar = intent.getStringExtra("otherAvatar");
+
         this.setTitle(username);
         messageList = new ArrayList<>();
 
-        userId = intent.getStringExtra("userId");
+
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = findViewById(R.id.sendButton);
         messageRecyclerView = findViewById(R.id.messageRecyclerView);
