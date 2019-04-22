@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -21,6 +22,7 @@ import com.example.miniresearchdatabase.MainActivity;
 import com.example.miniresearchdatabase.MyPostActivity;
 import com.example.miniresearchdatabase.NewPostActivity;
 import com.example.miniresearchdatabase.R;
+import com.example.miniresearchdatabase.SignInActivity;
 import com.example.miniresearchdatabase.UserEditActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -47,14 +49,14 @@ public class UserInformationFragment extends Fragment {
     private TextView UserNameTextView;
     private TextView UserEmailTextView;
     private RatingBar UserRatingBar;
-//    private TextView UserAddressTextView;
-//    private TextView UserPhoneTextView;
-//    private TextView UserIntroductionTextView;
-//    private TextView UserRateTextView;
-    private Button EditButton;
-    private Button button_mypost;
+    private TextView UserRateTextView;
     private ImageView UserAvatarImageView;
-    private CardView UserInformationLayout;
+    private FrameLayout UserInformationLayout;
+    private RelativeLayout MeMenuLayout;
+    private RelativeLayout EditMenuItem;
+    private RelativeLayout LikeMenuItem;
+    private RelativeLayout PostMenuItem;
+    private RelativeLayout SignoutMenuItem;
     public UserInformationFragment() {
         // Required empty public constructor
     }
@@ -68,31 +70,40 @@ public class UserInformationFragment extends Fragment {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_user_information, container, false);
+        // Information Part
         UserInformationLayout  = rootView.findViewById(R.id.UserInformationLayout);
-//        UserAddressTextView = rootView.findViewById(R.id.UserAddressTextView);
-//        UserPhoneTextView = rootView.findViewById(R.id.UserPhoneTextView);
-//        UserIntroductionTextView = rootView.findViewById(R.id.UserIntroductionTextView);
-//        UserRateTextView = rootView.findViewById(R.id.UserRateTextView);
-
+        UserRateTextView = UserInformationLayout.findViewById(R.id.UserRateTextView);
         UserNameTextView = UserInformationLayout.findViewById(R.id.UserNameTextView);
         UserEmailTextView = UserInformationLayout.findViewById(R.id.UserEmailTextView);
         UserRatingBar = UserInformationLayout.findViewById(R.id.ratingBar);
         UserAvatarImageView = UserInformationLayout.findViewById(R.id.AvatarImageView);
-        EditButton =  rootView.findViewById(R.id.EditButton);
-        button_mypost = rootView.findViewById(R.id.button_mypost);
+
+        // Menu Part
+        MeMenuLayout = rootView.findViewById(R.id.MeMenuLayout);
+        EditMenuItem = MeMenuLayout.findViewById(R.id.EditMenuItem);
+        PostMenuItem = MeMenuLayout.findViewById(R.id.PostMenuItem);
+        LikeMenuItem = MeMenuLayout.findViewById(R.id.LikeMenuItem);
+        SignoutMenuItem = rootView.findViewById(R.id.SignoutMenuItem);
         // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(getUid());
         // [END create_database_reference]
-        EditButton.setOnClickListener(new View.OnClickListener() {
+        EditMenuItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), UserEditActivity.class));
             }
         });
-        button_mypost.setOnClickListener(new View.OnClickListener() {
+        PostMenuItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), MyPostActivity.class));
+            }
+        });
+        SignoutMenuItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getContext(), SignInActivity.class));
             }
         });
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -110,7 +121,7 @@ public class UserInformationFragment extends Fragment {
 //                    UserAddressTextView.setText("Address: "+user.address);
 //                    UserPhoneTextView.setText("Phone: "+user.phone);
 //                    UserIntroductionTextView.setText('"'+user.intro+'"');
-//                    UserRateTextView.setText("Rate: "+Double.toString(user.rate)+"/5");
+                    UserRateTextView.setText(String.format("%.1f",user.rate)+"/5.0");
                     UserRatingBar.setRating((float)user.rate);
 
                     // Set the user profile picture
