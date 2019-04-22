@@ -112,9 +112,9 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String selectAddress = data.getExtras().getString("selectAddress"); //get the data from new Activity when it finished
-        Toast.makeText(this, "select location:\n" + selectAddress, Toast.LENGTH_SHORT).show();
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        String selectAddress = data.getExtras().getString("selectAddress"); //get the data from new Activity when it finished
+//        Toast.makeText(this, "select location:\n" + selectAddress, Toast.LENGTH_SHORT).show();
+//    }
 }

@@ -69,27 +69,6 @@ public class MapsActivity_selectAddress extends AppCompatActivity
             }
         });
 
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                mVisitingMarker.setPosition(latLng);
-                String address = new LocationToAddress().getAddress(latLng.latitude, latLng.longitude);
-                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
-                mVisitingMarker.setTitle(address);
-                Toast.makeText(MapsActivity_selectAddress.this, "select location:\n" + address, Toast.LENGTH_SHORT).show();
-                selectAddress = address;
-//                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-            }
-        });
-
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                marker.getPosition();
-                return false;
-            }
-        });
-
         // initialize api key
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), "AIzaSyCaUcdLLm4ifpW9ZYMhcCm_6RMvArAz-hA");
@@ -105,10 +84,14 @@ public class MapsActivity_selectAddress extends AppCompatActivity
             @Override
             public void onPlaceSelected(@NonNull com.google.android.libraries.places.api.model.Place place) {
                 mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 14.0f));
-                if (mVisitingMarker == null)
+                if (mVisitingMarker == null) {
                     mVisitingMarker = mMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                else
+                    mVisitingMarker.setVisible(true);
+                }
+                else {
                     mVisitingMarker.setPosition(place.getLatLng());
+                    mVisitingMarker.setVisible(true);
+                }
                 mVisitingMarker.setTitle(place.getAddress());
                 selectAddress = place.getAddress();
                 Toast.makeText(MapsActivity_selectAddress.this, "select location:\n" + selectAddress, Toast.LENGTH_SHORT).show();
@@ -140,6 +123,31 @@ public class MapsActivity_selectAddress extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        // initialize the marker
+        mVisitingMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(0.0, 0.0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        mVisitingMarker.setVisible(false);
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                String address = new LocationToAddress().getAddress(latLng.latitude, latLng.longitude);
+                selectAddress = address;
+                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
+                mVisitingMarker.setPosition(latLng);
+                mVisitingMarker.setVisible(true);
+                mVisitingMarker.setTitle(address);
+                Toast.makeText(MapsActivity_selectAddress.this, "select location:\n" + address, Toast.LENGTH_SHORT).show();
+//                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            }
+        });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.getPosition();
+                return false;
+            }
+        });
 
         // initialize listener for users locate
         mMap.setOnMyLocationButtonClickListener(this);
@@ -148,26 +156,6 @@ public class MapsActivity_selectAddress extends AppCompatActivity
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(42.3496, -71.0997), 14.0f));
 
-//        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//            @Override
-//            public void onMapClick(LatLng latLng) {
-//                mVisitingMarker.setPosition(latLng);
-//                String address = new LocationToAddress().getAddress(latLng.latitude, latLng.longitude);
-//                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
-//                mVisitingMarker.setTitle(address);
-//                Toast.makeText(MapsActivity_selectAddress.this, "select location:\n" + address, Toast.LENGTH_SHORT).show();
-//                selectAddress = address;
-////                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-//            }
-//        });
-//
-//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//            @Override
-//            public boolean onMarkerClick(Marker marker) {
-//                marker.getPosition();
-//                return false;
-//            }
-//        });
 
 //        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
 //            @Override
@@ -220,7 +208,10 @@ public class MapsActivity_selectAddress extends AppCompatActivity
                 double currentLongitude = mMap.getCameraPosition().target.longitude;
                 String address = new LocationToAddress().getAddress(currentLatitude, currentLongitude);
                 selectAddress = address;
-                Toast.makeText(MapsActivity_selectAddress.this, "Current location:\n" + address, Toast.LENGTH_SHORT).show();
+                mVisitingMarker.setPosition(new LatLng(currentLatitude, currentLongitude));
+                mVisitingMarker.setVisible(true);
+                mVisitingMarker.setTitle(selectAddress);
+//                Toast.makeText(MapsActivity_selectAddress.this, "Current location:\n" + address, Toast.LENGTH_SHORT).show();
                 //Toast.makeText(MapsActivity.this, "Current location:\n" + mMap.getCameraPosition().target.latitude, Toast.LENGTH_LONG).show();
             }
         });
