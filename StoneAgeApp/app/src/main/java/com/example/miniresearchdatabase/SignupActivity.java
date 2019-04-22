@@ -25,11 +25,7 @@ import com.example.miniresearchdatabase.models.User;
 
 // Sign up a new user
 public class SignupActivity extends BaseActivity{
-    private TextView textView_name;
-    private TextView textView_pwd;
-    private TextView textView_add;
-    private TextView textView_phone;
-    private TextView textView_intro;
+
     private Button button_signup2;
 
     private Button button_back2;
@@ -52,11 +48,7 @@ public class SignupActivity extends BaseActivity{
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
-        textView_name = findViewById(R.id.textView_name);
-        textView_pwd = findViewById(R.id.textView_pwd);
-        textView_add = findViewById(R.id.textView_add);
-        textView_phone = findViewById(R.id.textView_phone);
-        textView_intro = findViewById(R.id.textView_intro);
+
         button_signup2 = findViewById(R.id.button_signup2);
         button_back2 = findViewById(R.id.button_back2);
         editText_name = findViewById(R.id.editText_name);
@@ -65,7 +57,6 @@ public class SignupActivity extends BaseActivity{
         editText_phone = findViewById(R.id.editText_phone);
         editText_intro = findViewById(R.id.editText_intro);
 
-        Toast.makeText(SignupActivity.this,"Please enter at least six digit of password",Toast.LENGTH_SHORT).show();
 
         // onclick will trigger signUp function
         button_signup2.setOnClickListener(new View.OnClickListener() {
@@ -130,14 +121,24 @@ public class SignupActivity extends BaseActivity{
         if (TextUtils.isEmpty(editText_name.getText().toString())) {
             editText_name.setError("Required");
             result = false;
-        } else {
+        }
+        else if(!editText_name.getText().toString().contains("@")){
+            editText_name.setError("Invalid Email Address!");
+            result = false;
+        }
+        else {
             editText_name.setError(null);
         }
 
         if (TextUtils.isEmpty(editText_pwd.getText().toString())) {
             editText_pwd.setError("Required");
             result = false;
-        } else {
+        }
+        else if (editText_pwd.getText().toString().length()<6){
+            editText_pwd.setError("At Least 6 Digit!");
+            result = false;
+        }
+        else {
             editText_pwd.setError(null);
         }
 

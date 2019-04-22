@@ -18,37 +18,40 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class OfferViewHolder extends RecyclerView.ViewHolder {
-    public ImageView offerAuthorPhoto;
-    public TextView titleOfferView;
-    public TextView authorOfferView;
-    public TextView bodyOfferView;
-    public TextView addressOfferView;
-    public ImageView pictureOfferView;
+public class PostOfferViewHolder extends RecyclerView.ViewHolder {
+    public ImageView postOfferAuthorPhoto;
+    public TextView titlePostOfferView;
+    public TextView authorPostOfferView;
+    public TextView bodyPostOfferView;
+    public TextView addressPostOfferView;
+    public ImageView picturePostOfferView;
+    public Button button_accept;
     private DatabaseReference mDatabase;
-    public Context offer_context;
+    public Context postoffer_context;
 
-    public OfferViewHolder(View itemView, Context offer_context) {
+    public PostOfferViewHolder(View itemView, Context postoffer_context) {
         super(itemView);
 
-        titleOfferView = itemView.findViewById(R.id.offerTitle);
-        authorOfferView = itemView.findViewById(R.id.offerAuthor);
-        bodyOfferView = itemView.findViewById(R.id.offerBody);
-        addressOfferView = itemView.findViewById(R.id.offerAddress);
-        pictureOfferView = itemView.findViewById(R.id.offerImageView);
-        offerAuthorPhoto = itemView.findViewById(R.id.offerAuthorPhoto);
+        titlePostOfferView = itemView.findViewById(R.id.offerTitle);
+        authorPostOfferView = itemView.findViewById(R.id.offerAuthor);
+        bodyPostOfferView = itemView.findViewById(R.id.offerBody);
+        addressPostOfferView = itemView.findViewById(R.id.offerAddress);
+        picturePostOfferView = itemView.findViewById(R.id.offerImageView);
+        button_accept = itemView.findViewById(R.id.button_accept);
+        postOfferAuthorPhoto = itemView.findViewById(R.id.offerAuthorPhoto);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        this.offer_context = offer_context;
+        this.postoffer_context = postoffer_context;
     }
 
-    public void bindToOffer(Offer offer) {
-        titleOfferView.setText(offer.title);
-        authorOfferView.setText(offer.author);
-        bodyOfferView.setText(offer.description);
-        addressOfferView.setText(offer.address);
+    public void bindToOffer(Offer offer, View.OnClickListener acceptClickListener) {
+        titlePostOfferView.setText(offer.title);
+        authorPostOfferView.setText(offer.author);
+        bodyPostOfferView.setText(offer.description);
+        addressPostOfferView.setText(offer.address);
         if (offer.picture!=null) {
-            pictureOfferView.setImageBitmap(ImageUtils.stringToBitmap(offer.picture));
+            picturePostOfferView.setImageBitmap(ImageUtils.stringToBitmap(offer.picture));
         }
+        button_accept.setOnClickListener(acceptClickListener);
 
         if (offer.uid!=null) {
             Log.w("TAG", offer.uid);
@@ -62,7 +65,7 @@ public class OfferViewHolder extends RecyclerView.ViewHolder {
                     if (user != null) {
                         // Set the user profile picture
                         if (user.avatar != null) {
-                            offerAuthorPhoto.setImageBitmap(user.getAvatar());
+                            postOfferAuthorPhoto.setImageBitmap(user.getAvatar());
                         }
 
                     }
@@ -75,7 +78,7 @@ public class OfferViewHolder extends RecyclerView.ViewHolder {
             });
         }
         else{
-            offerAuthorPhoto.setImageDrawable(offer_context.getDrawable(R.drawable.ic_baseline_person_24px));
+            postOfferAuthorPhoto.setImageDrawable(postoffer_context.getDrawable(R.drawable.ic_baseline_person_24px));
         }
 
     }

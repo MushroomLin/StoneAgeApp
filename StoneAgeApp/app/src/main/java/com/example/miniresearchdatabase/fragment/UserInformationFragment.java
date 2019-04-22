@@ -52,7 +52,7 @@ public class UserInformationFragment extends Fragment {
     private FrameLayout UserInformationLayout;
     private RelativeLayout MeMenuLayout;
     private RelativeLayout EditMenuItem;
-    private RelativeLayout LikeMenuItem;
+//    private RelativeLayout LikeMenuItem;
     private RelativeLayout PostMenuItem;
     private RelativeLayout OfferMenuItem;
     private RelativeLayout SignoutMenuItem;
@@ -83,7 +83,7 @@ public class UserInformationFragment extends Fragment {
         EditMenuItem = MeMenuLayout.findViewById(R.id.EditMenuItem);
         PostMenuItem = MeMenuLayout.findViewById(R.id.PostMenuItem);
         OfferMenuItem = MeMenuLayout.findViewById(R.id.OfferMenuItem);
-        LikeMenuItem = MeMenuLayout.findViewById(R.id.LikeMenuItem);
+//        LikeMenuItem = MeMenuLayout.findViewById(R.id.LikeMenuItem);
         SignoutMenuItem = rootView.findViewById(R.id.SignoutMenuItem);
         // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(getUid());
