@@ -6,6 +6,9 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.json.*;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -79,24 +82,27 @@ public class EbayConnection {
         }
     }
 
-    public String parseResponse(String response) {
+    public List<Double> getPrices(String response) {
         try{
+            List<Double> pricesList = new LinkedList<>();
             System.out.println(response);
             JSONObject obj = new JSONObject(response);
             JSONArray arr = obj.getJSONArray("findItemsByKeywordsResponse");
             JSONArray items = arr.getJSONObject(0).
                     getJSONArray("searchResult").getJSONObject(0).getJSONArray("item");
             System.out.println("Number of items: "+items.length());
-            StringBuffer result = new StringBuffer();
-            for (int i=0; i<items.length(); i++) {
+            for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
-                result.append("Itemid: "+item.get("itemId").toString()+"\n");
-                result.append("Title: "+item.get("title").toString()+"\n");
-                result.append("URL: "+item.get("viewItemURL").toString()+"\n");
-                result.append("SellingStatus: "+item.get("sellingStatus").toString()+"\n");
-                result.append("\n");
+                JSONArray sellingStatusArray = item.getJSONArray("sellingStatus");
+                JSONObject sellingStatusObject = sellingStatusArray.getJSONObject(0);
+                JSONObject currentPriceObject = sellingStatusObject.getJSONArray("currentPrice").getJSONObject(0);
+                double price = currentPriceObject.getDouble("__value__");
+                pricesList.add(price);
+//                result.append("Itemid: "+item.get("itemId").toString()+"\n");
+//                result.append("Title: "+item.get("title").toString()+"\n");
+//                result.append("URL: "+item.get("viewItemURL").toString()+"\n");
             }
-            return result.toString();
+            return pricesList;
         }
         catch(Exception e){
             e.printStackTrace();
