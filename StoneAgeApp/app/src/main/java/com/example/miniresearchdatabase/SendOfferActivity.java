@@ -86,7 +86,9 @@ public class SendOfferActivity extends AppCompatActivity {
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SendOfferActivity.this, PostDetailActivity.class));
+                Intent intent = new Intent(SendOfferActivity.this, PostDetailActivity.class);
+                intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, offerPostKey);
+                startActivity(intent);
             }
         });
     }

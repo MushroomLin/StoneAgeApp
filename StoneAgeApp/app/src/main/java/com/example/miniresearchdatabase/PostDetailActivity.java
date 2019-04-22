@@ -48,6 +48,7 @@ public class PostDetailActivity extends BaseActivity {
     private EditText mCommentField;
     private Button mCommentButton;
     private Button mOfferButton;
+    private Button button_back;
     private RecyclerView mCommentsRecycler;
 
     @Override
@@ -75,12 +76,20 @@ public class PostDetailActivity extends BaseActivity {
         mCommentField = findViewById(R.id.fieldCommentText);
         mCommentButton = findViewById(R.id.buttonPostComment);
         mOfferButton = findViewById(R.id.button_offer);
+        button_back = findViewById(R.id.button_back6);
         mCommentsRecycler = findViewById(R.id.recyclerPostComments);
 
         mCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 postComment();
+            }
+        });
+
+        button_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(PostDetailActivity.this, MainActivity.class));
             }
         });
 
