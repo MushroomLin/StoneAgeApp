@@ -28,6 +28,6 @@
             android:clipToPadding="false"
             android:padding="5dp"
             android:scrollbars="vertical"
-            tools:listitem="@layout/item_post" />
+            tools:listitem="@layout/item_acceptable_offer" />
     </FrameLayout>
 </android.support.constraint.ConstraintLayout>

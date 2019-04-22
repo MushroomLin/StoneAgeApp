@@ -8,8 +8,6 @@
     tools:context=".fragment.UserInformationFragment"
     android:background="@color/grey_300">
 
-
-
     <include
         android:id="@+id/UserInformationLayout"
         layout="@layout/item_user_information"
@@ -18,84 +16,51 @@
         />
 
     <include
-
         android:id="@+id/MeMenuLayout"
         layout="@layout/me_menu"
         android:layout_below="@+id/UserInformationLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-
         />
 
     <RelativeLayout
-
         android:id="@+id/SignoutMenuItem"
-
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
-
         android:layout_alignParentBottom="true"
-
         android:layout_marginBottom="10dp"
-
         android:background="@color/white">
 
 
-
         <ImageView
-
             android:id="@+id/SignoutIcon"
-
             android:layout_width="60dp"
-
             android:layout_height="60dp"
-
             android:padding="10dp"
-
             android:src="@drawable/ic_exit_24px" />
 
-
-
         <TextView
-
             android:id="@+id/SignoutTextView"
-
             android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
-
             android:layout_centerVertical="true"
-
             android:layout_toRightOf="@id/SignoutIcon"
-
             android:paddingStart="10dp"
-
             android:textSize="30sp"
-
             android:textStyle="bold"
-
             android:text="Sign Out" />
-
 
 
         <ImageView
 
             android:id="@+id/menuEnterImageView"
-
             android:layout_width="35dp"
-
             android:layout_height="35dp"
-
             android:layout_alignParentEnd="true"
-
             android:layout_centerVertical="true"
-
             android:tint="@color/grey_500"
-
             android:src="@drawable/ic_next_24" />
-
     </RelativeLayout>
 
 </RelativeLayout>

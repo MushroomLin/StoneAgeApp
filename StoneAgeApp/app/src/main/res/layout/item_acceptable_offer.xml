@@ -9,6 +9,13 @@
         android:layout_height="wrap_content"
         android:padding="10dp">
 
+        <Button
+            android:id="@+id/button_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/offerAuthorLayout"
+            android:text="Accept" />
+
         <include
             android:id="@+id/offerAuthorLayout"
             layout="@layout/include_offer_author"

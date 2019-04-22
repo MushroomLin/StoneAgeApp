@@ -55,7 +55,7 @@ public class MyPostActivity extends AppCompatActivity {
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                startActivity(new Intent(MyPostActivity.this, MainActivity.class));
             }
         });
 
@@ -82,7 +82,7 @@ public class MyPostActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         // Launch PostDetailActivity
                         Intent intent = new Intent(MyPostActivity.this, MyPostOfferActivity.class);
-                        intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
+                        intent.putExtra(MyPostOfferActivity.EXTRA_POSTOFFER_POST_KEY, postKey);
                         startActivity(intent);
                     }
                 });

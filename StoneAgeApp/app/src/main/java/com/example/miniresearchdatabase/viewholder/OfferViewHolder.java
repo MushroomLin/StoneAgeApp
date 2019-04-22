@@ -22,7 +22,6 @@ public class OfferViewHolder extends RecyclerView.ViewHolder {
 
         titleView = itemView.findViewById(R.id.offerTitle);
         authorView = itemView.findViewById(R.id.offerAuthor);
-
         bodyView = itemView.findViewById(R.id.offerBody);
         addressView = itemView.findViewById(R.id.offerAddress);
         pictureView = itemView.findViewById(R.id.offerImageView);

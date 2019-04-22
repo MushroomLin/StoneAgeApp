@@ -84,11 +84,51 @@
         android:background="@android:color/darker_gray"
         android:layout_below="@id/PostMenuItem"
         />
+
+    <RelativeLayout
+        android:id="@+id/OfferMenuItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/PostMenuItem">
+
+        <ImageView
+            android:id="@+id/OfferIcon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_history_24px" />
+
+        <TextView
+            android:id="@+id/OfferTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/OfferIcon"
+            android:paddingStart="10dp"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:text="My Offer" />
+
+        <ImageView
+            android:id="@+id/menuEnterImageView4"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:tint="@color/grey_500"
+            android:src="@drawable/ic_next_24" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@id/OfferMenuItem"
+        />
     <RelativeLayout
         android:id="@+id/LikeMenuItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/PostMenuItem">
+        android:layout_below="@id/OfferMenuItem">
 
         <ImageView
             android:id="@+id/LikeIcon"

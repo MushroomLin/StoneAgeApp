@@ -119,7 +119,7 @@ public class SendOfferActivity extends AppCompatActivity {
             return;
         }
         setEditingEnabled(false);
-        Toast.makeText(this, offerPostKey, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Sending...", Toast.LENGTH_SHORT).show();
 
         final String userId = getUid();
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(

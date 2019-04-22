@@ -28,10 +28,10 @@ public class MyOfferActivity extends AppCompatActivity {
     private Button button_back;
     private static final String TAG = "MyOfferActivity";
     private DatabaseReference mDatabase;
-    private FirebaseRecyclerAdapter<Offer, OfferViewHolder> mAdapter;
-    private RecyclerView mRecycler;
+    private FirebaseRecyclerAdapter<Offer, OfferViewHolder> mOfferAdapter;
+    private RecyclerView mOfferRecycler;
 
-    private LinearLayoutManager mManager;
+    private LinearLayoutManager mOfferManager;
 
 
     @Override
@@ -40,13 +40,13 @@ public class MyOfferActivity extends AppCompatActivity {
         setContentView(R.layout.activity_myoffer);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mRecycler = findViewById(R.id.myoffersmessagesList);
-        mRecycler.setHasFixedSize(true);
+        mOfferRecycler = findViewById(R.id.myoffersmessagesList);
+        mOfferRecycler.setHasFixedSize(true);
 
-        mManager = new LinearLayoutManager(this);
-        mManager.setReverseLayout(true);
-        mManager.setStackFromEnd(true);
-        mRecycler.setLayoutManager(mManager);
+        mOfferManager = new LinearLayoutManager(this);
+        mOfferManager.setReverseLayout(true);
+        mOfferManager.setStackFromEnd(true);
+        mOfferRecycler.setLayoutManager(mOfferManager);
         button_back = findViewById(R.id.button_back5);
 
         // Set up FirebaseRecyclerAdapter with the Query
@@ -55,7 +55,7 @@ public class MyOfferActivity extends AppCompatActivity {
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MyOfferActivity.this, MainActivity.class));
+                finish();
             }
         });
 
@@ -63,7 +63,7 @@ public class MyOfferActivity extends AppCompatActivity {
                 .setQuery(offersQuery, Offer.class)
                 .build();
 
-        mAdapter = new FirebaseRecyclerAdapter<Offer, OfferViewHolder>(options) {
+        mOfferAdapter = new FirebaseRecyclerAdapter<Offer, OfferViewHolder>(options) {
 
             @Override
             public OfferViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -81,8 +81,8 @@ public class MyOfferActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         // Launch PostDetailActivity
-                        Intent intent = new Intent(MyOfferActivity.this, MyPostOfferActivity.class);
-                        intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
+                        Intent intent = new Intent(MyOfferActivity.this, MainActivity.class);
+                        //intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
                         startActivity(intent);
                     }
                 });
@@ -91,17 +91,12 @@ public class MyOfferActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View starView) {
                         // Need to write to both places the post is stored
-                        DatabaseReference globalPostRef = mDatabase.child("posts").child(offerRef.getKey());
-                        DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(offerRef.getKey());
-
                         // Run two transactions
-
                     }
                 });
-
             }
         };
-        mRecycler.setAdapter(mAdapter);
+        mOfferRecycler.setAdapter(mOfferAdapter);
 
     }
 
@@ -115,16 +110,16 @@ public class MyOfferActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if (mAdapter != null) {
-            mAdapter.startListening();
+        if (mOfferAdapter != null) {
+            mOfferAdapter.startListening();
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mAdapter != null) {
-            mAdapter.stopListening();
+        if (mOfferAdapter != null) {
+            mOfferAdapter.stopListening();
         }
     }
 
