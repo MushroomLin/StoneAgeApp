@@ -78,7 +78,7 @@ public abstract class PostListFragment extends Fragment {
             @Override
             public PostViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                return new PostViewHolder(inflater.inflate(R.layout.item_post, viewGroup, false));
+                return new PostViewHolder(inflater.inflate(R.layout.item_post, viewGroup, false), getContext());
             }
 
             @Override

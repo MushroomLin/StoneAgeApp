@@ -50,7 +50,7 @@ public class MyPostActivity extends AppCompatActivity {
         button_back = findViewById(R.id.button_back);
 
         // Set up FirebaseRecyclerAdapter with the Query
-        Query postsQuery = getQuery(mDatabase);
+        Query postsQuery = getPostQuery(mDatabase);
 
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +68,7 @@ public class MyPostActivity extends AppCompatActivity {
             @Override
             public PostViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                return new PostViewHolder(inflater.inflate(R.layout.item_post, viewGroup, false));
+                return new PostViewHolder(inflater.inflate(R.layout.item_post, viewGroup, false), getApplicationContext());
             }
 
             @Override
@@ -81,8 +81,8 @@ public class MyPostActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         // Launch PostDetailActivity
-                        Intent intent = new Intent(MyPostActivity.this, PostDetailActivity.class);
-                        intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
+                        Intent intent = new Intent(MyPostActivity.this, MyPostOfferActivity.class);
+                        intent.putExtra(MyPostOfferActivity.EXTRA_POSTOFFER_POST_KEY, postKey);
                         startActivity(intent);
                     }
                 });
@@ -113,7 +113,7 @@ public class MyPostActivity extends AppCompatActivity {
 
     }
 
-    public Query getQuery(DatabaseReference databaseReference) {
+    public Query getPostQuery(DatabaseReference databaseReference) {
         // All my posts
         return databaseReference.child("user-posts")
                 .child(getUid());

@@ -1,16 +1,26 @@
 package com.example.miniresearchdatabase.viewholder;
 
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.miniresearchdatabase.ImageUtils;
+import com.example.miniresearchdatabase.MainActivity;
 import com.example.miniresearchdatabase.R;
 import com.example.miniresearchdatabase.models.Post;
-
+import com.example.miniresearchdatabase.models.User;
+import com.firebase.ui.auth.data.model.Resource;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import android.content.Context;
 public class PostViewHolder extends RecyclerView.ViewHolder {
-
+    public ImageView postAuthorPhoto;
     public TextView titleView;
     public TextView authorView;
     public ImageView starView;
@@ -19,18 +29,21 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     public TextView addressView;
 
     public ImageView pictureView;
-
-    public PostViewHolder(View itemView) {
+    private DatabaseReference mDatabase;
+    public Context context;
+    public PostViewHolder(View itemView, Context context) {
         super(itemView);
 
         titleView = itemView.findViewById(R.id.postTitle);
         authorView = itemView.findViewById(R.id.postAuthor);
-
+        postAuthorPhoto = itemView.findViewById(R.id.postAuthorPhoto);
         starView = itemView.findViewById(R.id.star);
         numStarsView = itemView.findViewById(R.id.postNumStars);
         bodyView = itemView.findViewById(R.id.postBody);
         addressView = itemView.findViewById(R.id.postAddress);
         pictureView = itemView.findViewById(R.id.pictureImageView);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        this.context = context;
     }
 
     public void bindToPost(Post post, View.OnClickListener starClickListener) {
@@ -42,5 +55,32 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         if (post.picture!=null)
             pictureView.setImageBitmap(ImageUtils.stringToBitmap(post.picture));
         starView.setOnClickListener(starClickListener);
+        if (post.uid!=null) {
+            Log.w("TAG", post.uid);
+            DatabaseReference ref = mDatabase.child("users").child(post.uid);
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //Serialize retrieved data to a User object
+                    User user = dataSnapshot.getValue(User.class);
+                    //Now you have an object of the User class and can use its getters like this
+                    if (user != null) {
+                        // Set the user profile picture
+                        if (user.avatar != null) {
+                            postAuthorPhoto.setImageBitmap(user.getAvatar());
+                        }
+
+                    }
+
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                }
+            });
+        }
+        else{
+            postAuthorPhoto.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_person_24px));
+        }
     }
 }
