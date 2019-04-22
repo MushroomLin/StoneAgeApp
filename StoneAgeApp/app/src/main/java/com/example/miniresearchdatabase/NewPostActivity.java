@@ -168,26 +168,21 @@ public class NewPostActivity extends BaseActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        List<Double> estimatedPrices = new LinkedList<>();
-
 //                        double[] estimatedPrices = new HttpRequest().request(title);
                         EbayConnection ebay = new EbayConnection();
-                        System.out.println("Testing - Send Http GET request");
                         String response;
                         try{
-                            Log.w("TAG","Iphone");
-                            response = ebay.sendGet("Iphone",10);
+                            response = ebay.sendGet(title,10);
                         }
                         catch (Exception e){
                             e.printStackTrace();
                             response = null;
                         }
-                        ebay.parseResponse(response);
-                        Log.w("TAG",response);
+                        List<Double> pricesList = ebay.getPrices(response);
+
 
                         // Get user value
                         User user = dataSnapshot.getValue(User.class);
-
 
                         if (user == null) {
                             // User is null, error out
@@ -202,7 +197,7 @@ public class NewPostActivity extends BaseActivity {
                                 picture = "";
                             }
                             writeNewPost(userId, user.username, title, address,
-                                    description, originalType, targetType, picture, estimatedPrices);
+                                    description, originalType, targetType, picture, pricesList);
 
                         }
 
@@ -287,6 +282,7 @@ public class NewPostActivity extends BaseActivity {
 
 }
 
+/*
 class HttpRequest {
 
     private final String TOKEN = "CUJYSOVFIARKJWJXSXSBEFQIVEDPZUXQILFCXHPSNLEMOFGYQTIYTJGCDPDWNECZ";
@@ -391,3 +387,4 @@ class HttpRequest {
 
 }
 
+*/

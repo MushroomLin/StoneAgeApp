@@ -50,7 +50,6 @@ import static com.example.miniresearchdatabase.R.id.seekbar_distance;
 public class MapsActivity extends AppCompatActivity
         implements
         OnInfoWindowClickListener,
-
         OnMyLocationButtonClickListener,
         OnMyLocationClickListener,
         OnMapReadyCallback,
