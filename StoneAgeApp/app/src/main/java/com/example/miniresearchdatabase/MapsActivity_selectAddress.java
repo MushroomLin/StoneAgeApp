@@ -1,9 +1,18 @@
 package com.example.miniresearchdatabase;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,14 +27,27 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 
 import java.util.Arrays;
 
-public class MapsActivity_selectAddress extends FragmentActivity implements OnMapReadyCallback {
+import static android.view.View.*;
+
+public class MapsActivity_selectAddress extends AppCompatActivity
+        implements
+        OnMapReadyCallback,
+        OnMyLocationButtonClickListener,
+        OnMyLocationClickListener,
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
     private GoogleMap mMap;
     private Marker mVisitingMarker = null;
+    private String selectAddress = "";
+    private Button confirm;
 
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private boolean mPermissionDenied = false;
 
 
     @Override
@@ -33,6 +55,40 @@ public class MapsActivity_selectAddress extends FragmentActivity implements OnMa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps_select_address);
 
+        confirm = findViewById(R.id.bt_confirm);
+        confirm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // create new Intent to return data
+                Intent intent = new Intent();
+                intent.putExtra("selectAddress", selectAddress);
+                // set return value
+                MapsActivity_selectAddress.this.setResult(RESULT_OK, intent);
+                // close Activity
+                MapsActivity_selectAddress.this.finish();
+            }
+        });
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                mVisitingMarker.setPosition(latLng);
+                String address = new LocationToAddress().getAddress(latLng.latitude, latLng.longitude);
+                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
+                mVisitingMarker.setTitle(address);
+                Toast.makeText(MapsActivity_selectAddress.this, "select location:\n" + address, Toast.LENGTH_SHORT).show();
+                selectAddress = address;
+//                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            }
+        });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.getPosition();
+                return false;
+            }
+        });
 
         // initialize api key
         if (!Places.isInitialized()) {
@@ -54,6 +110,8 @@ public class MapsActivity_selectAddress extends FragmentActivity implements OnMa
                 else
                     mVisitingMarker.setPosition(place.getLatLng());
                 mVisitingMarker.setTitle(place.getAddress());
+                selectAddress = place.getAddress();
+                Toast.makeText(MapsActivity_selectAddress.this, "select location:\n" + selectAddress, Toast.LENGTH_SHORT).show();
 //                // change the color of the marker
 //                Marker tem = mMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 //                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 14.0f));
@@ -83,24 +141,33 @@ public class MapsActivity_selectAddress extends FragmentActivity implements OnMa
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                mVisitingMarker.setPosition(latLng);
-                String address = (String) new LocationToAddress().getAddress(latLng.latitude, latLng.longitude);
-                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
-                mVisitingMarker.setTitle(address);
-//                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-            }
-        });
+        // initialize listener for users locate
+        mMap.setOnMyLocationButtonClickListener(this);
+        mMap.setOnMyLocationClickListener(this);
+        enableMyLocation();
 
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                marker.getPosition();
-                return false;
-            }
-        });
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(42.3496, -71.0997), 14.0f));
+
+//        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+//            @Override
+//            public void onMapClick(LatLng latLng) {
+//                mVisitingMarker.setPosition(latLng);
+//                String address = new LocationToAddress().getAddress(latLng.latitude, latLng.longitude);
+//                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
+//                mVisitingMarker.setTitle(address);
+//                Toast.makeText(MapsActivity_selectAddress.this, "select location:\n" + address, Toast.LENGTH_SHORT).show();
+//                selectAddress = address;
+////                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+//            }
+//        });
+//
+//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+//                marker.getPosition();
+//                return false;
+//            }
+//        });
 
 //        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
 //            @Override
@@ -118,6 +185,85 @@ public class MapsActivity_selectAddress extends FragmentActivity implements OnMa
 //            public void onMarkerDrag(Marker arg0) {
 //            }
 //        });
+    }
 
+
+    /**
+     * Enables the My Location layer if the fine location permission has been granted.
+     */
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the location is missing.
+            PermissionUtils.requestPermission(MapsActivity_selectAddress.this, LOCATION_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION, true);
+        } else if (mMap != null) {
+            // Access to the location has been granted to the app.
+            mMap.setMyLocationEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        //Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+
+        // when users enable their location, this method will read the
+        // posts from firebase then show nearby posts on the map
+        // get the self-location info
+        mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                // get current location
+                double currentLatitude = mMap.getCameraPosition().target.latitude;
+                double currentLongitude = mMap.getCameraPosition().target.longitude;
+                String address = new LocationToAddress().getAddress(currentLatitude, currentLongitude);
+                selectAddress = address;
+                Toast.makeText(MapsActivity_selectAddress.this, "Current location:\n" + address, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MapsActivity.this, "Current location:\n" + mMap.getCameraPosition().target.latitude, Toast.LENGTH_LONG).show();
+            }
+        });
+        return false;
+    }
+
+    @Override
+    public void onMyLocationClick(@NonNull Location location) {
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+            return;
+        }
+
+        if (PermissionUtils.isPermissionGranted(permissions, grantResults,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // Enable the my location layer if the permission has been granted.
+            enableMyLocation();
+        } else {
+            // Display the missing permission error dialog when the fragments resume.
+            mPermissionDenied = true;
+        }
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        if (mPermissionDenied) {
+            // Permission was not granted, display error dialog.
+            showMissingPermissionError();
+            mPermissionDenied = false;
+        }
+    }
+
+    /**
+     * Displays a dialog with error message explaining that the location permission is missing.
+     */
+    private void showMissingPermissionError() {
+        PermissionUtils.PermissionDeniedDialog
+                .newInstance(true).show(getSupportFragmentManager(), "dialog");
     }
 }

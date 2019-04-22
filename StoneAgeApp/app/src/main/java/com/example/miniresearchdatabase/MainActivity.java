@@ -10,9 +10,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.miniresearchdatabase.fragment.MessageListFragment;
 import com.example.miniresearchdatabase.fragment.UserInformationFragment;
@@ -85,7 +87,8 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
                 break;
             case R.id.navigation_map:
 //                startActivity(new Intent(this, MapsActivity.class));
-                startActivity(new Intent(this, MapsActivity_selectAddress.class));
+                startActivityForResult(new Intent(MainActivity.this, MapsActivity_selectAddress.class), 1);
+//                startActivity(new Intent(this, MapsActivity_selectAddress.class));
                 break;
             case R.id.navigation_post:
                 startActivity(new Intent(MainActivity.this, NewPostActivity.class));
@@ -107,5 +110,11 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
                 return false;
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String selectAddress = data.getExtras().getString("selectAddress"); //get the data from new Activity when it finished
+        Toast.makeText(this, "select location:\n" + selectAddress, Toast.LENGTH_SHORT).show();
     }
 }

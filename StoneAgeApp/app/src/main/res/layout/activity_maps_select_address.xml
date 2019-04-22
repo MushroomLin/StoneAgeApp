@@ -8,6 +8,15 @@
     android:weightSum="1"
     tools:context=".MapsActivity">
 
+    <Button
+        android:id="@+id/bt_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Confirm"
+        android:textSize="12sp"
+        tools:text="Confirm" />
+
     <fragment
         android:id="@+id/autocomplete_fragment"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
