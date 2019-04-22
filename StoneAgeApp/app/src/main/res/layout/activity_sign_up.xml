@@ -3,14 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+    <ImageView
+        android:id="@+id/StoneAgeIcon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        app:srcCompat="@drawable/stone_icon" />
 
+    <TextView
+        android:id="@+id/StoneAgeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:layout_below="@id/StoneAgeIcon"
+        android:layout_centerHorizontal="true"
+        android:text="Stone Age"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
     <EditText
+        android:layout_below="@id/StoneAgeTextView"
+        android:layout_marginTop="20dp"
         android:id="@+id/editText_name"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="Email"
+        android:layout_centerHorizontal="true"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -19,6 +40,7 @@
         android:layout_height="wrap_content"
         android:hint="Password"
         android:layout_below="@id/editText_name"
+        android:layout_centerHorizontal="true"
         android:inputType="textPassword" />
 
     <EditText
@@ -27,14 +49,16 @@
         android:layout_height="wrap_content"
         android:hint="Address"
         android:layout_below="@id/editText_pwd"
+        android:layout_centerHorizontal="true"
         android:inputType="textPostalAddress" />
 
     <EditText
         android:id="@+id/editText_phone"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:hint="PhoneNumber"
+        android:hint="Phone"
         android:layout_below="@id/editText_add"
+        android:layout_centerHorizontal="true"
         android:inputType="phone" />
 
     <EditText
@@ -43,21 +67,32 @@
         android:layout_height="wrap_content"
         android:hint="Introduction"
         android:layout_below="@id/editText_phone"
+        android:layout_centerHorizontal="true"
         android:inputType="text" />
 
-    <Button
-        android:id="@+id/button_signup2"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign up"
-        android:layout_below="@id/editText_intro"/>
-
-    <Button
-        android:id="@+id/button_back2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
+        android:orientation="horizontal"
         android:layout_below="@id/editText_intro"
-        android:layout_toRightOf="@id/button_signup2"/>
+        android:layout_marginTop="30dp"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/button_signup2"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_corner_bg"
+            android:text="Sign up" />
+
+        <Button
+            android:id="@+id/button_back2"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/round_corner_bg"
+            android:text="Back" />
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -57,7 +57,6 @@ public class SignupActivity extends BaseActivity{
         editText_phone = findViewById(R.id.editText_phone);
         editText_intro = findViewById(R.id.editText_intro);
 
-        Toast.makeText(SignupActivity.this,"Please enter at least six digit of password",Toast.LENGTH_SHORT).show();
 
         // onclick will trigger signUp function
         button_signup2.setOnClickListener(new View.OnClickListener() {
@@ -122,14 +121,24 @@ public class SignupActivity extends BaseActivity{
         if (TextUtils.isEmpty(editText_name.getText().toString())) {
             editText_name.setError("Required");
             result = false;
-        } else {
+        }
+        else if(!editText_name.getText().toString().contains("@")){
+            editText_name.setError("Invalid Email Address!");
+            result = false;
+        }
+        else {
             editText_name.setError(null);
         }
 
         if (TextUtils.isEmpty(editText_pwd.getText().toString())) {
             editText_pwd.setError("Required");
             result = false;
-        } else {
+        }
+        else if (editText_pwd.getText().toString().length()<6){
+            editText_pwd.setError("At Least 6 Digit!");
+            result = false;
+        }
+        else {
             editText_pwd.setError(null);
         }
 
