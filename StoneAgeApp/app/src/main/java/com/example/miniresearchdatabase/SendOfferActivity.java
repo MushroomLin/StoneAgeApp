@@ -35,6 +35,7 @@ public class SendOfferActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private EditText offerTitle;
     private EditText offerdescription;
+    private EditText offerAddress;
     private FloatingActionButton offerButton;
     private Button button_addofferImage;
     private Button button_back;
@@ -46,6 +47,7 @@ public class SendOfferActivity extends AppCompatActivity {
     private String offerPostKey;
     public static final String OFFER_POST_KEY = "post_key";
     private DatabaseReference offerReference;
+    private DatabaseReference offerUserReference;
 
 
     @Override
@@ -57,6 +59,7 @@ public class SendOfferActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         offerTitle = findViewById(R.id.fieldOfferTitle);
         offerdescription = findViewById(R.id.editText_offerdescription);
+        offerAddress = findViewById(R.id.fieldOfferAddress);
         offerButton = findViewById(R.id.fabSubmitOffer);
         button_addofferImage = findViewById(R.id.button_addofferImage);
         offerimageView = findViewById(R.id.imageView_offer);
@@ -64,7 +67,8 @@ public class SendOfferActivity extends AppCompatActivity {
 
         offerReference = FirebaseDatabase.getInstance().getReference()
                 .child("post-offers").child(offerPostKey);
-
+        offerUserReference = FirebaseDatabase.getInstance().getReference()
+                .child("user-offers");
         button_addofferImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,8 +89,6 @@ public class SendOfferActivity extends AppCompatActivity {
                 startActivity(new Intent(SendOfferActivity.this, PostDetailActivity.class));
             }
         });
-
-
     }
 
     private void chooseImage() {
@@ -110,13 +112,14 @@ public class SendOfferActivity extends AppCompatActivity {
     private void submitOffer() {
         final String title = offerTitle.getText().toString();
         final String description = offerdescription.getText().toString();
+        final String address = offerAddress.getText().toString();
 
         if (TextUtils.isEmpty(title)) {
             offerTitle.setError(REQUIRED);
             return;
         }
         setEditingEnabled(false);
-        Toast.makeText(this, offerPostKey, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Sending...", Toast.LENGTH_SHORT).show();
 
         final String userId = getUid();
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
@@ -139,8 +142,9 @@ public class SendOfferActivity extends AppCompatActivity {
                             if (picture == null) {
                                 picture = "";
                             }
-                            Offer offer = new Offer(userId,author,title,description,picture);
+                            Offer offer = new Offer(userId,author,title,description,address,picture);
                             offerReference.push().setValue(offer);
+                            offerUserReference.child(userId).push().setValue(offer);
                         }
 
                         // Finish this Activity, back to the stream
@@ -177,19 +181,6 @@ public class SendOfferActivity extends AppCompatActivity {
         }
     }
 
-    private void writeNewOffer(String userId, String username, String title,
-                              String description, String picture) {
-
-        String key = mDatabase.child("offers").push().getKey();
-        Offer offer = new Offer(userId, username, title, description, picture);
-        Map<String, Object> offerValues = offer.toMap();
-
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/offers/" + key, offerValues);
-        childUpdates.put("/post-offers/" + offerPostKey + "/" + key, offerValues);
-
-        mDatabase.updateChildren(childUpdates);
-    }
 
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();

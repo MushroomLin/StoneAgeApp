@@ -5,7 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
+    <EditText
+        android:id="@+id/fieldOfferAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fieldOfferTitle"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="282dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="5dp"
+        android:hint="Write your address..."
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:scrollHorizontally="false" />
     <EditText
         android:id="@+id/fieldOfferTitle"
         android:layout_width="71dp"
@@ -54,8 +66,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="33dp"
-        android:layout_marginBottom="284dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="446dp"
         tools:srcCompat="@tools:sample/avatars[0]" />
 
     <Button

@@ -37,6 +37,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".MapsActivity_selectAddress"
+            android:label="@string/title_activity_maps_select_address"></activity>
+        <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".UserEditActivity" />
@@ -52,6 +55,12 @@
         <activity android:name=".MyPostActivity" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".SendOfferActivity" />
+        <activity android:name=".MyOfferActivity" />
+        <activity android:name=".MyPostOfferActivity" />
+        <activity android:name=".PostRateActivity" />
+        <provider android:authorities="com.facebook.app.FacebookContentProvider{2376751019220967}"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
     </application>
 
 </manifest>
