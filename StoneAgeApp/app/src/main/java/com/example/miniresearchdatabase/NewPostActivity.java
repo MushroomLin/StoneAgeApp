@@ -89,6 +89,14 @@ public class NewPostActivity extends BaseActivity {
                 chooseImage();
             }
         });
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+        }
     }
 
     private void chooseImage() {
@@ -163,6 +171,19 @@ public class NewPostActivity extends BaseActivity {
                         List<Double> estimatedPrices = new LinkedList<>();
 
 //                        double[] estimatedPrices = new HttpRequest().request(title);
+                        EbayConnection ebay = new EbayConnection();
+                        System.out.println("Testing - Send Http GET request");
+                        String response;
+                        try{
+                            Log.w("TAG","Iphone");
+                            response = ebay.sendGet("Iphone",10);
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                            response = null;
+                        }
+                        ebay.parseResponse(response);
+                        Log.w("TAG",response);
 
                         // Get user value
                         User user = dataSnapshot.getValue(User.class);
@@ -261,6 +282,8 @@ public class NewPostActivity extends BaseActivity {
         return null;
 
     }
+
+
 
 }
 
