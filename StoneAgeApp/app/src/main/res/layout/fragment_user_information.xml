@@ -25,6 +25,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/UserInformationLayout"
         android:layout_toRightOf="@id/EditButton"
-        android:text="My Post" />
+        android:text="My Posts" />
+
+    <Button
+        android:id="@+id/button_myoffer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/UserInformationLayout"
+        android:layout_toRightOf="@id/button_mypost"
+        android:text="My Offers" />
 
 </RelativeLayout>

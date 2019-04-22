@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.miniresearchdatabase.MainActivity;
+import com.example.miniresearchdatabase.MyOfferActivity;
 import com.example.miniresearchdatabase.MyPostActivity;
 import com.example.miniresearchdatabase.NewPostActivity;
 import com.example.miniresearchdatabase.R;
@@ -53,6 +54,7 @@ public class UserInformationFragment extends Fragment {
 //    private TextView UserRateTextView;
     private Button EditButton;
     private Button button_mypost;
+    private Button button_myoffer;
     private ImageView UserAvatarImageView;
     private CardView UserInformationLayout;
     public UserInformationFragment() {
@@ -80,6 +82,7 @@ public class UserInformationFragment extends Fragment {
         UserAvatarImageView = UserInformationLayout.findViewById(R.id.AvatarImageView);
         EditButton =  rootView.findViewById(R.id.EditButton);
         button_mypost = rootView.findViewById(R.id.button_mypost);
+        button_myoffer = rootView.findViewById(R.id.button_myoffer);
         // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(getUid());
         // [END create_database_reference]
@@ -89,12 +92,21 @@ public class UserInformationFragment extends Fragment {
                 startActivity(new Intent(getActivity(), UserEditActivity.class));
             }
         });
+
         button_mypost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), MyPostActivity.class));
             }
         });
+
+        button_myoffer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MyOfferActivity.class));
+            }
+        });
+
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

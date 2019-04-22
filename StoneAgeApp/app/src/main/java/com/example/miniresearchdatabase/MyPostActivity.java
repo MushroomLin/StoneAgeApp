@@ -81,7 +81,7 @@ public class MyPostActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         // Launch PostDetailActivity
-                        Intent intent = new Intent(MyPostActivity.this, PostDetailActivity.class);
+                        Intent intent = new Intent(MyPostActivity.this, MyPostOfferActivity.class);
                         intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
                         startActivity(intent);
                     }

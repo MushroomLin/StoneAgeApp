@@ -12,17 +12,19 @@ public class Offer {
     public String author;
     public String title;
     public String description;
-
+    public String address;
     public String picture;
+
 
     public Offer() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Offer(String uid, String author, String title, String description, String picture) {
+    public Offer(String uid, String author, String title, String description, String address, String picture) {
         this.uid = uid;
         this.author = author;
         this.title = title;
+        this.address = address;
         this.description = description;
         this.picture = picture;
     }
@@ -36,6 +38,8 @@ public class Offer {
         result.put("title", title);
         result.put("description", description);
         result.put("picture", picture);
+        result.put("address", address);
+
 
         return result;
     }

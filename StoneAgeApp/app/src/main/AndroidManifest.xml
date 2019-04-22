@@ -53,6 +53,8 @@
         <activity android:name=".MyPostActivity" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".SendOfferActivity" />
+        <activity android:name=".MyOfferActivity" />
+        <activity android:name=".MyPostOfferActivity" />
     </application>
 
 </manifest>
