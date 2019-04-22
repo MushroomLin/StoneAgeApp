@@ -50,7 +50,7 @@ public class MyPostActivity extends AppCompatActivity {
         button_back = findViewById(R.id.button_back);
 
         // Set up FirebaseRecyclerAdapter with the Query
-        Query postsQuery = getQuery(mDatabase);
+        Query postsQuery = getPostQuery(mDatabase);
 
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +113,7 @@ public class MyPostActivity extends AppCompatActivity {
 
     }
 
-    public Query getQuery(DatabaseReference databaseReference) {
+    public Query getPostQuery(DatabaseReference databaseReference) {
         // All my posts
         return databaseReference.child("user-posts")
                 .child(getUid());

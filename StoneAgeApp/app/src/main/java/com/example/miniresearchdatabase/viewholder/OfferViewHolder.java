@@ -27,7 +27,7 @@ public class OfferViewHolder extends RecyclerView.ViewHolder {
         pictureView = itemView.findViewById(R.id.offerImageView);
     }
 
-    public void bindToOffer(Offer offer, View.OnClickListener starClickListener) {
+    public void bindToOffer(Offer offer) {
         titleView.setText(offer.title);
         authorView.setText(offer.author);
         bodyView.setText(offer.description);

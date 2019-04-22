@@ -55,6 +55,10 @@
         <activity android:name=".SendOfferActivity" />
         <activity android:name=".MyOfferActivity" />
         <activity android:name=".MyPostOfferActivity" />
+        <activity android:name=".PostRateActivity" />
+        <provider android:authorities="com.facebook.app.FacebookContentProvider{2376751019220967}"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
     </application>
 
 </manifest>

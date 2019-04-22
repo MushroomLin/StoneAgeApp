@@ -50,7 +50,7 @@ public class MyOfferActivity extends AppCompatActivity {
         button_back = findViewById(R.id.button_back5);
 
         // Set up FirebaseRecyclerAdapter with the Query
-        Query offersQuery = getQuery(mDatabase);
+        Query offersQuery = getOfferQuery(mDatabase);
 
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,12 +72,12 @@ public class MyOfferActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void onBindViewHolder(OfferViewHolder viewHolder, int position, final Offer model) {
+            protected void onBindViewHolder(OfferViewHolder viewHolder2, int position, final Offer model) {
                 final DatabaseReference offerRef = getRef(position);
 
                 // Set click listener for the whole post view
                 final String postKey = offerRef.getKey();
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                viewHolder2.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Launch PostDetailActivity
@@ -87,20 +87,14 @@ public class MyOfferActivity extends AppCompatActivity {
                     }
                 });
 
-                viewHolder.bindToOffer(model, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View starView) {
-                        // Need to write to both places the post is stored
-                        // Run two transactions
-                    }
-                });
+                viewHolder2.bindToOffer(model);
             }
         };
         mOfferRecycler.setAdapter(mOfferAdapter);
 
     }
 
-    public Query getQuery(DatabaseReference databaseReference) {
+    public Query getOfferQuery(DatabaseReference databaseReference) {
         // All my posts
         return databaseReference.child("user-offers")
                 .child(getUid());

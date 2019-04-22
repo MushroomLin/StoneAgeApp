@@ -48,7 +48,7 @@ public class MyPostOfferActivity extends AppCompatActivity {
         button_accept = findViewById(R.id.button_accept);
 
         // Set up FirebaseRecyclerAdapter with the Query
-        Query offersQuery = getQuery(mDatabase);
+        Query offersQuery = getPostOfferQuery(mDatabase);
 
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +57,7 @@ public class MyPostOfferActivity extends AppCompatActivity {
             }
         });
 
+
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Offer>()
                 .setQuery(offersQuery, Offer.class)
                 .build();
@@ -64,18 +65,18 @@ public class MyPostOfferActivity extends AppCompatActivity {
         mOfferAdapter = new FirebaseRecyclerAdapter<Offer, OfferViewHolder>(options) {
 
             @Override
-            public OfferViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                return new OfferViewHolder(inflater.inflate(R.layout.item_offer, viewGroup, false));
+            public OfferViewHolder onCreateViewHolder(ViewGroup viewGroup2, int i) {
+                LayoutInflater inflater = LayoutInflater.from(viewGroup2.getContext());
+                return new OfferViewHolder(inflater.inflate(R.layout.item_offer, viewGroup2, false));
             }
 
             @Override
-            protected void onBindViewHolder(OfferViewHolder viewHolder, int position, final Offer model) {
-                final DatabaseReference offerRef = getRef(position);
+            protected void onBindViewHolder(OfferViewHolder viewHolder3, int position, final Offer model) {
+                //final DatabaseReference offerRef = getRef(position);
 
                 // Set click listener for the whole post view
                 //final String postKey = offerRef.getKey();
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                viewHolder3.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Launch PostDetailActivity
@@ -85,19 +86,13 @@ public class MyPostOfferActivity extends AppCompatActivity {
                     }
                 });
 
-                viewHolder.bindToOffer(model, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View starView) {
-                        // Need to write to both places the post is stored
-                        // Run two transactions
-                    }
-                });
+                viewHolder3.bindToOffer(model);
             }
         };
         mOfferRecycler.setAdapter(mOfferAdapter);
 
     }
-    public Query getQuery(DatabaseReference databaseReference) {
+    public Query getPostOfferQuery(DatabaseReference databaseReference) {
 
         return databaseReference.child("post-offers")
                 .child(mPostKey);
