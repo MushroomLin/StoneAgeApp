@@ -9,13 +9,13 @@
 
     <include
         android:id="@+id/UserInformationLayout"
-        layout="@layout/item_user_information"
+        layout="@layout/include_item_user_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
          />
     <include
         android:id="@+id/MeMenuLayout"
-        layout="@layout/me_menu"
+        layout="@layout/include_me_menu"
         android:layout_below="@+id/UserInformationLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

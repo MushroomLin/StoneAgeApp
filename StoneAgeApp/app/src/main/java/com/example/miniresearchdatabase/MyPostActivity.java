@@ -68,7 +68,7 @@ public class MyPostActivity extends AppCompatActivity {
             @Override
             public PostViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                return new PostViewHolder(inflater.inflate(R.layout.item_post, viewGroup, false));
+                return new PostViewHolder(inflater.inflate(R.layout.item_post, viewGroup, false), getApplicationContext());
             }
 
             @Override
