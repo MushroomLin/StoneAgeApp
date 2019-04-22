@@ -68,7 +68,7 @@ public class MyOfferActivity extends AppCompatActivity {
             @Override
             public OfferViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                return new OfferViewHolder(inflater.inflate(R.layout.item_offer, viewGroup, false));
+                return new OfferViewHolder(inflater.inflate(R.layout.item_offer, viewGroup, false), getApplicationContext());
             }
 
             @Override
