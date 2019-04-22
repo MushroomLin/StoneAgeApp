@@ -1,5 +1,6 @@
 package com.example.miniresearchdatabase;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +21,7 @@ public class LaunchScreenActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            intent = new Intent(LaunchScreenActivity.this, MainActivity.class);
+            intent = new Intent(LaunchScreenActivity.this, SignInActivity.class);
         }
 
         @Override
