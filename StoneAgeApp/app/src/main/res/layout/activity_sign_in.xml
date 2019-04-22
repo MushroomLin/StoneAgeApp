@@ -1,84 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:background="@color/colorPrimary">
 
+    <ImageView
+        android:id="@+id/StoneAgeIcon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        app:srcCompat="@drawable/stone_icon" />
+
+    <TextView
+        android:id="@+id/StoneAgeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:layout_below="@id/StoneAgeIcon"
+        android:layout_centerHorizontal="true"
+        android:text="Stone Age"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/StoneAgeTextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/StoneAgeTextView"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="casual"
+        android:text="Let's Swap!"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 
     <LinearLayout
         android:id="@+id/layoutEmailPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:layout_below="@id/StoneAgeTextView2">
 
         <EditText
             android:id="@+id/fieldEmail"
-            android:layout_width="150dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:gravity="center_horizontal"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:maxLines="1" />
 
         <EditText
             android:id="@+id/fieldPassword"
-            android:layout_width="150dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:ellipsize="end"
-            android:gravity="center_horizontal"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:maxLines="1" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutButtons"
-        android:layout_width="wrap_content"
+
+    <Button
+        android:id="@+id/buttonSignIn"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layoutEmailPassword"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/buttonSignIn"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_in" />
+        android:layout_marginTop="25dp"
+        android:text="@string/sign_in"
+        android:textColor="@color/white"
+        android:background="@drawable/round_corner_bg"
+        />
 
 
-        <Button
-            android:id="@+id/buttonSignUp"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_up" />
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/LayoutGoogle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layoutButtons"
+    <Button
+        android:id="@+id/buttonSignUp"
+        android:layout_width="250dp"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonSignIn"
+        android:text="@string/sign_up"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:background="@drawable/round_corner_bg"/>
 
-        <Button
-            android:id="@+id/buttonGoogle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="SIGN WITH GOOGLE" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/buttonGoogle"
+        android:layout_below="@+id/buttonSignUp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:background="@drawable/round_corner_bg"
+        android:drawableStart="@drawable/ic_google"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:drawablePadding="10dp"
+        android:text="SIGN WITH GOOGLE" />
 
 
 </RelativeLayout>
