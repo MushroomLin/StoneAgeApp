@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.miniresearchdatabase.models.Offer;
-import com.example.miniresearchdatabase.viewholder.OfferViewHolder;
+import com.example.miniresearchdatabase.viewholder.PostOfferViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,13 +21,12 @@ import com.google.firebase.database.Query;
 
 public class MyPostOfferActivity extends AppCompatActivity {
     private Button button_back;
-    private Button button_accept;
     private static final String TAG = "MyPostOfferActivity";
     public static final String EXTRA_POSTOFFER_POST_KEY = "post_key";
     private DatabaseReference mDatabase;
-    private FirebaseRecyclerAdapter<Offer, OfferViewHolder> mOfferAdapter;
-    private RecyclerView mOfferRecycler;
-    private LinearLayoutManager mOfferManager;
+    private FirebaseRecyclerAdapter<Offer, PostOfferViewHolder> mPostOfferAdapter;
+    private RecyclerView mPostOfferRecycler;
+    private LinearLayoutManager mPostOfferManager;
     private String mPostKey;
 
     @Override
@@ -37,18 +36,17 @@ public class MyPostOfferActivity extends AppCompatActivity {
 
         mPostKey = getIntent().getStringExtra(EXTRA_POSTOFFER_POST_KEY);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mOfferRecycler = findViewById(R.id.mypostoffermessagesList);
-        mOfferRecycler.setHasFixedSize(true);
+        mPostOfferRecycler = findViewById(R.id.mypostoffermessagesList);
+        mPostOfferRecycler.setHasFixedSize(true);
 
-        mOfferManager = new LinearLayoutManager(this);
-        mOfferManager.setReverseLayout(true);
-        mOfferManager.setStackFromEnd(true);
-        mOfferRecycler.setLayoutManager(mOfferManager);
+        mPostOfferManager = new LinearLayoutManager(this);
+        mPostOfferManager.setReverseLayout(true);
+        mPostOfferManager.setStackFromEnd(true);
+        mPostOfferRecycler.setLayoutManager(mPostOfferManager);
         button_back = findViewById(R.id.button_back4);
-        button_accept = findViewById(R.id.button_accept);
 
         // Set up FirebaseRecyclerAdapter with the Query
-        Query offersQuery = getPostOfferQuery(mDatabase);
+        Query postoffersQuery = getPostOfferQuery(mDatabase);
 
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,19 +57,19 @@ public class MyPostOfferActivity extends AppCompatActivity {
 
 
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Offer>()
-                .setQuery(offersQuery, Offer.class)
+                .setQuery(postoffersQuery, Offer.class)
                 .build();
 
-        mOfferAdapter = new FirebaseRecyclerAdapter<Offer, OfferViewHolder>(options) {
+        mPostOfferAdapter = new FirebaseRecyclerAdapter<Offer, PostOfferViewHolder>(options) {
 
             @Override
-            public OfferViewHolder onCreateViewHolder(ViewGroup viewGroup2, int i) {
+            public PostOfferViewHolder onCreateViewHolder(ViewGroup viewGroup2, int i) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup2.getContext());
-                return new OfferViewHolder(inflater.inflate(R.layout.item_offer, viewGroup2, false));
+                return new PostOfferViewHolder(inflater.inflate(R.layout.item_acceptable_offer, viewGroup2, false), getApplicationContext());
             }
 
             @Override
-            protected void onBindViewHolder(OfferViewHolder viewHolder3, int position, final Offer model) {
+            protected void onBindViewHolder(PostOfferViewHolder viewHolder3, int position, final Offer model) {
                 //final DatabaseReference offerRef = getRef(position);
 
                 // Set click listener for the whole post view
@@ -86,10 +84,16 @@ public class MyPostOfferActivity extends AppCompatActivity {
                     }
                 });
 
-                viewHolder3.bindToOffer(model);
+                viewHolder3.bindToOffer(model, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View button_accept) {
+                        Intent intent = new Intent(MyPostOfferActivity.this, PostRateActivity.class);
+                        startActivity(intent);
+                    }
+                });
             }
         };
-        mOfferRecycler.setAdapter(mOfferAdapter);
+        mPostOfferRecycler.setAdapter(mPostOfferAdapter);
 
     }
     public Query getPostOfferQuery(DatabaseReference databaseReference) {
@@ -102,16 +106,16 @@ public class MyPostOfferActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if (mOfferAdapter != null) {
-            mOfferAdapter.startListening();
+        if (mPostOfferAdapter != null) {
+            mPostOfferAdapter.startListening();
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mOfferAdapter != null) {
-            mOfferAdapter.stopListening();
+        if (mPostOfferAdapter != null) {
+            mPostOfferAdapter.stopListening();
         }
     }
 
