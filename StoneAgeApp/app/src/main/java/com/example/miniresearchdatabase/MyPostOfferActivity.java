@@ -70,10 +70,10 @@ public class MyPostOfferActivity extends AppCompatActivity {
 
             @Override
             protected void onBindViewHolder(PostOfferViewHolder viewHolder3, int position, final Offer model) {
-                //final DatabaseReference offerRef = getRef(position);
+                final DatabaseReference offerRef = getRef(position);
 
                 // Set click listener for the whole post view
-                //final String postKey = offerRef.getKey();
+                final String offerKey = offerRef.getKey();
                 viewHolder3.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -88,6 +88,8 @@ public class MyPostOfferActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View button_accept) {
                         Intent intent = new Intent(MyPostOfferActivity.this, PostRateActivity.class);
+                        intent.putExtra(PostRateActivity.FINAL_POST_KEY, mPostKey);
+                        intent.putExtra(PostRateActivity.FINAL_OFFER_KEY, offerKey);
                         startActivity(intent);
                     }
                 });
