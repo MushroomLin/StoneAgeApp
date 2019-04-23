@@ -43,7 +43,7 @@ public class PostOfferViewHolder extends RecyclerView.ViewHolder {
         this.postoffer_context = postoffer_context;
     }
 
-    public void bindToOffer(Offer offer, View.OnClickListener acceptClickListener) {
+    public void bindToPostOffer(Offer offer, View.OnClickListener acceptClickListener) {
         titlePostOfferView.setText(offer.title);
         authorPostOfferView.setText(offer.author);
         bodyPostOfferView.setText(offer.description);

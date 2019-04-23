@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp">
@@ -9,12 +11,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp">
 
-        <Button
-            android:id="@+id/button_accept"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/offerAuthorLayout"
-            android:text="Accept" />
+
 
         <include
             android:id="@+id/offerAuthorLayout"
@@ -22,6 +19,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true" />
+
+        <Button
+            android:id="@+id/button_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/offerAuthorLayout"
+            android:text="Accept" />
 
         <include layout="@layout/include_offer_text"
             android:layout_width="wrap_content"

@@ -63,9 +63,9 @@ public class MyPostOfferActivity extends AppCompatActivity {
         mPostOfferAdapter = new FirebaseRecyclerAdapter<Offer, PostOfferViewHolder>(options) {
 
             @Override
-            public PostOfferViewHolder onCreateViewHolder(ViewGroup viewGroup2, int i) {
-                LayoutInflater inflater = LayoutInflater.from(viewGroup2.getContext());
-                return new PostOfferViewHolder(inflater.inflate(R.layout.item_acceptable_offer, viewGroup2, false), getApplicationContext());
+            public PostOfferViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+                return new PostOfferViewHolder(inflater.inflate(R.layout.item_acceptable_offer, viewGroup, false), getApplicationContext());
             }
 
             @Override
@@ -84,7 +84,7 @@ public class MyPostOfferActivity extends AppCompatActivity {
                     }
                 });
 
-                viewHolder3.bindToOffer(model, new View.OnClickListener() {
+                viewHolder3.bindToPostOffer(model, new View.OnClickListener() {
                     @Override
                     public void onClick(View button_accept) {
                         Intent intent = new Intent(MyPostOfferActivity.this, PostRateActivity.class);
