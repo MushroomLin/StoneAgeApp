@@ -18,6 +18,12 @@
         tools:text="My First Post" />
 
     <TextView
+        android:id="@+id/textView_estimatedPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="$5.5" />
+
+    <TextView
         android:id="@+id/postAddress"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"

@@ -50,6 +50,7 @@ public class PostDetailActivity extends BaseActivity {
     private Button mOfferButton;
     private Button button_back;
     private RecyclerView mCommentsRecycler;
+    private TextView textView_estimatedPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class PostDetailActivity extends BaseActivity {
         mOfferButton = findViewById(R.id.button_offer);
         button_back = findViewById(R.id.button_back6);
         mCommentsRecycler = findViewById(R.id.recyclerPostComments);
+        textView_estimatedPrice = findViewById(R.id.textView_estimatedPrice);
 
         mCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +123,15 @@ public class PostDetailActivity extends BaseActivity {
                 mTitleView.setText(post.title);
                 mBodyView.setText(post.description);
                 mAddressView.setText(post.address);
+
+                double sumPrice = 0.0;
+                for(double price : post.estimatedPrices) {
+                    sumPrice += price;
+                }
+                int priceCount = post.estimatedPrices.size();
+                int avgPrice = (int)(sumPrice / priceCount);
+
+                textView_estimatedPrice.setText("Estimated: $" + avgPrice);
             }
 
             @Override

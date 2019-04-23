@@ -8,6 +8,11 @@ public class MyTopPostsFragment extends PostListFragment {
     public MyTopPostsFragment() {}
 
     @Override
+    public double[] getQuery3(DatabaseReference databaseReference) {
+        return null;
+    }
+
+    @Override
     public Query getQuery(DatabaseReference databaseReference) {
         // [START my_top_posts_query]
 
@@ -18,5 +23,10 @@ public class MyTopPostsFragment extends PostListFragment {
         // [END my_top_posts_query]
 
         return myTopPostsQuery;
+    }
+
+    @Override
+    public Query getQueryFromPrice(DatabaseReference databaseReference, double minPrice, double maxPrice) {
+        return null;
     }
 }
