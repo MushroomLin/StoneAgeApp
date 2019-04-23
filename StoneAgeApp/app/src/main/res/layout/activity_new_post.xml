@@ -77,4 +77,16 @@
         android:layout_toStartOf="@+id/fabSubmitPost"
         android:text="Add" />
 
+    <Button
+        android:id="@+id/bt_selectAddress"
+        android:layout_width="164dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/fieldAddress"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="0dp"
+        android:text="select address on map"
+        android:textSize="10sp"
+        tools:text="select address on map" />
+
 </RelativeLayout>

@@ -52,9 +52,12 @@ public class NewPostActivity extends BaseActivity {
 
     // -------
     private final int PICK_IMAGE_REQUEST = 71;
+    private final int SELECT_ADDRESS_ON_MAP = 118;
     private Button button_addImage;
+    private Button button_selectAddress;
     private ImageView imageView;
     private EditText editText_description;
+    private String address = "";
 
     private Uri filePath;
     private Bitmap bitmap;
@@ -80,6 +83,7 @@ public class NewPostActivity extends BaseActivity {
         });
 
         button_addImage = findViewById(R.id.button_addImage);
+        button_selectAddress = findViewById(R.id.bt_selectAddress);
         imageView = findViewById(R.id.imageView);
         editText_description = findViewById(R.id.editText_description);
 
@@ -97,6 +101,13 @@ public class NewPostActivity extends BaseActivity {
             StrictMode.setThreadPolicy(policy);
 
         }
+
+        button_selectAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(NewPostActivity.this, MapsActivity_selectAddress.class), SELECT_ADDRESS_ON_MAP);
+            }
+        });
     }
 
     private void chooseImage() {
@@ -120,6 +131,7 @@ public class NewPostActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // get image
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null )
         {
@@ -132,6 +144,11 @@ public class NewPostActivity extends BaseActivity {
             {
                 e.printStackTrace();
             }
+        }
+        // get address
+        if (requestCode == SELECT_ADDRESS_ON_MAP) {
+            address = data.getExtras().getString("selectAddress"); //get the data from new Activity when it finished
+            mAddressField.setText(address);
         }
     }
 
@@ -168,26 +185,21 @@ public class NewPostActivity extends BaseActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        List<Double> estimatedPrices = new LinkedList<>();
-
 //                        double[] estimatedPrices = new HttpRequest().request(title);
                         EbayConnection ebay = new EbayConnection();
-                        System.out.println("Testing - Send Http GET request");
                         String response;
                         try{
-                            Log.w("TAG","Iphone");
-                            response = ebay.sendGet("Iphone",10);
+                            response = ebay.sendGet(title,10);
                         }
                         catch (Exception e){
                             e.printStackTrace();
                             response = null;
                         }
-                        ebay.parseResponse(response);
-                        Log.w("TAG",response);
+                        List<Double> pricesList = ebay.getPrices(response);
+
 
                         // Get user value
                         User user = dataSnapshot.getValue(User.class);
-
 
                         if (user == null) {
                             // User is null, error out
@@ -202,7 +214,7 @@ public class NewPostActivity extends BaseActivity {
                                 picture = "";
                             }
                             writeNewPost(userId, user.username, title, address,
-                                    description, originalType, targetType, picture, estimatedPrices);
+                                    description, originalType, targetType, picture, pricesList);
 
                         }
 
@@ -287,6 +299,7 @@ public class NewPostActivity extends BaseActivity {
 
 }
 
+/*
 class HttpRequest {
 
     private final String TOKEN = "CUJYSOVFIARKJWJXSXSBEFQIVEDPZUXQILFCXHPSNLEMOFGYQTIYTJGCDPDWNECZ";
@@ -391,3 +404,4 @@ class HttpRequest {
 
 }
 
+*/
