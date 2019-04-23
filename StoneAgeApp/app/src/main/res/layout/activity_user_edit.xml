@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Avatar"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <ImageView
                     android:id="@+id/AvatarImageView"
@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Name"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/UserNameEditText"
@@ -95,7 +95,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
                     android:text=" "
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     tools:text="Tom" />
 
             </LinearLayout>
@@ -111,7 +111,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Email"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/EmailEditText"
@@ -119,7 +119,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     tools:text="123@gmail.com" />
 
             </LinearLayout>
@@ -135,7 +135,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Phone"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/PhoneEditText"
@@ -144,7 +144,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
                     android:text=" "
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     tools:text="123-456-7890" />
 
             </LinearLayout>
@@ -160,7 +160,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Address"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/AddressEditText"
@@ -168,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     tools:text="Apt. 123, 175 Freeman St." />
 
             </LinearLayout>
@@ -184,7 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Introduction"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/IntroductionEditText"
@@ -192,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     tools:text="Hi! I love Computer Games and seeking for trading." />
 
             </LinearLayout>

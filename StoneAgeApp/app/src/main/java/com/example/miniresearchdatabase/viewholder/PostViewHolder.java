@@ -31,6 +31,9 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     public ImageView pictureView;
     private DatabaseReference mDatabase;
     public Context context;
+
+    public TextView textView_estimatedPrice;
+
     public PostViewHolder(View itemView, Context context) {
         super(itemView);
 
@@ -42,11 +45,29 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         bodyView = itemView.findViewById(R.id.postBody);
         addressView = itemView.findViewById(R.id.postAddress);
         pictureView = itemView.findViewById(R.id.pictureImageView);
+
+        textView_estimatedPrice = itemView.findViewById(R.id.textView_estimatedPrice);
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         this.context = context;
     }
 
     public void bindToPost(Post post, View.OnClickListener starClickListener) {
+        if(post.estimatedPrices == null) {
+            textView_estimatedPrice.setText("No Estimated Price Now");
+        } else {
+            double sumPrice = 0.0;
+            for(double price : post.estimatedPrices) {
+                sumPrice += price;
+            }
+
+
+            int priceCount = post.estimatedPrices.size();
+            int avgPrice = (int)(sumPrice / priceCount);
+
+            textView_estimatedPrice.setText("Estimated: $" + avgPrice);
+        }
+
         titleView.setText(post.title);
         authorView.setText(post.author);
         numStarsView.setText(String.valueOf(post.starCount));

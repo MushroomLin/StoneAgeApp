@@ -42,8 +42,11 @@ public abstract class PostListFragment extends Fragment {
     private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
+    private double minPrice = 99999999.0;
+    private double maxPrice = 0.0;
 
     List<Double> avgPricesList = null;
+    Query postsQuery;
 
     public PostListFragment() {}
 
@@ -53,9 +56,54 @@ public abstract class PostListFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);
 
+//        Bundle bundle = getArguments();
+//        minPrice = bundle.getDouble("minPrice");
+//        maxPrice = bundle.getDouble("maxPrice");
+
+        final String userId = getUid();
         // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END create_database_reference]
+//        DatabaseReference databaseReference = mDatabase.child("user-posts").child(userId);;
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                List<Double> avgPriceList = new LinkedList<>();
+//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+//                    Post post = postSnapshot.getValue(Post.class);
+//                    List<Double> pricesList = post.estimatedPrices;
+//                    if(pricesList != null) {
+//                        double priceSum = 0.0;
+//                        for(int i = 0; i < pricesList.size(); i++) {
+//                            double curPrice = pricesList.get(i);
+//                            priceSum += curPrice;
+//                        }
+//                        double priceAvg = priceSum / pricesList.size();
+//                        // update minPrice and maxPrice
+//                        if (priceAvg < minPrice)
+//                            minPrice = priceAvg;
+//                        if (priceAvg > maxPrice)
+//                            maxPrice = priceAvg;
+//                        avgPriceList.add(priceAvg);
+//                        Log.e("pricequery", String.valueOf(priceAvg));
+//                        Log.e("pricequery", "minPrice:"+String.valueOf(minPrice)+" maxPrice:"+String.valueOf(maxPrice));
+//                        Log.e("pricequery", "--------------------------");
+//                    }
+//                }
+//                // if the range of minPrice and maxPrcie isn't big enough
+//                if (minPrice - 20.0 > 0.0)
+//                    minPrice = minPrice - 20.0;
+//                else
+//                    minPrice = 0.0;
+//                maxPrice = maxPrice + 20.0;
+////                avgPricesList = avgPriceList;
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
         mRecycler = rootView.findViewById(R.id.messagesList);
         mRecycler.setHasFixedSize(true);
@@ -73,12 +121,15 @@ public abstract class PostListFragment extends Fragment {
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
 
+        Log.e("pricequery", String.valueOf(minPrice)+" "+String.valueOf(maxPrice));
 
         // Set up FirebaseRecyclerAdapter with the Query
-        this.getQuery3(mDatabase);
+//        getQuery3(mDatabase);
 
 //        avgPricesList
         Query postsQuery = getQuery(mDatabase);
+//        Query postsQuery = getQueryFromPrice(mDatabase, minPrice, maxPrice);
+
 //        Log.e("testQuery3", "66666666");
 
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Post>()
@@ -132,6 +183,7 @@ public abstract class PostListFragment extends Fragment {
             }
         };
         mRecycler.setAdapter(mAdapter);
+        Log.e("pricequery", "finish create the start activity");
     }
 
     // [START post_stars_transaction]
@@ -175,6 +227,7 @@ public abstract class PostListFragment extends Fragment {
         super.onStart();
         if (mAdapter != null) {
             mAdapter.startListening();
+            Log.e("pricequery", "now is in Onstart");
         }
     }
 
@@ -190,42 +243,64 @@ public abstract class PostListFragment extends Fragment {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
+    public abstract double[] getQuery3(DatabaseReference databaseReference);
+
+//    public Query getQuery3(DatabaseReference databaseReference) {
+//        final String userId = getUid();
+//        DatabaseReference databaseReference2 = databaseReference.child("user-posts").child(userId);
+//
+//        databaseReference2.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                List<Double> avgPriceList = new LinkedList<>();
+//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+//                    Post post = postSnapshot.getValue(Post.class);
+//                    List<Double> pricesList = post.estimatedPrices;
+//                    if(pricesList != null) {
+//                        double priceSum = 0.0;
+//                        for(int i = 0; i < pricesList.size(); i++) {
+//                            double curPrice = pricesList.get(i);
+//                            priceSum += curPrice;
+//                        }
+//                        double priceAvg = priceSum / pricesList.size();
+//                        // update minPrice and maxPrice
+//                        if (priceAvg < minPrice)
+//                            minPrice = priceAvg;
+//                        if (priceAvg > maxPrice)
+//                            maxPrice = priceAvg;
+//                        avgPriceList.add(priceAvg);
+//                        Log.e("pricequery", String.valueOf(priceAvg));
+//                        Log.e("pricequery", "minPrice:"+String.valueOf(minPrice)+" maxPrice:"+String.valueOf(maxPrice));
+//                        Log.e("pricequery", "--------------------------");
+//                    }
+//                }
+//                // if the range of minPrice and maxPrcie isn't big enough
+//                if (minPrice - 20.0 > 0.0)
+//                    minPrice = minPrice - 20.0;
+//                else
+//                    minPrice = 0.0;
+//                maxPrice = maxPrice + 20.0;
+////                avgPricesList = avgPriceList;
+//                minMaxQuery = getQueryFromPrice(mDatabase, minPrice, maxPrice);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//        Log.e("pricequery", String.valueOf(minPrice)+" "+String.valueOf(maxPrice));
+//        return minMaxQuery;
+//    }
+
+//    public Query getQueryFromPrice(DatabaseReference databaseReference, double min, double max) {
+//        Log.e("pricequery", "min:"+String.valueOf(min)+" max:"+String.valueOf(max));
+//        Query minMaxPricePostsQuery = databaseReference.child("posts").orderByChild("avgPrice").startAt(min).endAt(max);
+//
+//        return minMaxPricePostsQuery;
+//    }
+
+    public abstract Query getQueryFromPrice(DatabaseReference databaseReference, double min, double max);
+
     public abstract Query getQuery(DatabaseReference databaseReference);
-
-    public Query getQuery3(DatabaseReference databaseReference) {
-        final String userId = getUid();
-        DatabaseReference databaseReference2 = databaseReference.child("user-posts").child(userId);
-
-        databaseReference2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Double> avgPriceList = new LinkedList<>();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Post post = postSnapshot.getValue(Post.class);
-                    List<Double> pricesList = post.estimatedPrices;
-                    if(pricesList != null) {
-                        double priceSum = 0.0;
-                        for(int i = 0; i < pricesList.size(); i++) {
-                            double curPrice = pricesList.get(i);
-                            priceSum += curPrice;
-                        }
-                        double priceAvg = priceSum / pricesList.size();
-                        avgPriceList.add(priceAvg);
-                    }
-                }
-                avgPricesList = avgPriceList;
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return null;
-
-    }
-
 }

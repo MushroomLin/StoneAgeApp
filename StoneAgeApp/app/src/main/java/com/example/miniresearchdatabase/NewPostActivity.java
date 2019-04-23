@@ -197,6 +197,16 @@ public class NewPostActivity extends BaseActivity {
                         }
                         List<Double> pricesList = ebay.getPrices(response);
 
+                        double avgPrice = 0.0;
+                        if(pricesList != null) {
+                            double priceSum = 0.0;
+                            for (int i = 0; i < pricesList.size(); i++) {
+                                double curPrice = pricesList.get(i);
+                                priceSum += curPrice;
+                            }
+                            avgPrice = priceSum / pricesList.size();
+                        }
+
 
                         // Get user value
                         User user = dataSnapshot.getValue(User.class);
@@ -214,7 +224,7 @@ public class NewPostActivity extends BaseActivity {
                                 picture = "";
                             }
                             writeNewPost(userId, user.username, title, address,
-                                    description, originalType, targetType, picture, pricesList);
+                                    description, originalType, targetType, picture, pricesList, avgPrice);
 
                         }
 
@@ -247,14 +257,14 @@ public class NewPostActivity extends BaseActivity {
     private void writeNewPost(String userId, String username, String title,
                               String address,
                               String description, String originalType, String targetType, String picture,
-                              List<Double> estimatedPrices) {
+                              List<Double> estimatedPrices, double avgPrice) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
 
         try {
             String key = mDatabase.child("posts").push().getKey();
             Post post = new Post(userId, username, title, address,
-                    description, originalType, targetType, picture, estimatedPrices);
+                    description, originalType, targetType, picture, estimatedPrices, avgPrice);
             Map<String, Object> postValues = post.toMap();
 
             Map<String, Object> childUpdates = new HashMap<>();

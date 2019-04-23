@@ -28,6 +28,7 @@ public class Post {
     public String picture;
 
     public List<Double> estimatedPrices;
+    public double avgPrice;
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -37,7 +38,7 @@ public class Post {
     public Post(String uid, String author, String title,
                 String address,
                 String description, String originalType, String targetType, String picture,
-                List<Double> estimatedPrices) {
+                List<Double> estimatedPrices, double avgPrice) {
         this.uid = uid;
         this.author = author;
         this.title = title;
@@ -59,6 +60,7 @@ public class Post {
         this.picture = picture;
 
         this.estimatedPrices = estimatedPrices;
+        this.avgPrice = avgPrice;
     }
 
     // post_to_map
@@ -80,6 +82,7 @@ public class Post {
         result.put("picture", picture);
 
         result.put("estimatedPrices", estimatedPrices);
+        result.put("avgPrice", avgPrice);
 
         return result;
     }
