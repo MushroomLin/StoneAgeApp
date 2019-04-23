@@ -144,7 +144,7 @@ public class MapsActivity_selectAddress extends AppCompatActivity
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                marker.getPosition();
+                Toast.makeText(MapsActivity_selectAddress.this, "location:\n" + marker.getTitle(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });

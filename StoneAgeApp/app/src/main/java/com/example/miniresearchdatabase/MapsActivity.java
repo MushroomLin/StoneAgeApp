@@ -10,6 +10,8 @@ import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -30,6 +32,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -84,6 +87,8 @@ public class MapsActivity extends AppCompatActivity
     private int onlyShowNearby = 0; // click my location button again will show the far away posts
     private boolean savedState = false; // To record whether this activity has been initialized yet
     private final String KEY_LOCATION = "loc";
+    CircleOptions circleOptions = new CircleOptions();
+    Circle circleAddress = null;
 
 
 
@@ -107,7 +112,7 @@ public class MapsActivity extends AppCompatActivity
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(MapsActivity.this, "restrict distance: "+String.valueOf(restrictDistance), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivity.this, "restrict distance: "+String.valueOf(restrictDistance)+" meters", Toast.LENGTH_SHORT).show();
             }
         });
         // initialize api key
@@ -119,19 +124,21 @@ public class MapsActivity extends AppCompatActivity
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME));
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS));
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull com.google.android.libraries.places.api.model.Place place) {
-                // change the color of the marker
-                Marker tem = mMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 14.0f));
-                if (lastLocation != null) {
-                    // once enter a new address the last marker will disappear
-                    lastLocation.setVisible(false);
+                if (lastLocation == null) {
+                    lastLocation = mMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                 }
-                lastLocation = tem;
+                else {
+                    lastLocation.setPosition(place.getLatLng());
+                }
+                lastLocation.setVisible(true);
+                lastLocation.setTitle(place.getAddress());
+                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 13.7f));
+                drawCircle(place.getLatLng(), restrictDistance);
             }
 
             @Override
@@ -155,15 +162,20 @@ public class MapsActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
+        // initialize lastLocation marker
+        lastLocation = mMap.addMarker(new MarkerOptions().position(new LatLng(0.0, 0.0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        lastLocation.setVisible(false);
 
+        // when click on map, a blue marker will be added there
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
                 String address = new LocationToAddress().getAddress(latLng.latitude, latLng.longitude);
-                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
+                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13.7f));
                 lastLocation.setPosition(latLng);
                 lastLocation.setVisible(true);
                 lastLocation.setTitle(address);
+                drawCircle(latLng, restrictDistance);
                 Toast.makeText(MapsActivity.this, "select location:\n" + address, Toast.LENGTH_SHORT).show();
 //                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             }
@@ -172,7 +184,7 @@ public class MapsActivity extends AppCompatActivity
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                marker.getPosition();
+//                Toast.makeText(MapsActivity.this, "location:\n" + marker.getTitle(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -356,11 +368,13 @@ public class MapsActivity extends AppCompatActivity
      */
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Log.w("marker", marker.getId() + " " + marker2post.get(marker));
-        String postKey = marker2post.get(marker);
-        Intent intent = new Intent(MapsActivity.this, PostDetailActivity.class);
-        intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
-        startActivity(intent);
+        if (marker2post.containsKey(marker)) {
+            Log.w("marker", marker.getId() + " " + marker2post.get(marker));
+            String postKey = marker2post.get(marker);
+            Intent intent = new Intent(MapsActivity.this, PostDetailActivity.class);
+            intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
+            startActivity(intent);
+        }
     }
 
 
@@ -436,6 +450,35 @@ public class MapsActivity extends AppCompatActivity
 //        Log.w("distance", String.valueOf(s));
         if (s > distanceRestrict) return false;
         else return true;
+    }
+
+    private void drawCircle(LatLng point, int distance){
+
+        // Instantiating CircleOptions to draw a circle around the marker
+        circleOptions = new CircleOptions();
+
+        // Specifying the center of the circle
+        circleOptions.center(point);
+
+        // Radius of the circle
+        circleOptions.radius(distance);
+
+        // Border color of the circle
+        circleOptions.strokeColor(Color.BLACK);
+
+        // Fill color of the circle
+        circleOptions.fillColor(0x30ff0000);
+
+        // Border width of the circle
+        circleOptions.strokeWidth(2);
+
+        // remove last circle
+        if (circleAddress != null)
+            circleAddress.setVisible(false);
+
+        // Adding the circle to the GoogleMap
+        circleAddress = mMap.addCircle(circleOptions);
+
     }
 }
 
