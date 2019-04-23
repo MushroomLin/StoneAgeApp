@@ -72,7 +72,12 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
             startActivity(new Intent(this, SignInActivity.class));
             finish();
             return true;
-        } else {
+        }
+        else if (i == R.id.action_setting){
+            startActivity(new Intent(this, SettingActivity.class));
+            return true;
+        }
+        else {
             return super.onOptionsItemSelected(item);
         }
     }
@@ -112,9 +117,9 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String selectAddress = data.getExtras().getString("selectAddress"); //get the data from new Activity when it finished
-        Toast.makeText(this, "select location:\n" + selectAddress, Toast.LENGTH_SHORT).show();
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        String selectAddress = data.getExtras().getString("selectAddress"); //get the data from new Activity when it finished
+//        Toast.makeText(this, "select location:\n" + selectAddress, Toast.LENGTH_SHORT).show();
+//    }
 }

@@ -2,6 +2,7 @@ package com.example.miniresearchdatabase.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,10 @@ import com.example.miniresearchdatabase.R;
 import com.example.miniresearchdatabase.PostDetailActivity;
 import com.example.miniresearchdatabase.models.Post;
 import com.example.miniresearchdatabase.viewholder.PostViewHolder;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class PostListFragment extends Fragment {
 
@@ -37,6 +42,8 @@ public abstract class PostListFragment extends Fragment {
     private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
+
+    List<Double> avgPricesList = null;
 
     public PostListFragment() {}
 
@@ -66,8 +73,13 @@ public abstract class PostListFragment extends Fragment {
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
 
+
         // Set up FirebaseRecyclerAdapter with the Query
+        this.getQuery3(mDatabase);
+
+//        avgPricesList
         Query postsQuery = getQuery(mDatabase);
+//        Log.e("testQuery3", "66666666");
 
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Post>()
                 .setQuery(postsQuery, Post.class)
@@ -179,5 +191,41 @@ public abstract class PostListFragment extends Fragment {
     }
 
     public abstract Query getQuery(DatabaseReference databaseReference);
+
+    public Query getQuery3(DatabaseReference databaseReference) {
+        final String userId = getUid();
+        DatabaseReference databaseReference2 = databaseReference.child("user-posts").child(userId);
+
+        databaseReference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Double> avgPriceList = new LinkedList<>();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Post post = postSnapshot.getValue(Post.class);
+                    List<Double> pricesList = post.estimatedPrices;
+                    if(pricesList != null) {
+                        double priceSum = 0.0;
+                        for(int i = 0; i < pricesList.size(); i++) {
+                            double curPrice = pricesList.get(i);
+                            priceSum += curPrice;
+                        }
+                        double priceAvg = priceSum / pricesList.size();
+                        avgPriceList.add(priceAvg);
+                    }
+                }
+                avgPricesList = avgPriceList;
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return null;
+
+    }
 
 }
