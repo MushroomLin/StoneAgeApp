@@ -146,7 +146,7 @@ public class NewPostActivity extends BaseActivity {
             }
         }
         // get address
-        if (requestCode == SELECT_ADDRESS_ON_MAP) {
+        if (requestCode == SELECT_ADDRESS_ON_MAP && resultCode == RESULT_OK && data != null) {
             address = data.getExtras().getString("selectAddress"); //get the data from new Activity when it finished
             mAddressField.setText(address);
         }

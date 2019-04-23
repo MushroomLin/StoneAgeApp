@@ -1,15 +1,9 @@
 package com.example.miniresearchdatabase;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.miniresearchdatabase.models.User;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,11 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class UserEditActivity extends AppCompatActivity {
     // [START define_database_reference]
@@ -51,6 +42,10 @@ public class UserEditActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 71;
     private static final int CAMERA_REQUEST = 1888;
     private Bitmap bitmap;
+
+    private static final int SELECT_ADDRESS_ON_MAP = 118;
+    private String selectAddress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +60,14 @@ public class UserEditActivity extends AppCompatActivity {
         TakePhotoButton = findViewById(R.id.TakePhotoButton);
         // Load the data from the Database
         // [START create_database_reference]
+        AddressEditText.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                startActivityForResult(new Intent(UserEditActivity.this, MapsActivity_selectAddress.class), SELECT_ADDRESS_ON_MAP);
+                return false;
+            }
+        });
+
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(getUid());
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -164,6 +167,10 @@ public class UserEditActivity extends AppCompatActivity {
             Log.w("TAG", data.toString());
             bitmap = (Bitmap) data.getExtras().get("data");
             AvatarImageView.setImageBitmap(bitmap);
+        }
+        else if (requestCode == SELECT_ADDRESS_ON_MAP && resultCode == RESULT_OK && data != null) {
+            selectAddress = data.getExtras().getString("selectAddress"); //get the data from new Activity when it finished
+            AddressEditText.setText(selectAddress);
         }
     }
 

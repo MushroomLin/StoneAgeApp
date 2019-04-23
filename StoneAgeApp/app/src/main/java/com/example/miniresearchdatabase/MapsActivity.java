@@ -80,7 +80,7 @@ public class MapsActivity extends AppCompatActivity
     private double currentLongitude = 0.0;
     Location mLastKnownLocation;
 
-    Marker lastLocation = null;
+    private Marker lastLocation = null;
     private int onlyShowNearby = 0; // click my location button again will show the far away posts
     private boolean savedState = false; // To record whether this activity has been initialized yet
     private final String KEY_LOCATION = "loc";
@@ -155,6 +155,27 @@ public class MapsActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                String address = new LocationToAddress().getAddress(latLng.latitude, latLng.longitude);
+                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
+                lastLocation.setPosition(latLng);
+                lastLocation.setVisible(true);
+                lastLocation.setTitle(address);
+                Toast.makeText(MapsActivity.this, "select location:\n" + address, Toast.LENGTH_SHORT).show();
+//                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            }
+        });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.getPosition();
+                return false;
+            }
+        });
 
         // initialize listener for users locate
         mMap.setOnMyLocationButtonClickListener(this);
