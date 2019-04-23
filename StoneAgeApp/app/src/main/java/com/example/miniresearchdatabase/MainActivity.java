@@ -72,7 +72,12 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
             startActivity(new Intent(this, SignInActivity.class));
             finish();
             return true;
-        } else {
+        }
+        else if (i == R.id.action_setting){
+            startActivity(new Intent(this, SettingActivity.class));
+            return true;
+        }
+        else {
             return super.onOptionsItemSelected(item);
         }
     }

@@ -8,4 +8,9 @@
         android:title="@string/menu_logout"
         android:visible="true"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_setting"
+        android:title="@string/settings"
+        android:visible="true"
+        app:showAsAction="never" />
 </menu>
