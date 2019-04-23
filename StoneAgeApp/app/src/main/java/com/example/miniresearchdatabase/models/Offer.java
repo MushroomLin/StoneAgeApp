@@ -14,19 +14,21 @@ public class Offer {
     public String description;
     public String address;
     public String picture;
+    public String postid;
 
 
     public Offer() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Offer(String uid, String author, String title, String description, String address, String picture) {
+    public Offer(String uid, String author, String title, String description, String address, String picture, String postid) {
         this.uid = uid;
         this.author = author;
         this.title = title;
         this.address = address;
         this.description = description;
         this.picture = picture;
+        this.postid = postid;
     }
 
     // post_to_map
@@ -39,6 +41,7 @@ public class Offer {
         result.put("description", description);
         result.put("picture", picture);
         result.put("address", address);
+        result.put("postid", postid);
 
 
         return result;

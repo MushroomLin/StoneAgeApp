@@ -64,6 +64,7 @@ public class PostRateActivity extends AppCompatActivity {
         finalOfferKey = getIntent().getStringExtra(FINAL_OFFER_KEY);
 
 
+
         button_facebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,17 +95,20 @@ public class PostRateActivity extends AppCompatActivity {
                                 .setBitmap(postpictureBitmap)
                                 .build();
 
+
                         DatabaseReference ref2 = mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey);
                         ref2.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 //Serialize retrieved data to a User object
                                 Offer offer = dataSnapshot.getValue(Offer.class);
+
                                 //Now you have an object of the User class and can use its getters like this
                                 if (offer != null) {
                                     // Set the user profile picture
                                     if (offer.picture != null) {
                                         offerpicture = String.valueOf(offer.picture);
+                                        //Toast.makeText(PostRateActivity.this, offerpicture, Toast.LENGTH_SHORT).show();
                                         offerpictureBitmap = ImageUtils.stringToBitmap(offerpicture);
                                         offerPhoto = new SharePhoto.Builder()
                                                 .setBitmap(offerpictureBitmap)
@@ -113,6 +117,7 @@ public class PostRateActivity extends AppCompatActivity {
                                                 .addPhoto(postPhoto)
                                                 .addPhoto(offerPhoto)
                                                 .build();
+
                                     }
                                 }
                             }
@@ -130,14 +135,6 @@ public class PostRateActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-
-
-        //ShareHashtag shareHashTag = new ShareHashtag.Builder().setHashtag("#YOUR_HASHTAG").build();
     }
 }
 

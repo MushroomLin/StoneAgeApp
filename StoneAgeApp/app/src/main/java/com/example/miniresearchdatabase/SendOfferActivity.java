@@ -144,7 +144,7 @@ public class SendOfferActivity extends AppCompatActivity {
                             if (picture == null) {
                                 picture = "";
                             }
-                            Offer offer = new Offer(userId,author,title,description,address,picture);
+                            Offer offer = new Offer(userId,author,title,description,address,picture,offerPostKey);
                             offerReference.push().setValue(offer);
                             offerUserReference.child(userId).push().setValue(offer);
                         }
