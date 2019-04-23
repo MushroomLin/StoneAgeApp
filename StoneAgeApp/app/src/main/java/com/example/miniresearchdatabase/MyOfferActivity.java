@@ -13,6 +13,8 @@ import android.widget.Button;
 
 import com.example.miniresearchdatabase.models.Offer;
 import com.example.miniresearchdatabase.viewholder.OfferViewHolder;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
 public class MyOfferActivity extends AppCompatActivity {
     private Button button_back;
@@ -76,14 +79,33 @@ public class MyOfferActivity extends AppCompatActivity {
                 final DatabaseReference offerRef = getRef(position);
 
                 // Set click listener for the whole post view
-                final String postKey = offerRef.getKey();
+                final String offerKey = offerRef.getKey();
+
                 viewHolder2.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Launch PostDetailActivity
-                        Intent intent = new Intent(MyOfferActivity.this, MainActivity.class);
-                        //intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
-                        startActivity(intent);
+                        DatabaseReference ref3 = mDatabase.child("user-offers").child(getUid()).child(offerKey);
+                        ref3.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                //Serialize retrieved data to a User object
+                                Offer offer = dataSnapshot.getValue(Offer.class);
+                                //Now you have an object of the User class and can use its getters like this
+                                if (offer != null) {
+                                    // Set the user profile picture
+                                        String mPostKey = String.valueOf(offer.postid);
+                                        Intent intent = new Intent(MyOfferActivity.this, PostRateActivity.class);
+                                        intent.putExtra(PostRateActivity.FINAL_POST_KEY, mPostKey);
+                                        intent.putExtra(PostRateActivity.FINAL_OFFER_KEY, offerKey);
+                                        startActivity(intent);
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                            }
+                        });
                     }
                 });
 
@@ -98,6 +120,7 @@ public class MyOfferActivity extends AppCompatActivity {
         // All my posts
         return databaseReference.child("user-offers")
                 .child(getUid());
+
     }
 
 
