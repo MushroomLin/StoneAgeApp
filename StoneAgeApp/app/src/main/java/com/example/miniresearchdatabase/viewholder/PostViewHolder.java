@@ -53,14 +53,20 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindToPost(Post post, View.OnClickListener starClickListener) {
-        double sumPrice = 0.0;
-        for(double price : post.estimatedPrices) {
-            sumPrice += price;
-        }
-        int priceCount = post.estimatedPrices.size();
-        int avgPrice = (int)(sumPrice / priceCount);
+        if(post.estimatedPrices == null) {
+            textView_estimatedPrice.setText("No Estimated Price Now");
+        } else {
+            double sumPrice = 0.0;
+            for(double price : post.estimatedPrices) {
+                sumPrice += price;
+            }
 
-        textView_estimatedPrice.setText("Estimated: $" + avgPrice);
+
+            int priceCount = post.estimatedPrices.size();
+            int avgPrice = (int)(sumPrice / priceCount);
+
+            textView_estimatedPrice.setText("Estimated: $" + avgPrice);
+        }
 
         titleView.setText(post.title);
         authorView.setText(post.author);

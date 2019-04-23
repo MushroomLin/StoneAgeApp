@@ -124,14 +124,22 @@ public class PostDetailActivity extends BaseActivity {
                 mBodyView.setText(post.description);
                 mAddressView.setText(post.address);
 
-                double sumPrice = 0.0;
-                for(double price : post.estimatedPrices) {
-                    sumPrice += price;
-                }
-                int priceCount = post.estimatedPrices.size();
-                int avgPrice = (int)(sumPrice / priceCount);
+                if(post.estimatedPrices == null) {
+                    textView_estimatedPrice.setText("No Estimated Price Now");
+                } else {
+                    double sumPrice = 0.0;
+                    for(double price : post.estimatedPrices) {
+                        sumPrice += price;
+                    }
 
-                textView_estimatedPrice.setText("Estimated: $" + avgPrice);
+
+                    int priceCount = post.estimatedPrices.size();
+                    int avgPrice = (int)(sumPrice / priceCount);
+
+                    textView_estimatedPrice.setText("Estimated: $" + avgPrice);
+                }
+
+
             }
 
             @Override
