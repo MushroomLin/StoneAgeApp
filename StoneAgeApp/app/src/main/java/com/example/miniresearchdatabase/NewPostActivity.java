@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -53,8 +54,7 @@ public class NewPostActivity extends BaseActivity {
     // -------
     private final int PICK_IMAGE_REQUEST = 71;
     private final int SELECT_ADDRESS_ON_MAP = 118;
-    private Button button_addImage;
-    private Button button_selectAddress;
+    private ImageButton button_selectAddress;
     private ImageView imageView;
     private EditText editText_description;
     private String address = "";
@@ -73,7 +73,7 @@ public class NewPostActivity extends BaseActivity {
 
         mTitleField = findViewById(R.id.fieldTitle);
         mSubmitButton = findViewById(R.id.fabSubmitPost);
-        mAddressField = findViewById(R.id.fieldAddress);
+        mAddressField = findViewById(R.id.addressEditText);
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,12 +82,11 @@ public class NewPostActivity extends BaseActivity {
             }
         });
 
-        button_addImage = findViewById(R.id.button_addImage);
-        button_selectAddress = findViewById(R.id.bt_selectAddress);
-        imageView = findViewById(R.id.imageView);
+        button_selectAddress = findViewById(R.id.selectAddressBtn);
+        imageView = findViewById(R.id.uploadImageView);
         editText_description = findViewById(R.id.editText_description);
 
-        button_addImage.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseImage();
