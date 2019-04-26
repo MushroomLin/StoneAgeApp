@@ -61,10 +61,7 @@ public class ChatActivity extends BaseActivity{
         Intent intent = getIntent();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("chats");
-        username = intent.getStringExtra("username");
         userId = intent.getStringExtra("userId");
-//        userAvatar = intent.getStringExtra("userAvatar");
-//        otherAvatar = intent.getStringExtra("otherAvatar");
 
         this.setTitle(username);
         messageList = new ArrayList<>();
@@ -117,7 +114,6 @@ public class ChatActivity extends BaseActivity{
                 mMessageEditText.setText("");
             }
         });
-
 
 
         reference.addValueEventListener(new ValueEventListener() {

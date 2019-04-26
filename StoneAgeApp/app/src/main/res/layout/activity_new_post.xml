@@ -3,90 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="20dp">
 
-
-    <EditText
-        android:id="@+id/fieldAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fieldTitle"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="282dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="5dp"
-        android:hint="Write your address..."
-        android:inputType="textMultiLine"
-        android:maxLines="10"
-        android:scrollHorizontally="false" />
 
     <EditText
         android:id="@+id/fieldTitle"
-        android:layout_width="71dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="297dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="5dp"
         android:hint="Title"
-        android:maxLines="1" />
+        android:maxLines="1"
+        tools:text="An apple" />
+
+    <EditText
+        android:id="@+id/editText_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fieldTitle"
+        android:layout_marginTop="5dp"
+        android:maxLines="8"
+        android:hint="description"
+        tools:text="@string/lorem"
+        />
+
+    <include
+        android:id="@+id/newAddressLayout"
+        layout="@layout/include_address_input"
+        android:layout_below="@id/editText_description"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabSubmitPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_navigation_check_24"/>
-
-    <EditText
-        android:id="@+id/editText_description"
-        android:layout_width="352dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="93dp"
-        android:layout_marginEnd="14dp"
-        android:ems="10"
-        android:hint="description"
-        android:inputType="textPersonName" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_navigation_check_24" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="425dp"
-        tools:srcCompat="@tools:sample/avatars[0]" />
-
-    <Button
-        android:id="@+id/button_addImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="217dp"
-        android:layout_marginEnd="-16dp"
-        android:layout_toStartOf="@+id/fabSubmitPost"
-        android:text="Add" />
-
-    <Button
-        android:id="@+id/bt_selectAddress"
-        android:layout_width="164dp"
-        android:layout_height="35dp"
-        android:layout_below="@+id/fieldAddress"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="0dp"
-        android:text="select address on map"
-        android:textSize="10sp"
-        tools:text="select address on map" />
+        android:id="@+id/uploadImageView"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_below="@id/newAddressLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        app:srcCompat="@drawable/ic_picture" />
 
 </RelativeLayout>

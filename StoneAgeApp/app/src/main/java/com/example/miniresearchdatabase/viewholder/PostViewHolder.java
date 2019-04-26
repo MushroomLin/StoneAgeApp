@@ -73,11 +73,15 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         numStarsView.setText(String.valueOf(post.starCount));
         bodyView.setText(post.description);
         addressView.setText(post.address);
-        if (post.picture!=null)
+        if (post.picture!=null && !post.picture.equals("")){
             pictureView.setImageBitmap(ImageUtils.stringToBitmap(post.picture));
+            pictureView.setVisibility(View.VISIBLE);
+        }
+        else{
+            pictureView.setVisibility(View.GONE);
+        }
         starView.setOnClickListener(starClickListener);
         if (post.uid!=null) {
-            Log.w("TAG", post.uid);
             DatabaseReference ref = mDatabase.child("users").child(post.uid);
             ref.addValueEventListener(new ValueEventListener() {
                 @Override

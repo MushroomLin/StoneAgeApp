@@ -46,10 +46,13 @@ public class OfferViewHolder extends RecyclerView.ViewHolder {
         authorOfferView.setText(offer.author);
         bodyOfferView.setText(offer.description);
         addressOfferView.setText(offer.address);
-        if (offer.picture!=null) {
+        if (offer.picture!=null && (!offer.picture.equals(""))) {
             pictureOfferView.setImageBitmap(ImageUtils.stringToBitmap(offer.picture));
+            pictureOfferView.setVisibility(View.VISIBLE);
         }
-
+        else{
+            pictureOfferView.setVisibility(View.GONE);
+        }
         if (offer.uid!=null) {
             Log.w("TAG", offer.uid);
             DatabaseReference ref = mDatabase.child("users").child(offer.uid);
