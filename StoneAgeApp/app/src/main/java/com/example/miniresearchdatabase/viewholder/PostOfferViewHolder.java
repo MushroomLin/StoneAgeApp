@@ -67,9 +67,7 @@ public class PostOfferViewHolder extends RecyclerView.ViewHolder {
                         if (user.avatar != null) {
                             postOfferAuthorPhoto.setImageBitmap(user.getAvatar());
                         }
-
                     }
-
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {

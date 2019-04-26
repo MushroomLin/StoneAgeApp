@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/offerAuthorPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_action_account_circle_40" />
 
     <TextView
