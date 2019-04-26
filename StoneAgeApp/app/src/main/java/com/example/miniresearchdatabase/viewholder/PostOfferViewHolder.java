@@ -48,8 +48,11 @@ public class PostOfferViewHolder extends RecyclerView.ViewHolder {
         authorPostOfferView.setText(offer.author);
         bodyPostOfferView.setText(offer.description);
         addressPostOfferView.setText(offer.address);
-        if (offer.picture!=null) {
+        if (offer.picture!=null && (!offer.picture.equals(""))) {
             picturePostOfferView.setImageBitmap(ImageUtils.stringToBitmap(offer.picture));
+        }
+        else{
+            picturePostOfferView.setVisibility(View.GONE);
         }
         button_accept.setOnClickListener(acceptClickListener);
 

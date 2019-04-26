@@ -25,7 +25,6 @@
 
     <TextView
         android:id="@+id/postAddress"
-        style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -41,9 +40,8 @@
 
     <ImageView
         android:id="@+id/pictureImageView"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
         android:layout_marginTop="20dp"
         android:adjustViewBounds="true"
         android:cropToPadding="false"
