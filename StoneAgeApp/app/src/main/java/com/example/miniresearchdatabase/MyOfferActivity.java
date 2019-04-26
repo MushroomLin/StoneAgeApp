@@ -35,6 +35,7 @@ public class MyOfferActivity extends AppCompatActivity {
     private RecyclerView mOfferRecycler;
 
     private LinearLayoutManager mOfferManager;
+    private String mPostkey;
 
 
     @Override
@@ -79,27 +80,27 @@ public class MyOfferActivity extends AppCompatActivity {
                 final DatabaseReference offerRef = getRef(position);
 
                 // Set click listener for the whole post view
-                final String offerKey = offerRef.getKey();
+                final String offerkey = offerRef.getKey();
 
                 viewHolder2.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Launch PostDetailActivity
-                        DatabaseReference ref3 = mDatabase.child("user-offers").child(getUid()).child(offerKey);
+                        DatabaseReference ref3 = mDatabase.child("user-offers").child(getUid()).child(offerkey);
                         ref3.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 //Serialize retrieved data to a User object
                                 Offer offer = dataSnapshot.getValue(Offer.class);
                                 //Now you have an object of the User class and can use its getters like this
-                                if (offer != null) {
+
                                     // Set the user profile picture
-                                        String mPostKey = String.valueOf(offer.postid);
-                                        Intent intent = new Intent(MyOfferActivity.this, PostRateActivity.class);
-                                        intent.putExtra(PostRateActivity.FINAL_POST_KEY, mPostKey);
-                                        intent.putExtra(PostRateActivity.FINAL_OFFER_KEY, offerKey);
+                                        mPostkey = String.valueOf(offer.postid);
+                                        Intent intent = new Intent(MyOfferActivity.this, OfferRateActivity.class);
+                                        intent.putExtra(OfferRateActivity.FINAL_POST_KEY2, mPostkey);
+                                        intent.putExtra(OfferRateActivity.FINAL_OFFER_KEY2, offerkey);
                                         startActivity(intent);
-                                }
+
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {

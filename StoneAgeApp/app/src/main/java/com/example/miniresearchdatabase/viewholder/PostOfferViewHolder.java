@@ -48,8 +48,12 @@ public class PostOfferViewHolder extends RecyclerView.ViewHolder {
         authorPostOfferView.setText(offer.author);
         bodyPostOfferView.setText(offer.description);
         addressPostOfferView.setText(offer.address);
-        if (offer.picture!=null) {
+        if (offer.picture!=null && (!offer.picture.equals(""))) {
             picturePostOfferView.setImageBitmap(ImageUtils.stringToBitmap(offer.picture));
+            picturePostOfferView.setVisibility(View.VISIBLE);
+        }
+        else{
+            picturePostOfferView.setVisibility(View.GONE);
         }
         button_accept.setOnClickListener(acceptClickListener);
 
@@ -67,9 +71,7 @@ public class PostOfferViewHolder extends RecyclerView.ViewHolder {
                         if (user.avatar != null) {
                             postOfferAuthorPhoto.setImageBitmap(user.getAvatar());
                         }
-
                     }
-
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {

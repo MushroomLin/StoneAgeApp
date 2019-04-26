@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +38,6 @@ public class SendOfferActivity extends AppCompatActivity {
     private EditText offerdescription;
     private EditText offerAddress;
     private FloatingActionButton offerButton;
-    private Button button_addofferImage;
     private Button button_back;
 
     private final int PICK_IMAGE_REQUEST = 71;
@@ -61,7 +61,6 @@ public class SendOfferActivity extends AppCompatActivity {
         offerdescription = findViewById(R.id.editText_offerdescription);
         offerAddress = findViewById(R.id.fieldOfferAddress);
         offerButton = findViewById(R.id.fabSubmitOffer);
-        button_addofferImage = findViewById(R.id.button_addofferImage);
         offerimageView = findViewById(R.id.imageView_offer);
         button_back = findViewById(R.id.button_back3);
 
@@ -69,12 +68,20 @@ public class SendOfferActivity extends AppCompatActivity {
                 .child("post-offers").child(offerPostKey);
         offerUserReference = FirebaseDatabase.getInstance().getReference()
                 .child("user-offers");
-        button_addofferImage.setOnClickListener(new View.OnClickListener() {
+        offerimageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseImage();
             }
         });
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+        }
 
         offerButton.setOnClickListener(new View.OnClickListener() {
             @Override

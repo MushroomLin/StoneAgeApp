@@ -3,36 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="20dp">
 
     <EditText
         android:id="@+id/fieldOfferAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/fieldOfferTitle"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="282dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="5dp"
-        android:hint="Write your address..."
-        android:inputType="textMultiLine"
-        android:maxLines="10"
-        android:scrollHorizontally="false" />
+        android:layout_below="@+id/editText_offerdescription"
+        android:layout_marginTop="5dp"
+        android:hint="Address"
+        android:maxLines="2" />
+
     <EditText
         android:id="@+id/fieldOfferTitle"
-        android:layout_width="71dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="297dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="5dp"
         android:hint="Title"
-        android:maxLines="1" />
+        android:maxLines="1"
+        tools:text="An apple"  />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabSubmitOffer"
@@ -44,41 +33,28 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        app:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_navigation_check_24" />
 
     <EditText
         android:id="@+id/editText_offerdescription"
-        android:layout_width="352dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="93dp"
-        android:layout_marginEnd="14dp"
-        android:ems="10"
+        android:layout_below="@id/fieldOfferTitle"
+        android:layout_marginTop="5dp"
+        android:maxLines="8"
         android:hint="description"
-        android:inputType="textPersonName" />
+        tools:text="@string/lorem" />
 
     <ImageView
         android:id="@+id/imageView_offer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="446dp"
-        tools:srcCompat="@tools:sample/avatars[0]" />
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_below="@id/fieldOfferAddress"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        app:srcCompat="@drawable/ic_picture"  />
 
-    <Button
-        android:id="@+id/button_addofferImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="230dp"
-        android:layout_marginEnd="-16dp"
-        android:layout_toStartOf="@+id/fabSubmitOffer"
-        android:text="Add" />
 
     <Button
         android:id="@+id/button_back3"
