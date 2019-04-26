@@ -20,20 +20,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="47dp"
         app:layout_constraintTop_toTopOf="parent">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="1000dp"
-            android:fillViewport="true">
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/mypostoffermessagesList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:clipToPadding="false"
             android:padding="5dp"
+            android:scrollbars="vertical"
             tools:listitem="@layout/item_acceptable_offer" />
-        </ScrollView>
+
     </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>
