@@ -66,6 +66,7 @@
         <activity android:name=".MyOfferActivity" />
         <activity android:name=".MyPostOfferActivity" />
         <activity android:name=".PostRateActivity" />
+        <activity android:name=".OfferRateActivity" />
 
         <provider
             android:authorities="com.facebook.app.FacebookContentProvider2376751019220967"
