@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.miniresearchdatabase.Adapter.MessageAdapter;
 import com.example.miniresearchdatabase.R;
+import com.example.miniresearchdatabase.models.Message;
 import com.example.miniresearchdatabase.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,7 +35,7 @@ public class MessageListFragment extends Fragment {
     private MessageAdapter messageAdapter;
 
     private LinearLayoutManager mManager;
-    private List<User> mUsers;
+    private List<Message> mUsers;
     private List<String> userKeys;
     private List<String> otherAvatar;
     private String userAvatar;
@@ -73,7 +74,7 @@ public class MessageListFragment extends Fragment {
 
 
     private void readUsers() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("chats");
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 //        Log.w("TAG", reference.toString());
         reference.addValueEventListener(new ValueEventListener() {
@@ -84,28 +85,18 @@ public class MessageListFragment extends Fragment {
                 otherAvatar.clear();
 
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User user = snapshot.getValue(User.class);
-                    assert  user != null;
+                    Message message = snapshot.getValue(Message.class);
+                    assert  message != null;
                     assert firebaseUser != null;
-                    if(!snapshot.getKey().equals(getUid())) {
+                    if(message.sender.equals(getUid())) {
 //                        Log.w("TAG", snapshot.getKey());
-                        mUsers.add(user);
-                        userKeys.add(snapshot.getKey());
-                        if(user.avatar != null) {
-                            otherAvatar.add(user.avatar);
-                        }
-                        else {
-                            otherAvatar.add("");
-                        }
+                        mUsers.add(message);
 
                     }
-                    else {
-                        userAvatar = user.avatar;
-//                        Log.w("AVA", userAvatar);
-                    }
                 }
-//                Log.w("AVA", otherAvatar.toString());
-                messageAdapter = new MessageAdapter(getContext(), mUsers, userKeys,userAvatar, otherAvatar);
+                Log.w("AVA", getUid());
+                Log.w("AVA", mUsers.toString());
+                messageAdapter = new MessageAdapter(getContext(), mUsers);
                 mRecycler.setAdapter(messageAdapter);
                 RecyclerView.ItemDecoration decor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
                 mRecycler.addItemDecoration(decor);
