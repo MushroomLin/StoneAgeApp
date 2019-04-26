@@ -35,11 +35,7 @@ public class MessageListFragment extends Fragment {
     private MessageAdapter messageAdapter;
 
     private LinearLayoutManager mManager;
-    private List<Message> mUsers;
-    private List<String> userKeys;
-    private List<String> otherAvatar;
-    private String userAvatar;
-
+    private List<String> mUsers;
     public MessageListFragment() {}
 
     @Override
@@ -57,8 +53,6 @@ public class MessageListFragment extends Fragment {
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecycler.setHasFixedSize(true);
         mUsers = new ArrayList<>();
-        userKeys = new ArrayList<>();
-        otherAvatar = new ArrayList<>();
         readUsers();
 
 
@@ -75,27 +69,24 @@ public class MessageListFragment extends Fragment {
 
     private void readUsers() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("chats");
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-//        Log.w("TAG", reference.toString());
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        assert firebaseUser != null;
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
-                userKeys.clear();
-                otherAvatar.clear();
-
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Message message = snapshot.getValue(Message.class);
                     assert  message != null;
-                    assert firebaseUser != null;
-                    if(message.sender.equals(getUid())) {
-//                        Log.w("TAG", snapshot.getKey());
-                        mUsers.add(message);
-
+                    if(message.receiver.equals(getUid()) && !mUsers.contains(message.sender)) {
+                        mUsers.add(message.sender);
+                    }
+                    else if(message.sender.equals(getUid()) && !mUsers.contains(message.receiver)) {
+                        mUsers.add(message.receiver);
                     }
                 }
-                Log.w("AVA", getUid());
-                Log.w("AVA", mUsers.toString());
+                Log.w("USERS", Integer.toString(mUsers.size()));
+
                 messageAdapter = new MessageAdapter(getContext(), mUsers);
                 mRecycler.setAdapter(messageAdapter);
                 RecyclerView.ItemDecoration decor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);

@@ -25,19 +25,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.MessageViewHolder>{
     private Context mContext;
-    private List<Message> mUsers;
+    private List<String> mUsers;
+    private String currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
-    public MessageAdapter(Context mContext, List<Message> mUsers) {
+    public MessageAdapter(Context mContext, List<String> mUsers) {
         this.mUsers = mUsers;
         this.mContext = mContext;
-
     }
 
     @NonNull
@@ -49,33 +50,34 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
 
     @Override
     public void onBindViewHolder(@NonNull final MessageViewHolder messageViewHolder, final int position) {
-        final Message message = mUsers.get(position);
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users").child(message.receiver);
-        reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    User user = dataSnapshot.getValue(User.class);
-                    messageViewHolder.tvSenders.setText(user.username);
-                    if(user.avatar != null) {
-                        messageViewHolder.imgUsers.setImageBitmap(user.getAvatar());
+        String user = mUsers.get(position);
+        if(getItemCount() != 0) {
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users").child(user);
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        messageViewHolder.tvSenders.setText(user.username);
+                        if (user.avatar != null) {
+                            messageViewHolder.imgUsers.setImageBitmap(user.getAvatar());
+                        }
                     }
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+        }
 
-            }
-        });
+
 
 
         messageViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currKey = mUsers.get(position).receiver;
+                String currKey = mUsers.get(position);
                 Intent intent = new Intent(mContext, ChatActivity.class);
                 intent.putExtra("userId", currKey);
-
                 mContext.startActivity(intent);
             }
         });

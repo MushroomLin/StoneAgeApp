@@ -126,7 +126,7 @@ public class MessageContentAdapter extends RecyclerView.Adapter<MessageContentAd
             receiverLayout = (LinearLayout) itemView.findViewById(R.id.receiverLayout) ;
             senderLayout = (LinearLayout) itemView.findViewById(R.id.senderLayout) ;
             messageTextView = (TextView) itemView.findViewById(R.id.messageTextView);
-            messageImageView = (ImageView) itemView.findViewById(R.id.messageImageView);
+            messageImageView = (ImageView) itemView.findViewById(R.id.receiveImageView);
             timeTextView = (TextView) itemView.findViewById(R.id.timeTextView);
             receiverImageView = (CircleImageView) itemView.findViewById(R.id.messengerImageView);
             sendTextView = (TextView) itemView.findViewById(R.id.sendTextView);
