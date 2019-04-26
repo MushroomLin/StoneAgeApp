@@ -73,8 +73,10 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         numStarsView.setText(String.valueOf(post.starCount));
         bodyView.setText(post.description);
         addressView.setText(post.address);
-        if (post.picture!=null && !post.picture.equals(""))
+        if (post.picture!=null && !post.picture.equals("")){
             pictureView.setImageBitmap(ImageUtils.stringToBitmap(post.picture));
+            pictureView.setVisibility(View.VISIBLE);
+        }
         else{
             pictureView.setVisibility(View.GONE);
         }
