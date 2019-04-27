@@ -86,6 +86,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
+
                     //Serialize retrieved data to a User object
                     User user = dataSnapshot.getValue(User.class);
                     //Now you have an object of the User class and can use its getters like this
