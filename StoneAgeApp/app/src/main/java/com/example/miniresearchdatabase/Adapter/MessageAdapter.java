@@ -49,7 +49,7 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MessageViewHolder messageViewHolder, final int position) {
+    public void onBindViewHolder(@NonNull final MessageViewHolder messageViewHolder, int position) {
         String user = mUsers.get(position);
         if(getItemCount() != 0) {
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users").child(user);
@@ -69,13 +69,10 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
                 });
         }
 
-
-
-
         messageViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currKey = mUsers.get(position);
+                String currKey = mUsers.get(messageViewHolder.getAdapterPosition());
                 Intent intent = new Intent(mContext, ChatActivity.class);
                 intent.putExtra("userId", currKey);
                 mContext.startActivity(intent);

@@ -54,9 +54,6 @@ public class MessageListFragment extends Fragment {
         mRecycler.setHasFixedSize(true);
         mUsers = new ArrayList<>();
         readUsers();
-
-
-
         return rootView;
     }
 
@@ -85,8 +82,6 @@ public class MessageListFragment extends Fragment {
                         mUsers.add(message.receiver);
                     }
                 }
-                Log.w("USERS", Integer.toString(mUsers.size()));
-
                 messageAdapter = new MessageAdapter(getContext(), mUsers);
                 mRecycler.setAdapter(messageAdapter);
                 RecyclerView.ItemDecoration decor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
