@@ -86,6 +86,7 @@
                 android:adjustViewBounds="true"
                 android:layout_gravity="right"
                 android:background="@color/colorPrimary"
+                android:layout_weight="0"
                 android:scaleType="fitCenter"/>
 
             <TextView

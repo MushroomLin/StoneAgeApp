@@ -34,16 +34,45 @@ public class MessageContentAdapter extends RecyclerView.Adapter<MessageContentAd
     private Context mContext;
     private List<Message> messageRead;
     private String user;
-    private Bitmap currUser;
-    private Bitmap otherUser;
+    private static Bitmap curr;
+    private static Bitmap other;
 
 
-    public MessageContentAdapter(Context mContext, List<Message> messageRead, Bitmap currUser, Bitmap otherUser) {
+
+    public MessageContentAdapter(Context mContext, List<Message> messageRead, String otherUser) {
         this.messageRead = messageRead;
         this.mContext = mContext;
         this.user = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        this.currUser = currUser;
-        this.otherUser = otherUser;
+        DatabaseReference receive = FirebaseDatabase.getInstance().getReference().child("users").child(otherUser);
+        receive.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                assert user != null;
+                if(user.avatar != null && curr != user.getAvatar()) {
+                    curr = user.getAvatar();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        DatabaseReference send = FirebaseDatabase.getInstance().getReference().child("users").child(user);
+        send.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                assert user != null;
+                if(user.avatar != null && other != user.getAvatar()) {
+                    other = user.getAvatar();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
     }
 
     @NonNull
@@ -57,29 +86,48 @@ public class MessageContentAdapter extends RecyclerView.Adapter<MessageContentAd
     public void onBindViewHolder(@NonNull final MessageContentAdapter.MessageViewHolder messageViewHolder, int position) {
         if(getItemCount() != 0) {
             if(user.equals(messageRead.get(position).receiver)) {
-                if(currUser != null) {
-                    messageViewHolder.receiverImageView.setImageBitmap(currUser);
+                if(curr != null) {
+                    messageViewHolder.receiverImageView.setImageBitmap(curr);
                 }
-                messageViewHolder.receiverLayout.setVisibility(LinearLayout.VISIBLE);
-                messageViewHolder.senderLayout.setVisibility(LinearLayout.GONE);
-                messageViewHolder.timeTextView.setText(messageRead.get(position).time);
-                messageViewHolder.messageTextView.setText(messageRead.get(position).message);
-                messageViewHolder.messageImageView.setVisibility(ImageView.GONE);
+                if(messageRead.get(position).image != null) {
+                    messageViewHolder.receiverLayout.setVisibility(LinearLayout.VISIBLE);
+                    messageViewHolder.senderLayout.setVisibility(LinearLayout.GONE);
+                    messageViewHolder.timeTextView.setText(messageRead.get(position).time);
+                    messageViewHolder.messageTextView.setVisibility(ImageView.GONE);
+                    messageViewHolder.messageImageView.setVisibility(View.VISIBLE);
+                    messageViewHolder.messageImageView.setImageBitmap(messageRead.get(position).getAvatar());
+                }
+                else {
+                    messageViewHolder.receiverLayout.setVisibility(LinearLayout.VISIBLE);
+                    messageViewHolder.senderLayout.setVisibility(LinearLayout.GONE);
+                    messageViewHolder.timeTextView.setText(messageRead.get(position).time);
+                    messageViewHolder.messageTextView.setText(messageRead.get(position).message);
+                    messageViewHolder.messageImageView.setVisibility(ImageView.GONE);
+                }
 
             }
             else if(user.equals(messageRead.get(position).sender)) {
-                if(otherUser != null) {
-                    messageViewHolder.senderImageView.setImageBitmap(otherUser);
+                if(other != null) {
+                    messageViewHolder.senderImageView.setImageBitmap(other);
                 }
-                messageViewHolder.receiverLayout.setVisibility(LinearLayout.GONE);
-                messageViewHolder.senderLayout.setVisibility(LinearLayout.VISIBLE);
-                messageViewHolder.sendTimeTextView.setText(messageRead.get(position).time);
-                messageViewHolder.sendTextView.setText(messageRead.get(position).message);
-                messageViewHolder.sendImageView.setVisibility(ImageView.GONE);
+                if(messageRead.get(position).image != null) {
+                    messageViewHolder.receiverLayout.setVisibility(LinearLayout.GONE);
+                    messageViewHolder.senderLayout.setVisibility(LinearLayout.VISIBLE);
+                    messageViewHolder.sendTimeTextView.setText(messageRead.get(position).time);
+                    messageViewHolder.sendImageView.setVisibility(View.VISIBLE);
+                    messageViewHolder.sendTextView.setVisibility(ImageView.GONE);
+                    messageViewHolder.sendImageView.setImageBitmap(messageRead.get(position).getAvatar());
+                    Log.w("IMG", messageRead.get(position).image);
+                }
+                else {
+                    messageViewHolder.receiverLayout.setVisibility(LinearLayout.GONE);
+                    messageViewHolder.senderLayout.setVisibility(LinearLayout.VISIBLE);
+                    messageViewHolder.sendTimeTextView.setText(messageRead.get(position).time);
+                    messageViewHolder.sendTextView.setText(messageRead.get(position).message);
+                    messageViewHolder.sendImageView.setVisibility(ImageView.GONE);
+                }
             }
         }
-
-
     }
 
     @Override
@@ -91,7 +139,6 @@ public class MessageContentAdapter extends RecyclerView.Adapter<MessageContentAd
     public class MessageViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout receiverLayout;
         private LinearLayout senderLayout;
-
         private TextView messageTextView;
         private CircleImageView receiverImageView;
         private ImageView messageImageView;
@@ -100,7 +147,6 @@ public class MessageContentAdapter extends RecyclerView.Adapter<MessageContentAd
         private ImageView sendImageView;
         private TextView sendTimeTextView;
         private CircleImageView senderImageView;
-
 
         public MessageViewHolder(View itemView) {
             super(itemView);

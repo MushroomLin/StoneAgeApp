@@ -33,12 +33,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.MessageViewHolder>{
     private Context mContext;
     private List<String> mUsers;
+    private List<String> username;
     private String currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
     public MessageAdapter(Context mContext, List<String> mUsers) {
         this.mUsers = mUsers;
         this.mContext = mContext;
+        username = new ArrayList<>();
     }
 
     @NonNull
@@ -58,6 +60,7 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         User user = dataSnapshot.getValue(User.class);
                         messageViewHolder.tvSenders.setText(user.username);
+                        username.add(user.username);
                         if (user.avatar != null) {
                             messageViewHolder.imgUsers.setImageBitmap(user.getAvatar());
                         }
@@ -74,11 +77,11 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
             public void onClick(View v) {
                 String currKey = mUsers.get(messageViewHolder.getAdapterPosition());
                 Intent intent = new Intent(mContext, ChatActivity.class);
+                intent.putExtra("username", username.get(messageViewHolder.getAdapterPosition()));
                 intent.putExtra("userId", currKey);
                 mContext.startActivity(intent);
             }
         });
-
     }
 
     @Override

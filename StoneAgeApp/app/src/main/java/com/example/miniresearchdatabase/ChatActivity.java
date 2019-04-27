@@ -61,8 +61,6 @@ public class ChatActivity extends BaseActivity{
     private final int PICK_IMAGE_REQUEST = 71;
     private Uri filePath;
     private Bitmap bitmap;
-    private Bitmap currUser;
-    private Bitmap otherUser;
     private String image;
 
     @Override
@@ -73,10 +71,9 @@ public class ChatActivity extends BaseActivity{
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("chats");
         userId = intent.getStringExtra("userId");
-
+        username = intent.getStringExtra("username");
         this.setTitle(username);
         messageList = new ArrayList<>();
-
 
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = findViewById(R.id.sendButton);
@@ -136,35 +133,6 @@ public class ChatActivity extends BaseActivity{
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
             }
         });
-        DatabaseReference receive = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
-        receive.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                if(user.avatar != null) {
-                    currUser = user.getAvatar();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-        DatabaseReference send = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
-        send.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                if(user.avatar != null) {
-                    otherUser = user.getAvatar();
-                }
-                Log.w("MESSA", otherUser.toString());
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -177,7 +145,6 @@ public class ChatActivity extends BaseActivity{
                     if((userId.equals(message.receiver) && getUid().equals(message.sender))
                             || (getUid().equals(message.receiver) && userId.equals(message.sender))) {
                         messageList.add(message);
-
                     }
                 }
                 Collections.sort(messageList, new Comparator<Message>() {
@@ -192,7 +159,7 @@ public class ChatActivity extends BaseActivity{
                     }
                 });
 
-                messageContentAdapter = new MessageContentAdapter(ChatActivity.this, messageList, currUser, otherUser);
+                messageContentAdapter = new MessageContentAdapter(ChatActivity.this, messageList, userId);
                 messageContentAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                     @Override
                     public void onItemRangeInserted(int positionStart, int itemCount) {
