@@ -3,6 +3,7 @@ package com.example.miniresearchdatabase.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,28 +15,30 @@ import android.widget.TextView;
 import com.example.miniresearchdatabase.ChatActivity;
 import com.example.miniresearchdatabase.R;
 
+import com.example.miniresearchdatabase.models.Message;
 import com.example.miniresearchdatabase.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.MessageViewHolder>{
     private Context mContext;
-    private List<User> mUsers;
-    private List<String> userKeys;
-    private String currKey;
-    private String username;
-    private List<String> otherAvatar;
-    private String userAvatar;
-    private String other;
+    private List<String> mUsers;
+    private String currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-    public MessageAdapter(Context mContext, List<User> mUsers, List<String> userKeys, String userAvatar, List<String> otherAvatar) {
+
+    public MessageAdapter(Context mContext, List<String> mUsers) {
         this.mUsers = mUsers;
         this.mContext = mContext;
-        this.userKeys = userKeys;
-        this.userAvatar = userAvatar;
-        this.otherAvatar = otherAvatar;
     }
 
     @NonNull
@@ -46,22 +49,35 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageViewHolder messageViewHolder, final int position) {
-        final User user = mUsers.get(position);
-        messageViewHolder.tvSenders.setText(user.username);
-        if(user.avatar != null) {
-            messageViewHolder.imgUsers.setImageBitmap(user.getAvatar());
+    public void onBindViewHolder(@NonNull final MessageViewHolder messageViewHolder, final int position) {
+        String user = mUsers.get(position);
+        if(getItemCount() != 0) {
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users").child(user);
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        messageViewHolder.tvSenders.setText(user.username);
+                        if (user.avatar != null) {
+                            messageViewHolder.imgUsers.setImageBitmap(user.getAvatar());
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
         }
+
+
+
+
         messageViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currKey = userKeys.get(position);
-                username = user.username;
-                other = otherAvatar.get(position);
-//                Log.w("TAG", currKey);
+                String currKey = mUsers.get(position);
                 Intent intent = new Intent(mContext, ChatActivity.class);
                 intent.putExtra("userId", currKey);
-                intent.putExtra("username",username);
                 mContext.startActivity(intent);
             }
         });
@@ -77,7 +93,7 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
     public class MessageViewHolder extends RecyclerView.ViewHolder {
 
         public TextView tvSenders;
-        public ImageView imgUsers;
+        public CircleImageView imgUsers;
 
 
         public MessageViewHolder(View itemView) {

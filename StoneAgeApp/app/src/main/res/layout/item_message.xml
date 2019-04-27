@@ -6,7 +6,7 @@
 
 
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgUsers"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="0dp"
         android:paddingLeft="20dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_gravity="center_vertical"
         android:text="tvSender"
