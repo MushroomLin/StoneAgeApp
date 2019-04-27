@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class PostDetailActivity extends BaseActivity {
 
     private DatabaseReference mPostReference;
     private DatabaseReference mCommentsReference;
+    private DatabaseReference mDatabase;
     private ValueEventListener mPostListener;
     private String mPostKey;
 
@@ -51,7 +53,8 @@ public class PostDetailActivity extends BaseActivity {
     private Button button_back;
     private RecyclerView mCommentsRecycler;
     private TextView textView_estimatedPrice;
-
+    private ImageView mPictureView;
+    private ImageView mAuthorPhoto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +71,7 @@ public class PostDetailActivity extends BaseActivity {
                 .child("posts").child(mPostKey);
         mCommentsReference = FirebaseDatabase.getInstance().getReference()
                 .child("post-comments").child(mPostKey);
-
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         // Initialize Views
         mAuthorView = findViewById(R.id.postAuthor);
         mTitleView = findViewById(R.id.postTitle);
@@ -77,6 +80,8 @@ public class PostDetailActivity extends BaseActivity {
         mCommentField = findViewById(R.id.fieldCommentText);
         mCommentButton = findViewById(R.id.buttonPostComment);
         mOfferButton = findViewById(R.id.button_offer);
+        mPictureView = findViewById(R.id.pictureImageView);
+        mAuthorPhoto = findViewById(R.id.postAuthorPhoto);
         button_back = findViewById(R.id.button_back6);
         mCommentsRecycler = findViewById(R.id.recyclerPostComments);
         textView_estimatedPrice = findViewById(R.id.textView_estimatedPrice);
@@ -103,6 +108,7 @@ public class PostDetailActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
 
     }
@@ -118,12 +124,43 @@ public class PostDetailActivity extends BaseActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 Post post = dataSnapshot.getValue(Post.class);
+                if (post!=null && post.uid!=null) {
+                    DatabaseReference ref = mDatabase.child("users").child(post.uid);
+                    ref.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //Serialize retrieved data to a User object
+                            User user = dataSnapshot.getValue(User.class);
+                            //Now you have an object of the User class and can use its getters like this
+                            if (user != null) {
+                                // Set the user profile picture
+                                if (user.avatar != null) {
+                                    mAuthorPhoto.setImageBitmap(user.getAvatar());
+                                }
 
+                            }
+
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                        }
+                    });
+                }
+                else{
+                    mAuthorPhoto.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_baseline_person_24px));
+                }
                 mAuthorView.setText(post.author);
                 mTitleView.setText(post.title);
                 mBodyView.setText(post.description);
                 mAddressView.setText(post.address);
-
+                if(post.picture!=null && (!post.picture.equals(""))){
+                    mPictureView.setImageBitmap(ImageUtils.stringToBitmap(post.picture));
+                    mPictureView.setVisibility(View.VISIBLE);
+                }
+                else{
+                    mPictureView.setVisibility(View.GONE);
+                }
                 if(post.estimatedPrices == null) {
                     textView_estimatedPrice.setText("No Estimated Price Now");
                 } else {
@@ -151,6 +188,7 @@ public class PostDetailActivity extends BaseActivity {
 
             }
         };
+
         mPostReference.addValueEventListener(postListener);
 
 
@@ -208,12 +246,14 @@ public class PostDetailActivity extends BaseActivity {
 
         public TextView authorView;
         public TextView bodyView;
+        public ImageView authorPicture;
 
         public CommentViewHolder(View itemView) {
             super(itemView);
 
             authorView = itemView.findViewById(R.id.commentAuthor);
             bodyView = itemView.findViewById(R.id.commentBody);
+            authorPicture = itemView.findViewById(R.id.commentPhoto);
         }
     }
 
@@ -221,6 +261,7 @@ public class PostDetailActivity extends BaseActivity {
 
         private Context mContext;
         private DatabaseReference mDatabaseReference;
+        private DatabaseReference mDatabase;
         private ChildEventListener mChildEventListener;
 
         private List<String> mCommentIds = new ArrayList<>();
@@ -229,7 +270,7 @@ public class PostDetailActivity extends BaseActivity {
         public CommentAdapter(final Context context, DatabaseReference ref) {
             mContext = context;
             mDatabaseReference = ref;
-
+            mDatabase = FirebaseDatabase.getInstance().getReference();
             // Create child event listener
             ChildEventListener childEventListener = new ChildEventListener() {
                 @Override
@@ -321,10 +362,37 @@ public class PostDetailActivity extends BaseActivity {
         }
 
         @Override
-        public void onBindViewHolder(CommentViewHolder holder, int position) {
+        public void onBindViewHolder(final CommentViewHolder holder, int position) {
             Comment comment = mComments.get(position);
+
             holder.authorView.setText(comment.author);
             holder.bodyView.setText(comment.text);
+            if (comment.uid!=null) {
+                DatabaseReference ref = mDatabase.child("users").child(comment.uid);
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Serialize retrieved data to a User object
+                        User user = dataSnapshot.getValue(User.class);
+                        //Now you have an object of the User class and can use its getters like this
+                        if (user != null) {
+                            // Set the user profile picture
+                            if (user.avatar != null) {
+                                holder.authorPicture.setImageBitmap(user.getAvatar());
+                            }
+
+                        }
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                    }
+                });
+            }
+            else{
+                holder.authorPicture.setImageDrawable(mContext.getDrawable(R.drawable.ic_baseline_person_24px));
+            }
         }
 
         @Override
