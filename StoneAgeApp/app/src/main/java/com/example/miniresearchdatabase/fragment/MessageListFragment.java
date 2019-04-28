@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.miniresearchdatabase.Adapter.MessageAdapter;
 import com.example.miniresearchdatabase.R;
+import com.example.miniresearchdatabase.models.Message;
 import com.example.miniresearchdatabase.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,11 +35,7 @@ public class MessageListFragment extends Fragment {
     private MessageAdapter messageAdapter;
 
     private LinearLayoutManager mManager;
-    private List<User> mUsers;
-    private List<String> userKeys;
-    private List<String> otherAvatar;
-    private String userAvatar;
-
+    private List<String> mUsers;
     public MessageListFragment() {}
 
     @Override
@@ -56,12 +53,7 @@ public class MessageListFragment extends Fragment {
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecycler.setHasFixedSize(true);
         mUsers = new ArrayList<>();
-        userKeys = new ArrayList<>();
-        otherAvatar = new ArrayList<>();
         readUsers();
-
-
-
         return rootView;
     }
 
@@ -73,39 +65,24 @@ public class MessageListFragment extends Fragment {
 
 
     private void readUsers() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-//        Log.w("TAG", reference.toString());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("chats");
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        assert firebaseUser != null;
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
-                userKeys.clear();
-                otherAvatar.clear();
-
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User user = snapshot.getValue(User.class);
-                    assert  user != null;
-                    assert firebaseUser != null;
-                    if(!snapshot.getKey().equals(getUid())) {
-//                        Log.w("TAG", snapshot.getKey());
-                        mUsers.add(user);
-                        userKeys.add(snapshot.getKey());
-                        if(user.avatar != null) {
-                            otherAvatar.add(user.avatar);
-                        }
-                        else {
-                            otherAvatar.add("");
-                        }
-
+                    Message message = snapshot.getValue(Message.class);
+                    assert  message != null;
+                    if(message.receiver.equals(getUid()) && !mUsers.contains(message.sender)) {
+                        mUsers.add(message.sender);
                     }
-                    else {
-                        userAvatar = user.avatar;
-//                        Log.w("AVA", userAvatar);
+                    else if(message.sender.equals(getUid()) && !mUsers.contains(message.receiver)) {
+                        mUsers.add(message.receiver);
                     }
                 }
-//                Log.w("AVA", otherAvatar.toString());
-                messageAdapter = new MessageAdapter(getContext(), mUsers, userKeys,userAvatar, otherAvatar);
+                messageAdapter = new MessageAdapter(getContext(), mUsers);
                 mRecycler.setAdapter(messageAdapter);
                 RecyclerView.ItemDecoration decor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
                 mRecycler.addItemDecoration(decor);

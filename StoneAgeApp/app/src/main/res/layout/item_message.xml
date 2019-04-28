@@ -6,19 +6,19 @@
 
 
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgUsers"
         android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_action_account_circle_40"
         android:layout_weight="1"/>
 
     <TextView
         android:layout_width="0dp"
-        android:paddingLeft="20dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:textSize="30dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="center_horizontal"
         android:text="tvSender"
         android:id="@+id/tvSenders"
         android:layout_weight="5"

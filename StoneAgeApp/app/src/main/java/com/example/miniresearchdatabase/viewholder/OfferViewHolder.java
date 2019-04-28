@@ -48,6 +48,7 @@ public class OfferViewHolder extends RecyclerView.ViewHolder {
         addressOfferView.setText(offer.address);
         if (offer.picture!=null && (!offer.picture.equals(""))) {
             pictureOfferView.setImageBitmap(ImageUtils.stringToBitmap(offer.picture));
+            pictureOfferView.setVisibility(View.VISIBLE);
         }
         else{
             pictureOfferView.setVisibility(View.GONE);

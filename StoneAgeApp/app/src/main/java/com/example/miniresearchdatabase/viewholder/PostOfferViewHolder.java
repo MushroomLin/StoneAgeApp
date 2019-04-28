@@ -50,6 +50,7 @@ public class PostOfferViewHolder extends RecyclerView.ViewHolder {
         addressPostOfferView.setText(offer.address);
         if (offer.picture!=null && (!offer.picture.equals(""))) {
             picturePostOfferView.setImageBitmap(ImageUtils.stringToBitmap(offer.picture));
+            picturePostOfferView.setVisibility(View.VISIBLE);
         }
         else{
             picturePostOfferView.setVisibility(View.GONE);

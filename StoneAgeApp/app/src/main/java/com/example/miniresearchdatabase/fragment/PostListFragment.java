@@ -4,13 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.example.miniresearchdatabase.MapsActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.LinkedList;
 import java.util.List;
 
+
 public abstract class PostListFragment extends Fragment {
 
     private static final String TAG = "PostListFragment";
@@ -44,6 +51,7 @@ public abstract class PostListFragment extends Fragment {
     private LinearLayoutManager mManager;
     private double minPrice = 99999999.0;
     private double maxPrice = 0.0;
+    private int recommendFlag = 0;
 
     List<Double> avgPricesList = null;
     Query postsQuery;
@@ -56,54 +64,72 @@ public abstract class PostListFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);
 
-//        Bundle bundle = getArguments();
-//        minPrice = bundle.getDouble("minPrice");
-//        maxPrice = bundle.getDouble("maxPrice");
+        Log.e("ppp", String.valueOf(recommendFlag));
+        Log.e("ppp", String.valueOf(minPrice));
+        Log.e("ppp", String.valueOf(maxPrice));
+
+        ImageButton imageButton = rootView.findViewById(R.id.imageButton_recommend);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (recommendFlag == 0) {
+                    recommendFlag = 1;
+                    Toast.makeText(getActivity(),"Price Recommend Mode",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    recommendFlag = 0;
+                    Toast.makeText(getActivity(),"Regular Mode",Toast.LENGTH_SHORT).show();
+                }
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(PostListFragment.this).attach(PostListFragment.this).commit();
+                Log.e("ppp", String.valueOf(recommendFlag));
+            }
+        });
+
 
         final String userId = getUid();
         // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
         // [END create_database_reference]
-//        DatabaseReference databaseReference = mDatabase.child("user-posts").child(userId);;
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                List<Double> avgPriceList = new LinkedList<>();
-//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                    Post post = postSnapshot.getValue(Post.class);
-//                    List<Double> pricesList = post.estimatedPrices;
-//                    if(pricesList != null) {
-//                        double priceSum = 0.0;
-//                        for(int i = 0; i < pricesList.size(); i++) {
-//                            double curPrice = pricesList.get(i);
-//                            priceSum += curPrice;
-//                        }
-//                        double priceAvg = priceSum / pricesList.size();
-//                        // update minPrice and maxPrice
-//                        if (priceAvg < minPrice)
-//                            minPrice = priceAvg;
-//                        if (priceAvg > maxPrice)
-//                            maxPrice = priceAvg;
-//                        avgPriceList.add(priceAvg);
-//                        Log.e("pricequery", String.valueOf(priceAvg));
-//                        Log.e("pricequery", "minPrice:"+String.valueOf(minPrice)+" maxPrice:"+String.valueOf(maxPrice));
-//                        Log.e("pricequery", "--------------------------");
-//                    }
-//                }
-//                // if the range of minPrice and maxPrcie isn't big enough
-//                if (minPrice - 20.0 > 0.0)
-//                    minPrice = minPrice - 20.0;
-//                else
-//                    minPrice = 0.0;
-//                maxPrice = maxPrice + 20.0;
-////                avgPricesList = avgPriceList;
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
+        DatabaseReference databaseReference = mDatabase.child("user-posts").child(userId);;
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Double> avgPriceList = new LinkedList<>();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Post post = postSnapshot.getValue(Post.class);
+                    List<Double> pricesList = post.estimatedPrices;
+                    if(pricesList != null) {
+                        double priceSum = 0.0;
+                        for(int i = 0; i < pricesList.size(); i++) {
+                            double curPrice = pricesList.get(i);
+                            priceSum += curPrice;
+                        }
+                        double priceAvg = priceSum / pricesList.size();
+                        // update minPrice and maxPrice
+                        if (priceAvg < minPrice)
+                            minPrice = priceAvg;
+                        if (priceAvg > maxPrice)
+                            maxPrice = priceAvg;
+                        avgPriceList.add(priceAvg);
+                    }
+                }
+                // if the range of minPrice and maxPrcie isn't big enough
+                if (minPrice - 20.0 > 0.0)
+                    minPrice = minPrice - 20.0;
+                else
+                    minPrice = 0.0;
+                maxPrice = maxPrice + 20.0;
+//                avgPricesList = avgPriceList;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         mRecycler = rootView.findViewById(R.id.messagesList);
         mRecycler.setHasFixedSize(true);
@@ -124,13 +150,13 @@ public abstract class PostListFragment extends Fragment {
         Log.e("pricequery", String.valueOf(minPrice)+" "+String.valueOf(maxPrice));
 
         // Set up FirebaseRecyclerAdapter with the Query
-//        getQuery3(mDatabase);
 
 //        avgPricesList
-        Query postsQuery = getQuery(mDatabase);
-//        Query postsQuery = getQueryFromPrice(mDatabase, minPrice, maxPrice);
+        if (recommendFlag == 0)
+            postsQuery = getQuery(mDatabase);
+        else
+            postsQuery = getQueryFromPrice(mDatabase, minPrice, maxPrice);
 
-//        Log.e("testQuery3", "66666666");
 
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Post>()
                 .setQuery(postsQuery, Post.class)
@@ -244,61 +270,6 @@ public abstract class PostListFragment extends Fragment {
     }
 
     public abstract double[] getQuery3(DatabaseReference databaseReference);
-
-//    public Query getQuery3(DatabaseReference databaseReference) {
-//        final String userId = getUid();
-//        DatabaseReference databaseReference2 = databaseReference.child("user-posts").child(userId);
-//
-//        databaseReference2.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                List<Double> avgPriceList = new LinkedList<>();
-//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                    Post post = postSnapshot.getValue(Post.class);
-//                    List<Double> pricesList = post.estimatedPrices;
-//                    if(pricesList != null) {
-//                        double priceSum = 0.0;
-//                        for(int i = 0; i < pricesList.size(); i++) {
-//                            double curPrice = pricesList.get(i);
-//                            priceSum += curPrice;
-//                        }
-//                        double priceAvg = priceSum / pricesList.size();
-//                        // update minPrice and maxPrice
-//                        if (priceAvg < minPrice)
-//                            minPrice = priceAvg;
-//                        if (priceAvg > maxPrice)
-//                            maxPrice = priceAvg;
-//                        avgPriceList.add(priceAvg);
-//                        Log.e("pricequery", String.valueOf(priceAvg));
-//                        Log.e("pricequery", "minPrice:"+String.valueOf(minPrice)+" maxPrice:"+String.valueOf(maxPrice));
-//                        Log.e("pricequery", "--------------------------");
-//                    }
-//                }
-//                // if the range of minPrice and maxPrcie isn't big enough
-//                if (minPrice - 20.0 > 0.0)
-//                    minPrice = minPrice - 20.0;
-//                else
-//                    minPrice = 0.0;
-//                maxPrice = maxPrice + 20.0;
-////                avgPricesList = avgPriceList;
-//                minMaxQuery = getQueryFromPrice(mDatabase, minPrice, maxPrice);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//        Log.e("pricequery", String.valueOf(minPrice)+" "+String.valueOf(maxPrice));
-//        return minMaxQuery;
-//    }
-
-//    public Query getQueryFromPrice(DatabaseReference databaseReference, double min, double max) {
-//        Log.e("pricequery", "min:"+String.valueOf(min)+" max:"+String.valueOf(max));
-//        Query minMaxPricePostsQuery = databaseReference.child("posts").orderByChild("avgPrice").startAt(min).endAt(max);
-//
-//        return minMaxPricePostsQuery;
-//    }
 
     public abstract Query getQueryFromPrice(DatabaseReference databaseReference, double min, double max);
 

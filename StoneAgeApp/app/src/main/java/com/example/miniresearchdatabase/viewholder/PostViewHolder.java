@@ -73,8 +73,10 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         numStarsView.setText(String.valueOf(post.starCount));
         bodyView.setText(post.description);
         addressView.setText(post.address);
-        if (post.picture!=null && !post.picture.equals(""))
+        if (post.picture!=null && !post.picture.equals("")){
             pictureView.setImageBitmap(ImageUtils.stringToBitmap(post.picture));
+            pictureView.setVisibility(View.VISIBLE);
+        }
         else{
             pictureView.setVisibility(View.GONE);
         }
@@ -84,6 +86,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
+
                     //Serialize retrieved data to a User object
                     User user = dataSnapshot.getValue(User.class);
                     //Now you have an object of the User class and can use its getters like this

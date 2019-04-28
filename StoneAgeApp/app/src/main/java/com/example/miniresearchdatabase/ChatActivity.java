@@ -2,7 +2,10 @@ package com.example.miniresearchdatabase;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -28,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,7 +57,11 @@ public class ChatActivity extends BaseActivity{
     private List<Message> messageList;
     private ProgressBar mProgressBar;
     private LinearLayoutManager mLinearLayoutManager;
-    private String userAvatar, otherAvatar;
+    private ImageView addMessageImageView;
+    private final int PICK_IMAGE_REQUEST = 71;
+    private Uri filePath;
+    private Bitmap bitmap;
+    private String image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,19 +70,16 @@ public class ChatActivity extends BaseActivity{
         Intent intent = getIntent();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("chats");
-        username = intent.getStringExtra("username");
         userId = intent.getStringExtra("userId");
-//        userAvatar = intent.getStringExtra("userAvatar");
-//        otherAvatar = intent.getStringExtra("otherAvatar");
-
+        username = intent.getStringExtra("username");
         this.setTitle(username);
         messageList = new ArrayList<>();
-
 
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = findViewById(R.id.sendButton);
         messageRecyclerView = findViewById(R.id.messageRecyclerView);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        addMessageImageView = (ImageView)findViewById(R.id.addMessageImageView);
 
 
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -118,7 +124,15 @@ public class ChatActivity extends BaseActivity{
             }
         });
 
-
+        addMessageImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+            }
+        });
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -131,7 +145,6 @@ public class ChatActivity extends BaseActivity{
                     if((userId.equals(message.receiver) && getUid().equals(message.sender))
                             || (getUid().equals(message.receiver) && userId.equals(message.sender))) {
                         messageList.add(message);
-
                     }
                 }
                 Collections.sort(messageList, new Comparator<Message>() {
@@ -146,7 +159,7 @@ public class ChatActivity extends BaseActivity{
                     }
                 });
 
-                messageContentAdapter = new MessageContentAdapter(ChatActivity.this, messageList);
+                messageContentAdapter = new MessageContentAdapter(ChatActivity.this, messageList, userId);
                 messageContentAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                     @Override
                     public void onItemRangeInserted(int positionStart, int itemCount) {
@@ -168,8 +181,6 @@ public class ChatActivity extends BaseActivity{
 
             }
 
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -177,6 +188,36 @@ public class ChatActivity extends BaseActivity{
         });
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // get image
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            filePath = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                image = convertImage();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            sendImage(firebaseUser.getUid(), userId, image);
+        }
+    }
+
+    public void sendImage(String sender, String receiver, String image) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
+        Date date = new Date();
+        String time = dateFormat.format(date);
+        hashMap.put("sender", sender);
+        hashMap.put("receiver", receiver);
+        hashMap.put("image", image);
+        hashMap.put("time", time);
+        reference.child("chats").push().setValue(hashMap);
     }
 
     private void sendMessage(String sender, String receiver, String message) {
@@ -191,5 +232,15 @@ public class ChatActivity extends BaseActivity{
         hashMap.put("time", time);
         reference.child("chats").push().setValue(hashMap);
 
+    }
+
+    private String convertImage() {
+        String data;
+        if(bitmap != null)
+        {
+            data = ImageUtils.bitmapToString(bitmap);
+        }
+        else data = null;
+        return data;
     }
 }

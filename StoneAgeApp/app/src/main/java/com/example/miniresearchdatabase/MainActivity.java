@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.miniresearchdatabase.fragment.MessageListFragment;
+import com.example.miniresearchdatabase.fragment.PostListFragment;
 import com.example.miniresearchdatabase.fragment.UserInformationFragment;
 import com.example.miniresearchdatabase.models.Post;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,62 +62,11 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        mDatabase = FirebaseDatabase.getInstance().getReference();
-//        final String userId = getUid();
-//        mDatabase = mDatabase.child("user-posts").child(userId);
-//
-//        mDatabase.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                Log.e("ooo", "enter onDataChange");
-//                List<Double> avgPriceList = new LinkedList<>();
-//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                    Post post = postSnapshot.getValue(Post.class);
-//                    List<Double> pricesList = post.estimatedPrices;
-//                    if(pricesList != null) {
-//                        double priceSum = 0.0;
-//                        for(int i = 0; i < pricesList.size(); i++) {
-//                            double curPrice = pricesList.get(i);
-//                            priceSum += curPrice;
-//                        }
-//                        double priceAvg = priceSum / pricesList.size();
-//                        // update minPrice and maxPrice
-//                        if (priceAvg < minPrice)
-//                            minPrice = priceAvg;
-//                        if (priceAvg > maxPrice)
-//                            maxPrice = priceAvg;
-//                        avgPriceList.add(priceAvg);
-//                        Log.e("pricequery", String.valueOf(priceAvg));
-//                        Log.e("pricequery", "minPrice:"+String.valueOf(minPrice)+" maxPrice:"+String.valueOf(maxPrice));
-//                        Log.e("pricequery", "--------------------------");
-//                    }
-//                }
-//                // if the range of minPrice and maxPrcie isn't big enough
-//                if (minPrice - 20.0 > 0.0)
-//                    minPrice = minPrice - 20.0;
-//                else
-//                    minPrice = 0.0;
-//                maxPrice = maxPrice + 20.0;
-////                avgPricesList = avgPriceList;
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
-
 
         ft = getSupportFragmentManager().beginTransaction();
         currentFragment = new RecentPostsFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putDouble("minPrice", minPrice);
-//        bundle.putDouble("maxPrice", maxPrice);
-//        Log.e("ooo", String.valueOf(minPrice));
-//        Log.e("ooo", String.valueOf(maxPrice));
-//        currentFragment.setArguments(bundle);
         ft.replace(R.id.container, currentFragment);
+
         ft.commit();
         // Set up the BottomNavigationView
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
@@ -152,11 +102,6 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 currentFragment = new RecentPostsFragment();
-                Bundle bundle1 = new Bundle();
-                bundle1.putDouble("minPrice", minPrice);
-                bundle1.putDouble("maxPrice", maxPrice);
-                Log.e("ooo", String.valueOf(minPrice)+" "+String.valueOf(maxPrice));
-                currentFragment.setArguments(bundle1);
                 ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.container, currentFragment);
                 ft.commit();

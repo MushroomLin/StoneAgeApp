@@ -50,7 +50,7 @@ public class NewPostActivity extends BaseActivity {
     private EditText mTitleField;
     private EditText mAddressField;
     private FloatingActionButton mSubmitButton;
-
+    private FloatingActionButton mCencelButton;
     // -------
     private final int PICK_IMAGE_REQUEST = 71;
     private final int SELECT_ADDRESS_ON_MAP = 118;
@@ -73,6 +73,7 @@ public class NewPostActivity extends BaseActivity {
 
         mTitleField = findViewById(R.id.fieldTitle);
         mSubmitButton = findViewById(R.id.fabSubmitPost);
+        mCencelButton = findViewById(R.id.fabCancelPost);
         mAddressField = findViewById(R.id.addressEditText);
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +82,12 @@ public class NewPostActivity extends BaseActivity {
                 submitPost();
             }
         });
-
+        mCencelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         button_selectAddress = findViewById(R.id.selectAddressBtn);
         imageView = findViewById(R.id.uploadImageView);
         editText_description = findViewById(R.id.editText_description);
