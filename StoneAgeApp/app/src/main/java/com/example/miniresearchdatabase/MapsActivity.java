@@ -47,8 +47,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static com.example.miniresearchdatabase.R.id.seekbar_distance;
-
 
 public class MapsActivity extends AppCompatActivity
         implements
@@ -71,7 +69,7 @@ public class MapsActivity extends AppCompatActivity
      */
     private boolean mPermissionDenied = false;
 
-    private SeekBar sbDistance;
+//    private SeekBar sbDistance;
     private GoogleMap mMap;
     private int restrictDistance = 2000;
     // used to set multiple markers on the map
@@ -97,24 +95,25 @@ public class MapsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        sbDistance = findViewById(R.id.seekbar_distance);
-        sbDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                restrictDistance = progress;
-            }
+//        sbDistance = findViewById(R.id.seekbar_distance);
+//        sbDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                restrictDistance = progress;
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                drawCircle(lastLocation.getPosition(), restrictDistance);
+//                Toast.makeText(MapsActivity.this, "restrict distance: "+String.valueOf(restrictDistance)+" meters", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                drawCircle(lastLocation.getPosition(), restrictDistance);
-                Toast.makeText(MapsActivity.this, "restrict distance: "+String.valueOf(restrictDistance)+" meters", Toast.LENGTH_SHORT).show();
-            }
-        });
         // initialize api key
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), "AIzaSyCaUcdLLm4ifpW9ZYMhcCm_6RMvArAz-hA");
@@ -138,7 +137,7 @@ public class MapsActivity extends AppCompatActivity
                 lastLocation.setVisible(true);
                 lastLocation.setTitle(place.getAddress());
                 mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 13.7f));
-                drawCircle(place.getLatLng(), restrictDistance);
+//                drawCircle(place.getLatLng(), restrictDistance);
             }
 
             @Override
@@ -175,7 +174,7 @@ public class MapsActivity extends AppCompatActivity
                 lastLocation.setPosition(latLng);
                 lastLocation.setVisible(true);
                 lastLocation.setTitle(address);
-                drawCircle(latLng, restrictDistance);
+//                drawCircle(latLng, restrictDistance);
                 Toast.makeText(MapsActivity.this, "select location:\n" + address, Toast.LENGTH_SHORT).show();
 //                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             }
