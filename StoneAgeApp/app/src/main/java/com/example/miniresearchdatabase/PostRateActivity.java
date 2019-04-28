@@ -188,6 +188,20 @@ public class PostRateActivity extends AppCompatActivity {
         button_submitrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DatabaseReference rateRef = mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey);
+                rateRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Serialize retrieved data to a User object
+                        Offer offer = dataSnapshot.getValue(Offer.class);
+                        //Now you have an object of the User class and can use its getters like this
+                        offeruid = String.valueOf(offer.uid);
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                    }
+                });
                 mDatabase.child("users").child(offeruid).child("rate").setValue((double)newrate);
                 mDatabase.child("users").child(offeruid).child("totalReview").setValue(newTotalReview+1);
                 mDatabase.child("posts").child(finalPostKey).child("status").setValue("closed");

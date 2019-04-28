@@ -161,8 +161,9 @@ public class SendOfferActivity extends AppCompatActivity {
                                 picture = "";
                             }
                             Offer offer = new Offer(userId,author,title,description,address,picture,offerPostKey,status);
-                            offerReference.push().setValue(offer);
-                            offerUserReference.child(userId).push().setValue(offer);
+                            String key = offerReference.push().getKey();
+                            offerReference.child(key).setValue(offer);
+                            offerUserReference.child(userId).child(key).setValue(offer);
                         }
 
                         // Finish this Activity, back to the stream
