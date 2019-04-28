@@ -7,16 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".UserEditActivity"
     android:background="@color/colorPrimary">
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="20dp"
+        android:padding="15dp"
         android:layout_margin="15dp"
         android:background="@drawable/round_corner">
-
         <TextView
             android:id="@+id/TitleTextView"
             android:layout_width="match_parent"
@@ -45,36 +42,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal">
-
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/AvatarImageView"
-                    android:layout_width="160dp"
-                    android:layout_height="160dp"
-                    android:layout_weight="2"
-                    app:srcCompat="@drawable/ic_action_account_circle_40" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/TakePhotoButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Take" />
-
-                    <Button
-                        android:id="@+id/SaveButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Save" />
-                </LinearLayout>
-
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_action_account_circle_40"
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="3dp"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -198,6 +175,15 @@
                     tools:text="Hi! I love Computer Games and seeking for trading." />
 
             </LinearLayout>
+            <Button
+                android:id="@+id/SaveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:background="@drawable/round_corner_bg"
+                android:text="Save" />
 
         </LinearLayout>
 

@@ -50,7 +50,7 @@ public class PostDetailActivity extends BaseActivity {
     private EditText mCommentField;
     private Button mCommentButton;
     private Button mOfferButton;
-    private Button button_back;
+    private ImageView button_back;
     private RecyclerView mCommentsRecycler;
     private TextView textView_estimatedPrice;
     private ImageView mPictureView;
@@ -82,7 +82,7 @@ public class PostDetailActivity extends BaseActivity {
         mOfferButton = findViewById(R.id.button_offer);
         mPictureView = findViewById(R.id.pictureImageView);
         mAuthorPhoto = findViewById(R.id.postAuthorPhoto);
-        button_back = findViewById(R.id.button_back6);
+        button_back = findViewById(R.id.BackImageView);
         mCommentsRecycler = findViewById(R.id.recyclerPostComments);
         textView_estimatedPrice = findViewById(R.id.textView_estimatedPrice);
 

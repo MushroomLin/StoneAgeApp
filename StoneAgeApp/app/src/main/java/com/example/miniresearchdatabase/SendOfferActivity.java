@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -38,9 +39,11 @@ public class SendOfferActivity extends AppCompatActivity {
     private EditText offerdescription;
     private EditText offerAddress;
     private FloatingActionButton offerButton;
-    private Button button_back;
-
+    private FloatingActionButton button_back;
+    private ImageButton button_selectAddress;
     private final int PICK_IMAGE_REQUEST = 71;
+    private final int SELECT_ADDRESS_ON_MAP = 118;
+    private String address = "";
     private ImageView offerimageView;
     private Uri filePath;
     private Bitmap bitmap_offer;
@@ -63,7 +66,7 @@ public class SendOfferActivity extends AppCompatActivity {
         offerButton = findViewById(R.id.fabSubmitOffer);
         offerimageView = findViewById(R.id.imageView_offer);
         button_back = findViewById(R.id.fabCancelOffer);
-
+        button_selectAddress = findViewById(R.id.selectAddressBtn);
         offerReference = FirebaseDatabase.getInstance().getReference()
                 .child("post-offers").child(offerPostKey);
         offerUserReference = FirebaseDatabase.getInstance().getReference()
@@ -89,7 +92,12 @@ public class SendOfferActivity extends AppCompatActivity {
                 submitOffer();
             }
         });
-
+        button_selectAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(SendOfferActivity.this, MapsActivity_selectAddress.class), SELECT_ADDRESS_ON_MAP);
+            }
+        });
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +195,10 @@ public class SendOfferActivity extends AppCompatActivity {
             {
                 e.printStackTrace();
             }
+        }
+        if (requestCode == SELECT_ADDRESS_ON_MAP && resultCode == RESULT_OK && data != null) {
+            address = data.getExtras().getString("selectAddress"); //get the data from new Activity when it finished
+            offerAddress.setText(address);
         }
     }
 
