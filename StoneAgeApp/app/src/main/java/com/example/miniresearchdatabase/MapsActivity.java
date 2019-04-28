@@ -91,7 +91,6 @@ public class MapsActivity extends AppCompatActivity
     Circle circleAddress = null;
 
 
-
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +111,7 @@ public class MapsActivity extends AppCompatActivity
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                drawCircle(lastLocation.getPosition(), restrictDistance);
                 Toast.makeText(MapsActivity.this, "restrict distance: "+String.valueOf(restrictDistance)+" meters", Toast.LENGTH_SHORT).show();
             }
         });
@@ -276,40 +276,6 @@ public class MapsActivity extends AppCompatActivity
                 //Toast.makeText(MapsActivity.this, "Current location:\n" + mMap.getCameraPosition().target.latitude, Toast.LENGTH_LONG).show();
             }
         });
-
-//        // get posts and extract some key info
-//        mPostReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                    Post post = postSnapshot.getValue(Post.class);
-//                    // get the key of current post and store for future use
-//                    DatabaseReference marker2postReference =  postSnapshot.getRef();
-//                    final String postkey = marker2postReference.getKey();
-//                    // get current position for distance computing
-//                    double postLatitude = post.latitude;
-//                    double postLongitude = post.longitude;
-//                    if (!marker2post.containsValue(postkey)) {
-//                        LatLng postPoint = new LatLng(postLatitude, postLongitude);
-//                        options.position(postPoint);
-//                        options.title(post.title);
-//                        options.snippet("Author: " + post.author + " Address: " + post.address
-//                                + " " + post.description);
-//                        Marker mId = mMap.addMarker(options);
-//                        // store marker id and post key for future use
-//                        Log.w("marker", mId.getId() + " " + postkey);
-//                        marker2post.put(mId, postkey);
-//                        post2marker.put(postkey, mId);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
 
         return false;
     }
@@ -478,7 +444,6 @@ public class MapsActivity extends AppCompatActivity
 
         // Adding the circle to the GoogleMap
         circleAddress = mMap.addCircle(circleOptions);
-
     }
 }
 
