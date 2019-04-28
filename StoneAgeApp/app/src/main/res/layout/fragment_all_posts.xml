@@ -9,11 +9,11 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/messagesList"
         android:layout_width="match_parent"
-        android:layout_height="633dp"
+        android:layout_height="680dp"
         android:layout_below="@+id/et_searchText"
         android:layout_alignParentStart="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="-3dp"
         android:padding="5dp"
         android:scrollbars="vertical">
 
@@ -25,9 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="3dp"
+        android:layout_marginStart="-6dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="31dp"
         android:layout_toEndOf="@+id/et_searchText"
         android:text="Search"
         tools:text="Search" />
@@ -45,12 +45,12 @@
 
     <ImageButton
         android:id="@+id/imageButton_recommend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="31dp"
+        android:layout_height="32dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="51dp"
-        android:layout_marginEnd="7dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="0dp"
         app:srcCompat="@drawable/quantum_ic_search_grey600_24" />
 
 </RelativeLayout>
