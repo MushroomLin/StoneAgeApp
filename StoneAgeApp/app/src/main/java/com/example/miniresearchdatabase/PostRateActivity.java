@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.miniresearchdatabase.models.Offer;
@@ -30,6 +32,9 @@ import com.google.firebase.database.ValueEventListener;
 public class PostRateActivity extends AppCompatActivity {
     private Button button_facebook;
     private Button button_back;
+    private RatingBar starBar;
+    private TextView textView_rate;
+    private Button button_submitrate;
     private String postpicture;
     private String offerpicture;
     private SharePhotoContent sharePhotoContent;
@@ -40,6 +45,11 @@ public class PostRateActivity extends AppCompatActivity {
     private Bitmap offerpictureBitmap;
     private SharePhoto postPhoto;
     private SharePhoto offerPhoto;
+    private float rate;
+    private String offeruid;
+    private float newrate;
+    private int newTotalReview;
+
 
     public static final String FINAL_POST_KEY = "mPostkey";
     public static final String FINAL_OFFER_KEY = "offerkey";
@@ -60,9 +70,11 @@ public class PostRateActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         button_facebook = findViewById(R.id.button_facebook);
         button_back = findViewById(R.id.button_back7);
+        button_submitrate = findViewById(R.id.button_submitrate);
+        starBar = findViewById(R.id.starBar);
+        textView_rate = findViewById(R.id.textView_rate);
         finalPostKey = getIntent().getStringExtra(FINAL_POST_KEY);
         finalOfferKey = getIntent().getStringExtra(FINAL_OFFER_KEY);
-
 
 
         button_facebook.setOnClickListener(new View.OnClickListener() {
@@ -72,10 +84,64 @@ public class PostRateActivity extends AppCompatActivity {
             }
         });
 
+        starBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                rate = rating;
+                textView_rate.setText(Float.toString(rate));
+            }
+
+        });
+
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(PostRateActivity.this, MainActivity.class));
+            }
+        });
+
+        button_submitrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference rateRef = mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey);
+                rateRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Serialize retrieved data to a User object
+                        Offer offer = dataSnapshot.getValue(Offer.class);
+                        //Now you have an object of the User class and can use its getters like this
+                        offeruid = String.valueOf(offer.uid);
+
+                        DatabaseReference userRef = mDatabase.child("users").child(offeruid);
+                        userRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                //Serialize retrieved data to a User object
+                                User user = dataSnapshot.getValue(User.class);
+                                float userrate = (float)user.rate;
+                                float totalrate = userrate * ((float)user.totalReview-1);
+                                newrate = (totalrate + rate) / ((float)user.totalReview);
+                                newTotalReview = user.totalReview;
+                                mDatabase.child("users").child(offeruid).child("rate").setValue((double)newrate);
+                                mDatabase.child("users").child(offeruid).child("totalReview").setValue(newTotalReview+1);
+
+                                //Now you have an object of the User class and can use its getters like this
+
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                            }
+                        });
+
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                    }
+                });
+
             }
         });
 
