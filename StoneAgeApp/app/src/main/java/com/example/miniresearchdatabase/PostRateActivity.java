@@ -23,6 +23,7 @@ import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +35,7 @@ public class PostRateActivity extends AppCompatActivity {
     private Button button_back;
     private RatingBar starBar;
     private TextView textView_rate;
+    private TextView textView_rateother;
     private Button button_submitrate;
     private String postpicture;
     private String offerpicture;
@@ -45,10 +47,11 @@ public class PostRateActivity extends AppCompatActivity {
     private Bitmap offerpictureBitmap;
     private SharePhoto postPhoto;
     private SharePhoto offerPhoto;
-    private float rate;
+    private float starRate = 5;
     private String offeruid;
     private float newrate;
     private int newTotalReview;
+    private String offerUserName;
 
 
     public static final String FINAL_POST_KEY = "mPostkey";
@@ -73,8 +76,10 @@ public class PostRateActivity extends AppCompatActivity {
         button_submitrate = findViewById(R.id.button_submitrate);
         starBar = findViewById(R.id.starBar);
         textView_rate = findViewById(R.id.textView_rate);
+        textView_rateother = findViewById(R.id.textView_rateother);
         finalPostKey = getIntent().getStringExtra(FINAL_POST_KEY);
         finalOfferKey = getIntent().getStringExtra(FINAL_OFFER_KEY);
+        textView_rate.setText("5.0/5.0");
 
 
         button_facebook.setOnClickListener(new View.OnClickListener() {
@@ -87,22 +92,8 @@ public class PostRateActivity extends AppCompatActivity {
         starBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                rate = rating;
-                textView_rate.setText(Float.toString(rate));
-            }
-
-        });
-
-        button_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(PostRateActivity.this, MainActivity.class));
-            }
-        });
-
-        button_submitrate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                starRate = rating;
+                textView_rate.setText(Float.toString(starRate)+ "/5.0");
                 DatabaseReference rateRef = mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey);
                 rateRef.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -111,6 +102,8 @@ public class PostRateActivity extends AppCompatActivity {
                         Offer offer = dataSnapshot.getValue(Offer.class);
                         //Now you have an object of the User class and can use its getters like this
                         offeruid = String.valueOf(offer.uid);
+                        offerUserName = String.valueOf(offer.author);
+                        textView_rateother.setText("Please Rate Your Trade with "+offerUserName);
 
                         DatabaseReference userRef = mDatabase.child("users").child(offeruid);
                         userRef.addValueEventListener(new ValueEventListener() {
@@ -119,11 +112,10 @@ public class PostRateActivity extends AppCompatActivity {
                                 //Serialize retrieved data to a User object
                                 User user = dataSnapshot.getValue(User.class);
                                 float userrate = (float)user.rate;
-                                float totalrate = userrate * ((float)user.totalReview-1);
-                                newrate = (totalrate + rate) / ((float)user.totalReview);
+                                float totalrate = userrate * ((float)user.totalReview);
+                                newrate = (totalrate + starRate) / ((float)user.totalReview+1);
                                 newTotalReview = user.totalReview;
-                                mDatabase.child("users").child(offeruid).child("rate").setValue((double)newrate);
-                                mDatabase.child("users").child(offeruid).child("totalReview").setValue(newTotalReview+1);
+
 
                                 //Now you have an object of the User class and can use its getters like this
 
@@ -134,6 +126,41 @@ public class PostRateActivity extends AppCompatActivity {
                             }
                         });
 
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                    }
+                });
+                Toast.makeText(PostRateActivity.this, String.valueOf(newrate), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        DatabaseReference rateRef = mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey);
+        rateRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Serialize retrieved data to a User object
+                Offer offer = dataSnapshot.getValue(Offer.class);
+                //Now you have an object of the User class and can use its getters like this
+                offeruid = String.valueOf(offer.uid);
+                offerUserName = String.valueOf(offer.author);
+                textView_rateother.setText("Please Rate Your Trade with "+offerUserName);
+
+                DatabaseReference userRef = mDatabase.child("users").child(offeruid);
+                userRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Serialize retrieved data to a User object
+                        User user = dataSnapshot.getValue(User.class);
+                        float userrate = (float)user.rate;
+                        float totalrate = userrate * ((float)user.totalReview);
+                        newrate = (totalrate + starRate) / ((float)user.totalReview+1);
+                        newTotalReview = user.totalReview;
+
+
+                        //Now you have an object of the User class and can use its getters like this
 
                     }
                     @Override
@@ -142,6 +169,36 @@ public class PostRateActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+            }
+        });
+
+        button_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostRateActivity.this, MyPostOfferActivity.class);
+                intent.putExtra(MyPostOfferActivity.EXTRA_POSTOFFER_POST_KEY, finalPostKey);
+                startActivity(intent);
+            }
+        });
+
+        button_submitrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatabase.child("users").child(offeruid).child("rate").setValue((double)newrate);
+                mDatabase.child("users").child(offeruid).child("totalReview").setValue(newTotalReview+1);
+                mDatabase.child("posts").child(finalPostKey).child("status").setValue("closed");
+                mDatabase.child("user-posts").child(getUid()).child(finalPostKey).child("status").setValue("closed");
+                mDatabase.child("user-offers").child(offeruid).child(finalOfferKey).child("status").setValue("closed");
+                mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("closed");
+                Toast.makeText(PostRateActivity.this, "Trade Finished!", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(PostRateActivity.this, MyPostOfferActivity.class);
+                intent.putExtra(MyPostOfferActivity.EXTRA_POSTOFFER_POST_KEY, finalPostKey);
+                startActivity(intent);
             }
         });
 
@@ -201,6 +258,9 @@ public class PostRateActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 }
 
