@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:padding="15dp"
         android:layout_margin="15dp"
-        android:background="@drawable/round_corner">
+        android:background="@drawable/round_corner_post_detail">
         <TextView
             android:id="@+id/TitleTextView"
             android:layout_width="match_parent"
