@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.miniresearchdatabase.models.Offer;
 import com.example.miniresearchdatabase.viewholder.OfferViewHolder;
@@ -28,7 +29,7 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 public class MyOfferActivity extends AppCompatActivity {
-    private Button button_back;
+    private ImageView button_back;
     private static final String TAG = "MyOfferActivity";
     private DatabaseReference mDatabase;
     private FirebaseRecyclerAdapter<Offer, OfferViewHolder> mOfferAdapter;
@@ -51,7 +52,7 @@ public class MyOfferActivity extends AppCompatActivity {
         mOfferManager.setReverseLayout(true);
         mOfferManager.setStackFromEnd(true);
         mOfferRecycler.setLayoutManager(mOfferManager);
-        button_back = findViewById(R.id.button_back5);
+        button_back = findViewById(R.id.BackImageView);
 
         // Set up FirebaseRecyclerAdapter with the Query
         Query offersQuery = getOfferQuery(mDatabase);

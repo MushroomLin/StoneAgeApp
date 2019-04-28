@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.miniresearchdatabase.models.Offer;
 import com.example.miniresearchdatabase.viewholder.PostOfferViewHolder;
@@ -20,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 public class MyPostOfferActivity extends AppCompatActivity {
-    private Button button_back;
+    private ImageView button_back;
     private static final String TAG = "MyPostOfferActivity";
     public static final String EXTRA_POSTOFFER_POST_KEY = "post_key";
     private DatabaseReference mDatabase;
@@ -43,7 +44,7 @@ public class MyPostOfferActivity extends AppCompatActivity {
         mPostOfferManager.setReverseLayout(true);
         mPostOfferManager.setStackFromEnd(true);
         mPostOfferRecycler.setLayoutManager(mPostOfferManager);
-        button_back = findViewById(R.id.button_back4);
+        button_back = findViewById(R.id.BackImageView);
 
         // Set up FirebaseRecyclerAdapter with the Query
         Query postoffersQuery = getPostOfferQuery(mDatabase);
