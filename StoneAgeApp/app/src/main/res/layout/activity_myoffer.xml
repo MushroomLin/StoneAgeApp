@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
 
 
-    <Button
-        android:id="@+id/button_back5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/BackImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:tint="@color/grey_300"
+        app:srcCompat="@drawable/ic_back_icon" />
 
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="47dp"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_below="@id/BackImageView">
 
 
         <android.support.v7.widget.RecyclerView
@@ -34,4 +33,4 @@
 
     </FrameLayout>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

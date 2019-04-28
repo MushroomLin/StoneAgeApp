@@ -59,10 +59,10 @@ public class SendOfferActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         offerTitle = findViewById(R.id.fieldOfferTitle);
         offerdescription = findViewById(R.id.editText_offerdescription);
-        offerAddress = findViewById(R.id.fieldOfferAddress);
+        offerAddress = findViewById(R.id.addressEditText);
         offerButton = findViewById(R.id.fabSubmitOffer);
         offerimageView = findViewById(R.id.imageView_offer);
-        button_back = findViewById(R.id.button_back3);
+        button_back = findViewById(R.id.fabCancelOffer);
 
         offerReference = FirebaseDatabase.getInstance().getReference()
                 .child("post-offers").child(offerPostKey);
