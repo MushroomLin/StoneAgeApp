@@ -29,6 +29,7 @@ public class Post {
 
     public List<Double> estimatedPrices;
     public double avgPrice;
+    public String status;
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -38,11 +39,12 @@ public class Post {
     public Post(String uid, String author, String title,
                 String address,
                 String description, String originalType, String targetType, String picture,
-                List<Double> estimatedPrices, double avgPrice) {
+                List<Double> estimatedPrices, double avgPrice, String status) {
         this.uid = uid;
         this.author = author;
         this.title = title;
         this.address = address;
+        this.status = status;
 
         // TO_BE_FIXED
 //        double[] coordinates = null;
@@ -83,6 +85,7 @@ public class Post {
 
         result.put("estimatedPrices", estimatedPrices);
         result.put("avgPrice", avgPrice);
+        result.put("status", status);
 
         return result;
     }

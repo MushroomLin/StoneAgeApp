@@ -1,69 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp">
-
-    <EditText
-        android:id="@+id/fieldOfferAddress"
+    android:background="@color/colorPrimary"
+    >
+    <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editText_offerdescription"
-        android:layout_marginTop="5dp"
-        android:hint="Address"
-        android:maxLines="2" />
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:padding="20dp"
+        android:background="@drawable/round_corner_post_detail">
 
-    <EditText
-        android:id="@+id/fieldOfferTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Title"
-        android:maxLines="1"
-        tools:text="An apple"  />
+        <EditText
+            android:id="@+id/fieldOfferTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title"
+            android:maxLines="1"
+            tools:text="An apple"  />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabSubmitOffer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_navigation_check_24" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabSubmitOffer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:backgroundTint="@color/colorPrimary"
+            android:src="@drawable/ic_navigation_check_24" />
 
-    <EditText
-        android:id="@+id/editText_offerdescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/fieldOfferTitle"
-        android:layout_marginTop="5dp"
-        android:maxLines="8"
-        android:hint="description"
-        tools:text="@string/lorem" />
+        <EditText
+            android:id="@+id/editText_offerdescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fieldOfferTitle"
+            android:layout_marginTop="5dp"
+            android:maxLines="8"
+            android:hint="description"
+            tools:text="@string/lorem" />
+        <include
+            android:id="@+id/newAddressLayout"
+            layout="@layout/include_address_input"
+            android:layout_below="@id/editText_offerdescription"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/imageView_offer"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_below="@id/newAddressLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            app:srcCompat="@drawable/ic_picture"  />
 
-    <ImageView
-        android:id="@+id/imageView_offer"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_below="@id/fieldOfferAddress"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        app:srcCompat="@drawable/ic_picture"  />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabCancelOffer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:backgroundTint="@color/colorPrimary"
+            android:tint="@color/white"
+            android:src="@drawable/ic_delete"/>
 
-    <Button
-        android:id="@+id/button_back3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="7dp"
-        android:layout_marginBottom="23dp"
-        android:text="Back" />
-
-</RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>

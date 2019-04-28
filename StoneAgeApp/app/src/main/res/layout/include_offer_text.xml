@@ -39,7 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:adjustViewBounds="true"
-        android:cropToPadding="false"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
 </LinearLayout>

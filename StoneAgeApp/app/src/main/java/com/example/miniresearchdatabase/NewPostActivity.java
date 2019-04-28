@@ -164,6 +164,7 @@ public class NewPostActivity extends BaseActivity {
         final String description = editText_description.getText().toString();
         final String originalType = "originalType";
         final String targetType = "targetType";
+        final String status = "open";
 
         // Title is required
         if (TextUtils.isEmpty(title)) {
@@ -229,7 +230,7 @@ public class NewPostActivity extends BaseActivity {
                                 picture = "";
                             }
                             writeNewPost(userId, user.username, title, address,
-                                    description, originalType, targetType, picture, pricesList, avgPrice);
+                                    description, originalType, targetType, picture, pricesList, avgPrice, status);
 
                         }
 
@@ -262,14 +263,14 @@ public class NewPostActivity extends BaseActivity {
     private void writeNewPost(String userId, String username, String title,
                               String address,
                               String description, String originalType, String targetType, String picture,
-                              List<Double> estimatedPrices, double avgPrice) {
+                              List<Double> estimatedPrices, double avgPrice, String status) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
 
         try {
             String key = mDatabase.child("posts").push().getKey();
             Post post = new Post(userId, username, title, address,
-                    description, originalType, targetType, picture, estimatedPrices, avgPrice);
+                    description, originalType, targetType, picture, estimatedPrices, avgPrice, status);
             Map<String, Object> postValues = post.toMap();
 
             Map<String, Object> childUpdates = new HashMap<>();

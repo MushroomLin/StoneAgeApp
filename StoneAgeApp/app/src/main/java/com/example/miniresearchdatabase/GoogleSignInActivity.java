@@ -127,7 +127,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if(!dataSnapshot.exists()) {
-                                        writeNewUser(userId,username,email,"","","",0,"");
+                                        writeNewUser(userId,username,email,"","","",5,"",0);
                                     }
                                 }
                                 @Override
@@ -200,8 +200,8 @@ public class GoogleSignInActivity extends BaseActivity implements
         }
     }
 
-    private void writeNewUser(String userId, String name, String email, String address, String phone, String intro, double rate, String avatar) {
-        User user = new User(name, email, address, phone, intro, rate, avatar);
+    private void writeNewUser(String userId, String name, String email, String address, String phone, String intro, double rate, String avatar, int totalReview) {
+        User user = new User(name, email, address, phone, intro, rate, avatar, totalReview);
         mDatabase.child("users").child(userId).setValue(user);
     }
 

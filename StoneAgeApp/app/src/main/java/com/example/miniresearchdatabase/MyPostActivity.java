@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.miniresearchdatabase.models.Post;
 import com.example.miniresearchdatabase.viewholder.PostViewHolder;
@@ -25,7 +26,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 
 public class MyPostActivity extends AppCompatActivity {
-    private Button button_back;
+    private ImageView button_back;
     private static final String TAG = "MyPostActivity";
     private DatabaseReference mDatabase;
     private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
@@ -47,7 +48,7 @@ public class MyPostActivity extends AppCompatActivity {
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
-        button_back = findViewById(R.id.button_back);
+        button_back = findViewById(R.id.BackImageView);
 
         // Set up FirebaseRecyclerAdapter with the Query
         Query postsQuery = getPostQuery(mDatabase);

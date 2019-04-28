@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import rebus.bottomdialog.BottomDialog;
+
 public class UserEditActivity extends AppCompatActivity {
     // [START define_database_reference]
     private DatabaseReference mDatabase;
@@ -37,12 +39,11 @@ public class UserEditActivity extends AppCompatActivity {
     private EditText AddressEditText;
     private EditText IntroductionEditText;
     private Button SaveButton;
-    private Button TakePhotoButton;
     private Uri filePath;
     private static final int PICK_IMAGE_REQUEST = 71;
     private static final int CAMERA_REQUEST = 1888;
     private Bitmap bitmap;
-
+    private BottomDialog dialog;
     private static final int SELECT_ADDRESS_ON_MAP = 118;
     private String selectAddress;
 
@@ -57,7 +58,6 @@ public class UserEditActivity extends AppCompatActivity {
         AddressEditText = findViewById(R.id.AddressEditText);
         IntroductionEditText = findViewById(R.id.IntroductionEditText);
         SaveButton = findViewById(R.id.SaveButton);
-        TakePhotoButton = findViewById(R.id.TakePhotoButton);
         // Load the data from the Database
         // [START create_database_reference]
         AddressEditText.setOnLongClickListener(new View.OnLongClickListener() {
@@ -82,18 +82,31 @@ public class UserEditActivity extends AppCompatActivity {
                     if (user.avatar!=null){
                         AvatarImageView.setImageBitmap(user.getAvatar());
                     }
+                    dialog = new BottomDialog(UserEditActivity.this);
+                    dialog.canceledOnTouchOutside(true);
+                    dialog.cancelable(true);
+                    dialog.inflateMenu(R.menu.menu_choose_picture);
+                    dialog.setOnItemSelectedListener(new BottomDialog.OnItemSelectedListener() {
+                        @Override
+                        public boolean onItemSelected(int id) {
+                            switch (id) {
+                                case R.id.action_choose:
+                                    chooseImage();
+                                    return true;
+                                case R.id.action_new:
+                                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                                    return true;
+                                default:
+                                    return false;
+                            }
+                        }
+                    });
                     AvatarImageView.setClickable(true);
                     AvatarImageView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            chooseImage();
-                        }
-                    });
-                    TakePhotoButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                            dialog.show();
                         }
                     });
 
@@ -110,6 +123,7 @@ public class UserEditActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
                 Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
             }
+
         });
         // Save button clicked
         SaveButton.setOnClickListener(new View.OnClickListener() {

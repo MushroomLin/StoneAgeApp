@@ -10,7 +10,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp"
+        android:layout_margin="15dp"
         android:padding="20dp"
         android:background="@drawable/round_corner_post_detail">
 
@@ -30,7 +30,7 @@
             android:layout_below="@id/fieldTitle"
             android:layout_marginTop="5dp"
             android:maxLines="4"
-            android:hint="description"
+            android:hint="Description"
             tools:text="@string/lorem"
             />
 
