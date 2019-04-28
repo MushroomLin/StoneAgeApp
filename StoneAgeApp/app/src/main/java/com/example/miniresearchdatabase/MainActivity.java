@@ -107,8 +107,8 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
                 ft.commit();
                 break;
             case R.id.navigation_map:
-//                startActivity(new Intent(this, MapsActivity.class));
-                startActivity(new Intent(this, SettingActivity.class));
+                startActivity(new Intent(this, MapsActivity.class));
+//                startActivity(new Intent(this, SettingActivity.class));
                 break;
             case R.id.navigation_post:
                 startActivity(new Intent(MainActivity.this, NewPostActivity.class));
