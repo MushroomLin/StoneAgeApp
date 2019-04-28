@@ -19,14 +19,15 @@ public class User {
     public String address;
     public String phone;
     public String intro;
-    public double rate = 5.0;
+    public double rate;
     public String avatar;
+    public int totalReview;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String username, String email, String address, String phone, String intro, double rate, String avatar) {
+    public User(String username, String email, String address, String phone, String intro, double rate, String avatar, int totalReview) {
         this.username = username;
         this.email = email;
         this.address = address;
@@ -34,6 +35,7 @@ public class User {
         this.intro = intro;
         this.rate = rate;
         this.avatar = avatar;
+        this.totalReview = totalReview;
     }
     @Exclude
     public Map<String, Object> toMap() {
@@ -45,6 +47,7 @@ public class User {
         result.put("intro", intro);
         result.put("rate", rate);
         result.put("avatar", avatar);
+        result.put("totalReview", totalReview);
 
         return result;
     }

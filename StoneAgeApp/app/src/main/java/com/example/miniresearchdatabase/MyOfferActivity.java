@@ -60,7 +60,7 @@ public class MyOfferActivity extends AppCompatActivity {
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                startActivity(new Intent(MyOfferActivity.this, MainActivity.class));
             }
         });
 

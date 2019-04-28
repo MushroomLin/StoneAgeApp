@@ -75,15 +75,6 @@ public class MyPostOfferActivity extends AppCompatActivity {
 
                 // Set click listener for the whole post view
                 final String offerKey = offerRef.getKey();
-                viewHolder3.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Launch PostDetailActivity
-                        Intent intent = new Intent(MyPostOfferActivity.this, MainActivity.class);
-                        //intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
-                        startActivity(intent);
-                    }
-                });
 
                 viewHolder3.bindToPostOffer(model, new View.OnClickListener() {
                     @Override

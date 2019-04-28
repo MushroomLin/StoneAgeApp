@@ -130,6 +130,7 @@ public class SendOfferActivity extends AppCompatActivity {
         final String title = offerTitle.getText().toString();
         final String description = offerdescription.getText().toString();
         final String address = offerAddress.getText().toString();
+        final String status = "open";
 
         if (TextUtils.isEmpty(title)) {
             offerTitle.setError(REQUIRED);
@@ -159,7 +160,7 @@ public class SendOfferActivity extends AppCompatActivity {
                             if (picture == null) {
                                 picture = "";
                             }
-                            Offer offer = new Offer(userId,author,title,description,address,picture,offerPostKey);
+                            Offer offer = new Offer(userId,author,title,description,address,picture,offerPostKey,status);
                             offerReference.push().setValue(offer);
                             offerUserReference.child(userId).push().setValue(offer);
                         }

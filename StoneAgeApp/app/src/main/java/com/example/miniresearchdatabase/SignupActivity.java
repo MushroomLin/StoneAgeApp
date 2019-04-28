@@ -109,7 +109,7 @@ public class SignupActivity extends BaseActivity{
         String phone = editText_phone.getText().toString();
         String intro = editText_intro.getText().toString();
         // Write new user to database
-        writeNewUser(user.getUid(), username, user.getEmail(), address, phone, intro, 0, "");
+        writeNewUser(user.getUid(), username, user.getEmail(), address, phone, intro, 5, "", 0);
 
         // Go to MainActivity
         startActivity(new Intent(SignupActivity.this, MainActivity.class));
@@ -155,8 +155,8 @@ public class SignupActivity extends BaseActivity{
     }
 
     // write new user function based on user format. Format is in models/User
-    private void writeNewUser(String userId, String name, String email, String address, String phone, String intro, double rate, String avatar) {
-        User user = new User(name, email, address, phone, intro, rate, avatar);
+    private void writeNewUser(String userId, String name, String email, String address, String phone, String intro, double rate, String avatar, int totalReview) {
+        User user = new User(name, email, address, phone, intro, rate, avatar, totalReview);
         mDatabase.child("users").child(userId).setValue(user);
     }
 
