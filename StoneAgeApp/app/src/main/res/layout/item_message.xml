@@ -3,24 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_corner_post_detail"
+    android:padding="10dp">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgUsers"
-        android:layout_width="30dp"
-        android:layout_height="50dp"
-        android:layout_weight="1"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         tools:src="@drawable/ic_action_account_circle_40" />
 
     <TextView
         android:id="@+id/tvSenders"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="5"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="20dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="30dp"
+        android:textSize="35dp"
+        android:textStyle="bold"
         tools:text="tvSender" />
 
 
