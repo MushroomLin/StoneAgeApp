@@ -181,6 +181,8 @@ public class OfferRateActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mDatabase.child("users").child(postuid).child("rate").setValue((double)newrate);
                 mDatabase.child("users").child(postuid).child("totalReview").setValue(newTotalReview+1);
+                mDatabase.child("user-offers").child(getUid()).child(finalOfferKey).child("status").setValue("closed");
+                mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("closed");
                 Toast.makeText(OfferRateActivity.this, "Sending Review", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(OfferRateActivity.this, MyOfferActivity.class);

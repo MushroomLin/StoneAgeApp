@@ -185,8 +185,8 @@ public class PostRateActivity extends AppCompatActivity {
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PostRateActivity.this, MyPostOfferActivity.class);
-                intent.putExtra(MyPostOfferActivity.EXTRA_POSTOFFER_POST_KEY, finalPostKey);
+                Intent intent = new Intent(PostRateActivity.this, MyPostActivity.class);
+                //intent.putExtra(MyPostOfferActivity.EXTRA_POSTOFFER_POST_KEY, finalPostKey);
                 startActivity(intent);
             }
         });
@@ -214,8 +214,8 @@ public class PostRateActivity extends AppCompatActivity {
                 mDatabase.child("users").child(offeruid).child("totalReview").setValue(newTotalReview+1);
                 mDatabase.child("posts").child(finalPostKey).child("status").setValue("closed");
                 mDatabase.child("user-posts").child(getUid()).child(finalPostKey).child("status").setValue("closed");
-                mDatabase.child("user-offers").child(offeruid).child(finalOfferKey).child("status").setValue("closed");
-                mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("closed");
+                mDatabase.child("user-offers").child(offeruid).child(finalOfferKey).child("status").setValue("accepted");
+                mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("accepted");
                 sendMessage(getUid(),offeruid,"Hello, I accept your offer of " + offerTitle + ". Let's find a time to meet!");
 
                 Intent intent = new Intent(PostRateActivity.this, MyPostOfferActivity.class);
