@@ -83,7 +83,6 @@ public class ChatActivity extends BaseActivity{
 
 
         mLinearLayoutManager = new LinearLayoutManager(this);
-//        mLinearLayoutManager.setStackFromEnd(true);
         messageRecyclerView.setLayoutManager(mLinearLayoutManager);
         messageRecyclerView.setHasFixedSize(true);
 
@@ -221,17 +220,20 @@ public class ChatActivity extends BaseActivity{
     }
 
     private void sendMessage(String sender, String receiver, String message) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        HashMap<String, Object> hashMap = new HashMap<>();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
-        Date date = new Date();
-        String time = dateFormat.format(date);
-        hashMap.put("sender", sender);
-        hashMap.put("receiver", receiver);
-        hashMap.put("message", message);
-        hashMap.put("time", time);
-        reference.child("chats").push().setValue(hashMap);
-
+        try{
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+            HashMap<String, Object> hashMap = new HashMap<>();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
+            Date date = new Date();
+            String time = dateFormat.format(date);
+            hashMap.put("sender", sender);
+            hashMap.put("receiver", receiver);
+            hashMap.put("message", message);
+            hashMap.put("time", time);
+            reference.child("chats").push().setValue(hashMap);
+        }
+        catch (Exception e){
+        };
     }
 
     private String convertImage() {
