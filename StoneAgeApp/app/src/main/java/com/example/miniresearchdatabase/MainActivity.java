@@ -1,6 +1,7 @@
 package com.example.miniresearchdatabase;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -62,6 +63,7 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         ft = getSupportFragmentManager().beginTransaction();
         currentFragment = new RecentPostsFragment();
@@ -108,8 +110,7 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
                 break;
             case R.id.navigation_map:
                 startActivity(new Intent(this, MapsActivity.class));
-//                startActivityForResult(new Intent(MainActivity.this, MapsActivity_selectAddress.class), 1);
-//                startActivity(new Intent(this, MapsActivity_selectAddress.class));
+//                startActivity(new Intent(this, SettingActivity.class));
                 break;
             case R.id.navigation_post:
                 startActivity(new Intent(MainActivity.this, NewPostActivity.class));
