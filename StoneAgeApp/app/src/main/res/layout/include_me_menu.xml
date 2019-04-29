@@ -64,8 +64,8 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/PostIcon"
             android:paddingStart="10dp"
-            android:textSize="25sp"
-            android:text="My Post" />
+            android:text="My Posts"
+            android:textSize="25sp" />
 
         <ImageView
             android:id="@+id/menuEnterImageView2"
@@ -103,8 +103,8 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/OfferIcon"
             android:paddingStart="10dp"
-            android:textSize="25sp"
-            android:text="My Offer" />
+            android:text="My Accepted Offers"
+            android:textSize="25sp" />
 
         <ImageView
             android:id="@+id/menuEnterImageView4"

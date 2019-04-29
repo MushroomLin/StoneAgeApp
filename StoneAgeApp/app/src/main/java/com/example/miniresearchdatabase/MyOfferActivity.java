@@ -121,7 +121,7 @@ public class MyOfferActivity extends AppCompatActivity {
     public Query getOfferQuery(DatabaseReference databaseReference) {
         // All my posts
         return databaseReference.child("user-offers")
-                .child(getUid()).orderByChild("status").equalTo("open");
+                .child(getUid()).orderByChild("status").equalTo("accepted");
 
     }
 

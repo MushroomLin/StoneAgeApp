@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.miniresearchdatabase.ImageUtils;
@@ -31,12 +32,13 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     public ImageView pictureView;
     private DatabaseReference mDatabase;
     public Context context;
+    public View closedView;
 
     public TextView textView_estimatedPrice;
 
     public PostViewHolder(View itemView, Context context) {
         super(itemView);
-
+        closedView = itemView;
         titleView = itemView.findViewById(R.id.postTitle);
         authorView = itemView.findViewById(R.id.postAuthor);
         postAuthorPhoto = itemView.findViewById(R.id.postAuthorPhoto);
@@ -108,6 +110,15 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         }
         else{
             postAuthorPhoto.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_person_24px));
+        }
+
+        if (post.status.equals("closed")){
+            closedView.setVisibility(View.GONE);
+            closedView.setLayoutParams(new LinearLayout.LayoutParams(0,0));
+
+        }
+        else {
+            closedView.setVisibility(View.VISIBLE);
         }
     }
 }
