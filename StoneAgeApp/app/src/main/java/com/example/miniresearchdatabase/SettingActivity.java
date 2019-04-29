@@ -7,7 +7,9 @@ import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -28,9 +30,7 @@ public class SettingActivity extends AppCompatActivity {
                 startActivityForResult(intent, 200);
             }
         }
-
-
-
+        
         changeBrightness = findViewById(R.id.BrightnessProgressBar);
         changeBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)

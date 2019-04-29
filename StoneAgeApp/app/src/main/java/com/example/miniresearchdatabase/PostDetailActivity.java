@@ -40,6 +40,9 @@ public class PostDetailActivity extends BaseActivity {
     private DatabaseReference mDatabase;
     private ValueEventListener mPostListener;
     private String mPostKey;
+    private String author;
+    String currKey;
+
 
     private CommentAdapter mAdapter;
 
@@ -151,6 +154,18 @@ public class PostDetailActivity extends BaseActivity {
                     mAuthorPhoto.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_baseline_person_24px));
                 }
                 mAuthorView.setText(post.author);
+                author = post.author;
+                currKey =post.uid;
+                mAuthorPhoto.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        // Launch ChatActivity
+                        Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                        intent.putExtra("username", author);
+                        intent.putExtra("userId", currKey);
+                        getApplicationContext().startActivity(intent);
+                    }
+                });
                 mTitleView.setText(post.title);
                 mBodyView.setText(post.description);
                 mAddressView.setText(post.address);

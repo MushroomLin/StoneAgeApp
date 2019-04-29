@@ -28,6 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -112,6 +115,23 @@ public class SendOfferActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 submitOffer();
+                DatabaseReference rateRef = mDatabase.child("posts").child(offerPostKey);
+                rateRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Serialize retrieved data to a User object
+                        Post post = dataSnapshot.getValue(Post.class);
+                        //Now you have an object of the User class and can use its getters like this
+                        String postuid = String.valueOf(post.uid);
+                        String postTitle = String.valueOf(post.title);
+                        sendMessage(getUid(),postuid,"Hello, I send you an offer to trade your "+ postTitle + ". Please check your Post's Offer page");
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                    }
+                });
+
             }
         });
         button_selectAddress.setOnClickListener(new View.OnClickListener() {
@@ -245,5 +265,19 @@ public class SendOfferActivity extends AppCompatActivity {
         } else {
             offerButton.hide();
         }
+    }
+
+    private void sendMessage(String sender, String receiver, String message) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
+        Date date = new Date();
+        String time = dateFormat.format(date);
+        hashMap.put("sender", sender);
+        hashMap.put("receiver", receiver);
+        hashMap.put("message", message);
+        hashMap.put("time", time);
+        reference.child("chats").push().setValue(hashMap);
+
     }
 }

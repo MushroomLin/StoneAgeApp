@@ -117,7 +117,7 @@ public class MyPostActivity extends AppCompatActivity {
     public Query getPostQuery(DatabaseReference databaseReference) {
         // All my posts
         return databaseReference.child("user-posts")
-                .child(getUid());
+                .child(getUid()).orderByChild("status").equalTo("open");
     }
 
     private void onStarClicked(DatabaseReference postRef) {

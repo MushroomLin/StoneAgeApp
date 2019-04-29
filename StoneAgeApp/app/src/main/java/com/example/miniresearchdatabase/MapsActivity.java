@@ -26,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import android.Manifest;
@@ -74,7 +75,7 @@ public class MapsActivity extends AppCompatActivity
     private int restrictDistance = 2000;
     // used to set multiple markers on the map
     private MarkerOptions options = new MarkerOptions();
-    private DatabaseReference mPostReference;
+    private Query mPostReference;
     private HashMap<Marker, String> marker2post = new HashMap<Marker, String>();
     private HashMap<String, Marker> post2marker = new HashMap<String, Marker>();
     private double currentLatitude = 0.0;
@@ -222,8 +223,7 @@ public class MapsActivity extends AppCompatActivity
                         LatLng postPoint = new LatLng(postLatitude, postLongitude);
                         options.position(postPoint);
                         options.title(post.title);
-                        options.snippet("Author: " + post.author + " Address: " + post.address
-                                + " " + post.description);
+                        options.snippet(post.description);
                         Marker mId = mMap.addMarker(options);
                         // store marker id and post key for future use
                         // Log.w("marker", mId.getId() + " " + postkey);
