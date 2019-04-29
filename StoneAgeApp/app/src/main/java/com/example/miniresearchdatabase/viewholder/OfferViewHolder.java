@@ -27,7 +27,7 @@ public class OfferViewHolder extends RecyclerView.ViewHolder {
     public ImageView pictureOfferView;
     private DatabaseReference mDatabase;
     public Context offer_context;
-
+    public TextView starTextView;
     public OfferViewHolder(View itemView, Context offer_context) {
         super(itemView);
 
@@ -37,6 +37,7 @@ public class OfferViewHolder extends RecyclerView.ViewHolder {
         addressOfferView = itemView.findViewById(R.id.offerAddress);
         pictureOfferView = itemView.findViewById(R.id.offerImageView);
         offerAuthorPhoto = itemView.findViewById(R.id.offerAuthorPhoto);
+        starTextView = itemView.findViewById(R.id.starTextView);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         this.offer_context = offer_context;
     }
@@ -67,6 +68,7 @@ public class OfferViewHolder extends RecyclerView.ViewHolder {
                         if (user.avatar != null) {
                             offerAuthorPhoto.setImageBitmap(user.getAvatar());
                         }
+                        starTextView.setText( String.format("%.1f", user.rate)+"/5.0");
 
                     }
 

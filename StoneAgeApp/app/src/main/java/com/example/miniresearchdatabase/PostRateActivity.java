@@ -54,6 +54,7 @@ public class PostRateActivity extends AppCompatActivity {
     private SharePhoto offerPhoto;
     private float starRate = 5;
     private String offeruid;
+    private String offerTitle;
     private float newrate;
     private int newTotalReview;
     private String offerUserName;
@@ -201,8 +202,8 @@ public class PostRateActivity extends AppCompatActivity {
                         Offer offer = dataSnapshot.getValue(Offer.class);
                         //Now you have an object of the User class and can use its getters like this
                         offeruid = String.valueOf(offer.uid);
-                        String offerTitle = String.valueOf(offer.title);
-                        sendMessage(getUid(),offeruid,"Hello, I accept your offer of " + offerTitle + ". Let's find a time to meet!");
+                        offerTitle = String.valueOf(offer.title);
+
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -215,7 +216,7 @@ public class PostRateActivity extends AppCompatActivity {
                 mDatabase.child("user-posts").child(getUid()).child(finalPostKey).child("status").setValue("closed");
                 mDatabase.child("user-offers").child(offeruid).child(finalOfferKey).child("status").setValue("closed");
                 mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("closed");
-                Toast.makeText(PostRateActivity.this, "Trade Finished!", Toast.LENGTH_SHORT).show();
+                sendMessage(getUid(),offeruid,"Hello, I accept your offer of " + offerTitle + ". Let's find a time to meet!");
 
                 Intent intent = new Intent(PostRateActivity.this, MyPostOfferActivity.class);
                 intent.putExtra(MyPostOfferActivity.EXTRA_POSTOFFER_POST_KEY, finalPostKey);

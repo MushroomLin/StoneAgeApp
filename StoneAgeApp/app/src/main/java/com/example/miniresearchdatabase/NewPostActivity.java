@@ -33,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -64,7 +65,6 @@ public class NewPostActivity extends BaseActivity {
     private BottomDialog dialog;
     private Uri filePath;
     private Bitmap bitmap;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

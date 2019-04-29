@@ -27,7 +27,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     public TextView numStarsView;
     public TextView bodyView;
     public TextView addressView;
-
+    public TextView starTextView;
     public ImageView pictureView;
     private DatabaseReference mDatabase;
     public Context context;
@@ -45,7 +45,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         bodyView = itemView.findViewById(R.id.postBody);
         addressView = itemView.findViewById(R.id.postAddress);
         pictureView = itemView.findViewById(R.id.pictureImageView);
-
+        starTextView = itemView.findViewById(R.id.starTextView);
         textView_estimatedPrice = itemView.findViewById(R.id.textView_estimatedPrice);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -96,7 +96,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
                         if (user.avatar != null) {
                             postAuthorPhoto.setImageBitmap(user.getAvatar());
                         }
-
+                        starTextView.setText( String.format("%.1f", user.rate)+"/5.0");
                     }
 
                 }
