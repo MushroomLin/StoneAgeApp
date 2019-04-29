@@ -1,6 +1,7 @@
 package com.example.miniresearchdatabase.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -29,7 +30,7 @@ import java.util.List;
 public class MessageListFragment extends Fragment {
 
     private static final String TAG = "MessageListFragment";
-    private DatabaseReference mDatabase;
+    private Context mContext;
     private RecyclerView mRecycler;
 
     private MessageAdapter messageAdapter;
@@ -38,6 +39,7 @@ public class MessageListFragment extends Fragment {
     private List<String> mUsers;
     public MessageListFragment() {}
 
+
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
@@ -45,7 +47,6 @@ public class MessageListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_all_messages, container, false);
 
         // [START create_database_reference]
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         //        // [END create_database_reference]
 
@@ -61,6 +62,12 @@ public class MessageListFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
 
@@ -82,10 +89,10 @@ public class MessageListFragment extends Fragment {
                         mUsers.add(message.receiver);
                     }
                 }
-                messageAdapter = new MessageAdapter(getContext(), mUsers);
+                messageAdapter = new MessageAdapter(mContext, mUsers);
                 mRecycler.setAdapter(messageAdapter);
-                //RecyclerView.ItemDecoration decor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-                //mRecycler.addItemDecoration(decor);
+                RecyclerView.ItemDecoration decor = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
+                mRecycler.addItemDecoration(decor);
             }
 
             @Override

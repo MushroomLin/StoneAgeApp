@@ -3,14 +3,18 @@ package com.example.miniresearchdatabase;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -67,6 +71,7 @@ public class ChatActivity extends BaseActivity{
     private String image;
     private Bitmap curr;
     private  Bitmap other;
+    private BottomDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +90,28 @@ public class ChatActivity extends BaseActivity{
         messageRecyclerView = findViewById(R.id.messageRecyclerView);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         addMessageImageView = (ImageView)findViewById(R.id.addMessageImageView);
+        messageRecyclerView.setHasFixedSize(false);
 
-
-        mLinearLayoutManager = new LinearLayoutManager(this);
-        messageRecyclerView.setLayoutManager(mLinearLayoutManager);
-        messageRecyclerView.setHasFixedSize(true);
+        dialog = new BottomDialog(ChatActivity.this);
+        dialog.canceledOnTouchOutside(true);
+        dialog.cancelable(true);
+        dialog.inflateMenu(R.menu.menu_choose_picture);
+        dialog.setOnItemSelectedListener(new BottomDialog.OnItemSelectedListener() {
+            @Override
+            public boolean onItemSelected(int id) {
+                switch (id) {
+                    case R.id.action_choose:
+                        chooseImage();
+                        return true;
+                    case R.id.action_new:
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
 
 
 
@@ -131,10 +153,7 @@ public class ChatActivity extends BaseActivity{
         addMessageImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+                dialog.show();
             }
         });
 
@@ -182,24 +201,12 @@ public class ChatActivity extends BaseActivity{
                                     other = user.getAvatar();
                                 }
                                 messageContentAdapter = new MessageContentAdapter(ChatActivity.this, messageList, curr, other);
-                                messageContentAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-                                    @Override
-                                    public void onItemRangeInserted(int positionStart, int itemCount) {
-                                        super.onItemRangeInserted(positionStart, itemCount);
-                                        int friendlyMessageCount = messageContentAdapter.getItemCount();
-                                        int lastVisiblePosition =
-                                                mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
-                                        // If the recycler view is initially being loaded or the
-                                        // user is at the bottom of the list, scroll to the bottom
-                                        // of the list to show the newly added message.
-                                        if (lastVisiblePosition == -1 ||
-                                                (positionStart >= (friendlyMessageCount - 1) &&
-                                                        lastVisiblePosition == (positionStart - 1))) {
-                                            messageRecyclerView.scrollToPosition(positionStart);
-                                        }
-                                    }
-                                });
                                 messageRecyclerView.setAdapter(messageContentAdapter);
+                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
+
+                                linearLayoutManager.scrollToPositionWithOffset(messageContentAdapter.getItemCount()-1, 0);
+                                messageRecyclerView.setLayoutManager(linearLayoutManager);
+                                messageRecyclerView.getRecycledViewPool().setMaxRecycledViews(0, 0);
                             }
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -225,17 +232,38 @@ public class ChatActivity extends BaseActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // get image
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
+        Log.w("TAG", String.valueOf(requestCode)+" "+String.valueOf(resultCode));
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null )
+        {
             filePath = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                image = convertImage();
-            } catch (IOException e) {
+                image = convertImage(bitmap);
+                if(image !=null) {
+                    sendImage(firebaseUser.getUid(), userId, image);
+                }
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
-            sendImage(firebaseUser.getUid(), userId, image);
+        }
+        else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null)
+        {
+            try {
+                Log.w("TAG", data.toString());
+                bitmap = (Bitmap) data.getExtras().get("data");
+                image = convertImage(bitmap);
+                if(image !=null) {
+                    sendImage(firebaseUser.getUid(), userId, image);
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -266,16 +294,51 @@ public class ChatActivity extends BaseActivity{
             reference.child("chats").push().setValue(hashMap);
         }
         catch (Exception e){
+            e.printStackTrace();
         };
     }
 
-    private String convertImage() {
+    private String convertImage(Bitmap b) {
         String data;
-        if(bitmap != null)
+        if(b != null)
         {
-            data = ImageUtils.bitmapToString(bitmap);
+            data = ImageUtils.bitmapToString(b);
         }
         else data = null;
         return data;
     }
+
+    private void chooseImage() {
+        // set up intent to choose a picture from phone
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+//    public class ScrollLinearLayoutManager extends LinearLayoutManager {
+//        private static final float MILLISECONDS_PER_INCH = 100f;
+//        public ScrollLinearLayoutManager(Context context) {
+//            super(context);
+//        }
+//
+//        @Override
+//        public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, final int position) {
+//            LinearSmoothScroller linearSmoothScroller = new LinearSmoothScroller(recyclerView.getContext())
+//            {
+//                @Nullable
+//                @Override
+//                public PointF computeScrollVectorForPosition(int targetPosition) {
+//                    return ScrollLinearLayoutManager.this.computeScrollVectorForPosition(targetPosition);
+//                }
+//
+//                @Override
+//                protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+//                    return MILLISECONDS_PER_INCH / displayMetrics.densityDpi;
+//                }
+//            };
+//            linearSmoothScroller.setTargetPosition(position);
+//            startSmoothScroll(linearSmoothScroller);
+//        }
+//    }
 }

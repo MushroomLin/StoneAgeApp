@@ -45,6 +45,7 @@ public class MessageContentAdapter extends RecyclerView.Adapter<MessageContentAd
         this.user = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.curr = curr;
         this.other = other;
+
     }
 
     @NonNull
