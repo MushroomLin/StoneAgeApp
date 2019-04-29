@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import rebus.bottomdialog.BottomDialog;
+
 public class SendOfferActivity extends AppCompatActivity {
     private static final String TAG = "SendOfferActivity";
     private static final String REQUIRED = "Required";
@@ -43,6 +45,7 @@ public class SendOfferActivity extends AppCompatActivity {
     private ImageButton button_selectAddress;
     private final int PICK_IMAGE_REQUEST = 71;
     private final int SELECT_ADDRESS_ON_MAP = 118;
+    private final int CAMERA_REQUEST = 1888;
     private String address = "";
     private ImageView offerimageView;
     private Uri filePath;
@@ -51,7 +54,7 @@ public class SendOfferActivity extends AppCompatActivity {
     public static final String OFFER_POST_KEY = "post_key";
     private DatabaseReference offerReference;
     private DatabaseReference offerUserReference;
-
+    private BottomDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +74,6 @@ public class SendOfferActivity extends AppCompatActivity {
                 .child("post-offers").child(offerPostKey);
         offerUserReference = FirebaseDatabase.getInstance().getReference()
                 .child("user-offers");
-        offerimageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseImage();
-            }
-        });
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 8)
         {
@@ -85,7 +82,32 @@ public class SendOfferActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
 
         }
-
+        dialog = new BottomDialog(SendOfferActivity.this);
+        dialog.canceledOnTouchOutside(true);
+        dialog.cancelable(true);
+        dialog.inflateMenu(R.menu.menu_choose_picture);
+        dialog.setOnItemSelectedListener(new BottomDialog.OnItemSelectedListener() {
+            @Override
+            public boolean onItemSelected(int id) {
+                switch (id) {
+                    case R.id.action_choose:
+                        chooseImage();
+                        return true;
+                    case R.id.action_new:
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        offerimageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
         offerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,9 +220,15 @@ public class SendOfferActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        if (requestCode == SELECT_ADDRESS_ON_MAP && resultCode == RESULT_OK && data != null) {
+        else if (requestCode == SELECT_ADDRESS_ON_MAP && resultCode == RESULT_OK && data != null) {
             address = data.getExtras().getString("selectAddress"); //get the data from new Activity when it finished
             offerAddress.setText(address);
+        }
+        else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null)
+        {
+            Log.w("TAG", data.toString());
+            bitmap_offer = (Bitmap) data.getExtras().get("data");
+            offerimageView.setImageBitmap(bitmap_offer);
         }
     }
 

@@ -13,7 +13,16 @@
         android:layout_height="50dp"
         android:tint="@color/grey_300"
         app:srcCompat="@drawable/ic_back_icon" />
-
+    <TextView
+        android:id="@+id/MyPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/BackImageView"
+        android:text="My Post"
+        android:textSize="30sp"
+        android:textColor="@color/grey_300"
+        android:textStyle="bold" />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

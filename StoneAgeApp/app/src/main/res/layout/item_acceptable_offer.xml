@@ -31,7 +31,9 @@
             android:id="@+id/button_accept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/offerAuthorLayout"
+            android:background="@drawable/round_corner"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/white"
             android:text="Accept" />
 
     </RelativeLayout>

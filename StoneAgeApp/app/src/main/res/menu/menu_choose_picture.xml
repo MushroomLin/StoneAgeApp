@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_choose"
-        android:icon="@drawable/baseline_add_a_photo_black_18dp"
+        android:icon="@drawable/baseline_add_photo_alternate_black_18dp"
         android:title="Choose Picture" />
     <item
         android:id="@+id/action_new"
-        android:icon="@drawable/baseline_add_photo_alternate_black_18dp"
+        android:icon="@drawable/baseline_add_a_photo_black_18dp"
         android:title="New Photo" />
 </menu>

@@ -38,6 +38,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import rebus.bottomdialog.BottomDialog;
+
 public class NewPostActivity extends BaseActivity {
 
     private static final String TAG = "NewPostActivity";
@@ -54,11 +56,12 @@ public class NewPostActivity extends BaseActivity {
     // -------
     private final int PICK_IMAGE_REQUEST = 71;
     private final int SELECT_ADDRESS_ON_MAP = 118;
+    private final int CAMERA_REQUEST = 1888;
     private ImageButton button_selectAddress;
     private ImageView imageView;
     private EditText editText_description;
     private String address = "";
-
+    private BottomDialog dialog;
     private Uri filePath;
     private Bitmap bitmap;
 
@@ -91,11 +94,30 @@ public class NewPostActivity extends BaseActivity {
         button_selectAddress = findViewById(R.id.selectAddressBtn);
         imageView = findViewById(R.id.uploadImageView);
         editText_description = findViewById(R.id.editText_description);
-
+        dialog = new BottomDialog(NewPostActivity.this);
+        dialog.canceledOnTouchOutside(true);
+        dialog.cancelable(true);
+        dialog.inflateMenu(R.menu.menu_choose_picture);
+        dialog.setOnItemSelectedListener(new BottomDialog.OnItemSelectedListener() {
+            @Override
+            public boolean onItemSelected(int id) {
+                switch (id) {
+                    case R.id.action_choose:
+                        chooseImage();
+                        return true;
+                    case R.id.action_new:
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chooseImage();
+                dialog.show();
             }
         });
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
@@ -150,8 +172,14 @@ public class NewPostActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
+        else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null)
+        {
+            Log.w("TAG", data.toString());
+            bitmap = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(bitmap);
+        }
         // get address
-        if (requestCode == SELECT_ADDRESS_ON_MAP && resultCode == RESULT_OK && data != null) {
+        else if (requestCode == SELECT_ADDRESS_ON_MAP && resultCode == RESULT_OK && data != null) {
             address = data.getExtras().getString("selectAddress"); //get the data from new Activity when it finished
             mAddressField.setText(address);
         }
