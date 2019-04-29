@@ -28,7 +28,7 @@ public class PostOfferViewHolder extends RecyclerView.ViewHolder {
     public Button button_accept;
     private DatabaseReference mDatabase;
     public Context postoffer_context;
-
+    public TextView starTextView;
     public PostOfferViewHolder(View itemView, Context postoffer_context) {
         super(itemView);
 
@@ -40,6 +40,7 @@ public class PostOfferViewHolder extends RecyclerView.ViewHolder {
         button_accept = itemView.findViewById(R.id.button_accept);
         postOfferAuthorPhoto = itemView.findViewById(R.id.offerAuthorPhoto);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        starTextView = itemView.findViewById(R.id.starTextView);
         this.postoffer_context = postoffer_context;
     }
 
@@ -71,6 +72,7 @@ public class PostOfferViewHolder extends RecyclerView.ViewHolder {
                         if (user.avatar != null) {
                             postOfferAuthorPhoto.setImageBitmap(user.getAvatar());
                         }
+                        starTextView.setText( String.format("%.1f", user.rate)+"/5.0");
                     }
                 }
                 @Override

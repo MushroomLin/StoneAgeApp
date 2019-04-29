@@ -84,8 +84,8 @@ public class MessageListFragment extends Fragment {
                 }
                 messageAdapter = new MessageAdapter(getContext(), mUsers);
                 mRecycler.setAdapter(messageAdapter);
-                RecyclerView.ItemDecoration decor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-                mRecycler.addItemDecoration(decor);
+                //RecyclerView.ItemDecoration decor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+                //mRecycler.addItemDecoration(decor);
             }
 
             @Override

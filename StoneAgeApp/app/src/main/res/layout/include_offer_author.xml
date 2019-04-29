@@ -13,6 +13,7 @@
         android:src="@drawable/ic_action_account_circle_40"
         app:civ_border_color="@color/grey_300"
         app:civ_border_width="3dp"/>
+
     <TextView
         android:id="@+id/offerAuthor"
         style="@style/Base.TextAppearance.AppCompat.Small"
@@ -21,6 +22,20 @@
         android:layout_marginLeft="12dp"
         android:gravity="center_vertical"
         android:textSize="18sp"
+        android:textStyle="bold"
         tools:text="someauthor@email.com" />
+
+    <TextView
+        android:id="@+id/starTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        tools:text="4.0/5" />
+
+    <ImageView
+        android:id="@+id/starImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_toggle_star_24" />
 
 </LinearLayout>
