@@ -43,6 +43,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import rebus.bottomdialog.BottomDialog;
+
 
 public class ChatActivity extends BaseActivity{
     private DatabaseReference reference;
@@ -58,10 +60,13 @@ public class ChatActivity extends BaseActivity{
     private ProgressBar mProgressBar;
     private LinearLayoutManager mLinearLayoutManager;
     private ImageView addMessageImageView;
+    private static final int CAMERA_REQUEST = 1888;
     private final int PICK_IMAGE_REQUEST = 71;
     private Uri filePath;
     private Bitmap bitmap;
     private String image;
+    private Bitmap curr;
+    private  Bitmap other;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,25 +163,53 @@ public class ChatActivity extends BaseActivity{
                     }
                 });
 
-                messageContentAdapter = new MessageContentAdapter(ChatActivity.this, messageList, userId);
-                messageContentAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                DatabaseReference receive = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+                receive.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onItemRangeInserted(int positionStart, int itemCount) {
-                        super.onItemRangeInserted(positionStart, itemCount);
-                        int friendlyMessageCount = messageContentAdapter.getItemCount();
-                        int lastVisiblePosition =
-                                mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
-                        // If the recycler view is initially being loaded or the
-                        // user is at the bottom of the list, scroll to the bottom
-                        // of the list to show the newly added message.
-                        if (lastVisiblePosition == -1 ||
-                                (positionStart >= (friendlyMessageCount - 1) &&
-                                        lastVisiblePosition == (positionStart - 1))) {
-                            messageRecyclerView.scrollToPosition(positionStart);
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        assert user != null;
+                        if(user.avatar != null) {
+                            curr = user.getAvatar();
                         }
+                        DatabaseReference send = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
+                        send.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                User user = dataSnapshot.getValue(User.class);
+                                assert user != null;
+                                if(user.avatar != null) {
+                                    other = user.getAvatar();
+                                }
+                                messageContentAdapter = new MessageContentAdapter(ChatActivity.this, messageList, curr, other);
+                                messageContentAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                                    @Override
+                                    public void onItemRangeInserted(int positionStart, int itemCount) {
+                                        super.onItemRangeInserted(positionStart, itemCount);
+                                        int friendlyMessageCount = messageContentAdapter.getItemCount();
+                                        int lastVisiblePosition =
+                                                mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
+                                        // If the recycler view is initially being loaded or the
+                                        // user is at the bottom of the list, scroll to the bottom
+                                        // of the list to show the newly added message.
+                                        if (lastVisiblePosition == -1 ||
+                                                (positionStart >= (friendlyMessageCount - 1) &&
+                                                        lastVisiblePosition == (positionStart - 1))) {
+                                            messageRecyclerView.scrollToPosition(positionStart);
+                                        }
+                                    }
+                                });
+                                messageRecyclerView.setAdapter(messageContentAdapter);
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
                 });
-                messageRecyclerView.setAdapter(messageContentAdapter);
 
             }
 
