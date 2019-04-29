@@ -156,7 +156,7 @@ public class PostDetailActivity extends BaseActivity {
                 mAuthorView.setText(post.author);
                 author = post.author;
                 currKey =post.uid;
-                mAuthorView.setOnClickListener(new View.OnClickListener(){
+                mAuthorPhoto.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
                         // Launch ChatActivity
