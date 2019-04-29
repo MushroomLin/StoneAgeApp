@@ -58,6 +58,8 @@ public class SendOfferActivity extends AppCompatActivity {
     private DatabaseReference offerReference;
     private DatabaseReference offerUserReference;
     private BottomDialog dialog;
+    private String postuid;
+    private String postTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,15 +124,16 @@ public class SendOfferActivity extends AppCompatActivity {
                         //Serialize retrieved data to a User object
                         Post post = dataSnapshot.getValue(Post.class);
                         //Now you have an object of the User class and can use its getters like this
-                        String postuid = String.valueOf(post.uid);
-                        String postTitle = String.valueOf(post.title);
-                        sendMessage(getUid(),postuid,"Hello, I send you an offer to trade your "+ postTitle + ". Please check your Post's Offer page");
+                        postuid = String.valueOf(post.uid);
+                        postTitle = String.valueOf(post.title);
+
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
                     }
                 });
+                sendMessage(getUid(),postuid,"Hello, I send you an offer to trade your "+ postTitle + ". Please check your Post's Offer page");
 
             }
         });
