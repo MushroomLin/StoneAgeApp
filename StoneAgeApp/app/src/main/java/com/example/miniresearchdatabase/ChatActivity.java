@@ -83,7 +83,6 @@ public class ChatActivity extends BaseActivity{
 
 
         mLinearLayoutManager = new LinearLayoutManager(this);
-//        mLinearLayoutManager.setStackFromEnd(true);
         messageRecyclerView.setLayoutManager(mLinearLayoutManager);
         messageRecyclerView.setHasFixedSize(true);
 

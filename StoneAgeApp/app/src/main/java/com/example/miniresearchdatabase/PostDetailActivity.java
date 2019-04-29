@@ -40,8 +40,8 @@ public class PostDetailActivity extends BaseActivity {
     private DatabaseReference mDatabase;
     private ValueEventListener mPostListener;
     private String mPostKey;
-    private String author;
-    String currKey;
+    private String author = "";
+    private String currKey = "";
 
 
     private CommentAdapter mAdapter;
@@ -58,6 +58,7 @@ public class PostDetailActivity extends BaseActivity {
     private TextView textView_estimatedPrice;
     private ImageView mPictureView;
     private ImageView mAuthorPhoto;
+    private Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,9 +120,7 @@ public class PostDetailActivity extends BaseActivity {
     @Override
     public void onStart() {
         super.onStart();
-
         // Add value event listener to the post
-
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -160,10 +159,10 @@ public class PostDetailActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         // Launch ChatActivity
-                        Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                        Intent intent = new Intent(PostDetailActivity.this, ChatActivity.class);
                         intent.putExtra("username", author);
                         intent.putExtra("userId", currKey);
-                        getApplicationContext().startActivity(intent);
+                        startActivity(intent);
                     }
                 });
                 mTitleView.setText(post.title);
