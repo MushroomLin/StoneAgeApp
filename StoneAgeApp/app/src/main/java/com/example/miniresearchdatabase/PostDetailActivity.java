@@ -58,6 +58,7 @@ public class PostDetailActivity extends BaseActivity {
     private TextView textView_estimatedPrice;
     private ImageView mPictureView;
     private ImageView mAuthorPhoto;
+    private TextView starTextView;
     private Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,7 @@ public class PostDetailActivity extends BaseActivity {
         mPictureView = findViewById(R.id.pictureImageView);
         mAuthorPhoto = findViewById(R.id.postAuthorPhoto);
         button_back = findViewById(R.id.BackImageView);
+        starTextView = findViewById(R.id.starTextView);
         mCommentsRecycler = findViewById(R.id.recyclerPostComments);
         textView_estimatedPrice = findViewById(R.id.textView_estimatedPrice);
 
@@ -139,7 +141,7 @@ public class PostDetailActivity extends BaseActivity {
                                 if (user.avatar != null) {
                                     mAuthorPhoto.setImageBitmap(user.getAvatar());
                                 }
-
+                                starTextView.setText( String.format("%.1f", user.rate)+"/5.0");
                             }
 
                         }
