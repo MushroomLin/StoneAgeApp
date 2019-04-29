@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
 
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgUsers"
         android:layout_width="30dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_action_account_circle_40"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        tools:src="@drawable/ic_action_account_circle_40" />
 
     <TextView
+        android:id="@+id/tvSenders"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:textSize="30dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_gravity="center_horizontal"
-        android:text="tvSender"
-        android:id="@+id/tvSenders"
         android:layout_weight="5"
-        />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30dp"
+        tools:text="tvSender" />
 
 
 </LinearLayout>
