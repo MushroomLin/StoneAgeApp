@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -160,11 +161,15 @@ public class PostDetailActivity extends BaseActivity {
                 mAuthorPhoto.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        // Launch ChatActivity
-                        Intent intent = new Intent(PostDetailActivity.this, ChatActivity.class);
-                        intent.putExtra("username", author);
-                        intent.putExtra("userId", currKey);
-                        startActivity(intent);
+                        String currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        //make sure people can't talk to themselves.
+                        if(!currKey.equals(currUser)) {
+                            // Launch ChatActivity
+                            Intent intent = new Intent(PostDetailActivity.this, ChatActivity.class);
+                            intent.putExtra("username", author);
+                            intent.putExtra("userId", currKey);
+                            startActivity(intent);
+                        }
                     }
                 });
                 mTitleView.setText(post.title);

@@ -1,30 +1,22 @@
 package com.example.miniresearchdatabase;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.example.miniresearchdatabase.Adapter.MessageAdapter;
 import com.example.miniresearchdatabase.Adapter.MessageContentAdapter;
 import com.example.miniresearchdatabase.models.Message;
 import com.example.miniresearchdatabase.models.User;
@@ -35,10 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,7 +43,6 @@ import rebus.bottomdialog.BottomDialog;
 public class ChatActivity extends BaseActivity{
     private DatabaseReference reference;
     private FirebaseUser firebaseUser;
-    private DatabaseReference mDatabase;
     private EditText mMessageEditText;
     private Button mSendButton;
     private MessageContentAdapter messageContentAdapter;
@@ -62,7 +51,6 @@ public class ChatActivity extends BaseActivity{
     private RecyclerView messageRecyclerView;
     private List<Message> messageList;
     private ProgressBar mProgressBar;
-    private LinearLayoutManager mLinearLayoutManager;
     private ImageView addMessageImageView;
     private static final int CAMERA_REQUEST = 1888;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -90,7 +78,6 @@ public class ChatActivity extends BaseActivity{
         messageRecyclerView = findViewById(R.id.messageRecyclerView);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         addMessageImageView = (ImageView)findViewById(R.id.addMessageImageView);
-        messageRecyclerView.setHasFixedSize(false);
 
         dialog = new BottomDialog(ChatActivity.this);
         dialog.canceledOnTouchOutside(true);
@@ -203,7 +190,6 @@ public class ChatActivity extends BaseActivity{
                                 messageContentAdapter = new MessageContentAdapter(ChatActivity.this, messageList, curr, other);
                                 messageRecyclerView.setAdapter(messageContentAdapter);
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
-
                                 linearLayoutManager.scrollToPositionWithOffset(messageContentAdapter.getItemCount()-1, 0);
                                 messageRecyclerView.setLayoutManager(linearLayoutManager);
                                 messageRecyclerView.getRecycledViewPool().setMaxRecycledViews(0, 0);
