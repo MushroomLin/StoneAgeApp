@@ -73,32 +73,36 @@ public class MessageListFragment extends Fragment {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("chats");
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         assert firebaseUser != null;
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mUsers.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Message message = snapshot.getValue(Message.class);
-                    assert  message != null;
-                    if(message.receiver.equals(getUid()) && !mUsers.contains(message.sender)) {
-                        mUsers.add(message.sender);
+        try {
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    mUsers.clear();
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Message message = snapshot.getValue(Message.class);
+                        assert  message != null;
+                        if(message.receiver.equals(getUid()) && !mUsers.contains(message.sender)) {
+                            mUsers.add(message.sender);
+                        }
+                        else if(message.sender.equals(getUid()) && !mUsers.contains(message.receiver)) {
+                            mUsers.add(message.receiver);
+                        }
                     }
-                    else if(message.sender.equals(getUid()) && !mUsers.contains(message.receiver)) {
-                        mUsers.add(message.receiver);
-                    }
+                    messageAdapter = new MessageAdapter(mContext, mUsers);
+                    mRecycler.setAdapter(messageAdapter);
+                    RecyclerView.ItemDecoration decor = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
+                    mRecycler.addItemDecoration(decor);
                 }
-                messageAdapter = new MessageAdapter(mContext, mUsers);
-                mRecycler.setAdapter(messageAdapter);
-                RecyclerView.ItemDecoration decor = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
-                mRecycler.addItemDecoration(decor);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-
+                }
+            });
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String getUid() {
