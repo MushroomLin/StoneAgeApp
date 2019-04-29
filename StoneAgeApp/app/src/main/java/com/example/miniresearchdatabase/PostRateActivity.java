@@ -30,6 +30,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+
 public class PostRateActivity extends AppCompatActivity {
     private Button button_facebook;
     private Button button_back;
@@ -196,6 +201,8 @@ public class PostRateActivity extends AppCompatActivity {
                         Offer offer = dataSnapshot.getValue(Offer.class);
                         //Now you have an object of the User class and can use its getters like this
                         offeruid = String.valueOf(offer.uid);
+                        String offerTitle = String.valueOf(offer.title);
+                        sendMessage(getUid(),offeruid,"Hello, I accept your offer of " + offerTitle + ". Let's find a time to meet!");
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -275,6 +282,20 @@ public class PostRateActivity extends AppCompatActivity {
     }
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    private void sendMessage(String sender, String receiver, String message) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
+        Date date = new Date();
+        String time = dateFormat.format(date);
+        hashMap.put("sender", sender);
+        hashMap.put("receiver", receiver);
+        hashMap.put("message", message);
+        hashMap.put("time", time);
+        reference.child("chats").push().setValue(hashMap);
+
     }
 }
 

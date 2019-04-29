@@ -32,6 +32,11 @@ public class MyTopPostsFragment extends PostListFragment {
     }
 
     @Override
+    public Query getQueryBySearchUser(DatabaseReference databaseReference, String searchText){
+        return null;
+    }
+
+    @Override
     public Query getQueryFromPrice(DatabaseReference databaseReference, double minPrice, double maxPrice) {
         return null;
     }

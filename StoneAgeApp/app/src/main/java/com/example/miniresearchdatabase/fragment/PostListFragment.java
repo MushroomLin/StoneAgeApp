@@ -56,6 +56,7 @@ public abstract class PostListFragment extends Fragment {
 
     private Button bt_search;
     private EditText et_searchText;
+    private Button button_user;
 
     List<Double> avgPricesList = null;
     Query postsQuery;
@@ -78,17 +79,17 @@ public abstract class PostListFragment extends Fragment {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            if (recommendFlag == 0 || recommendFlag == 2) {
-                recommendFlag = 1;
-                Toast.makeText(getActivity(),"Price Recommend Mode",Toast.LENGTH_SHORT).show();
-            }
-            else {
-                recommendFlag = 0;
-                Toast.makeText(getActivity(),"Regular Mode",Toast.LENGTH_SHORT).show();
-            }
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.detach(PostListFragment.this).attach(PostListFragment.this).commit();
-            Log.e("ppp", String.valueOf(recommendFlag));
+                if (recommendFlag == 0 || recommendFlag == 2) {
+                    recommendFlag = 1;
+                    Toast.makeText(getActivity(),"Price Recommend Mode",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    recommendFlag = 0;
+                    Toast.makeText(getActivity(),"Regular Mode",Toast.LENGTH_SHORT).show();
+                }
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(PostListFragment.this).attach(PostListFragment.this).commit();
+                Log.e("ppp", String.valueOf(recommendFlag));
             }
         });
 
@@ -98,6 +99,18 @@ public abstract class PostListFragment extends Fragment {
             public void onClick(View v) {
                 searchText = et_searchText.getText().toString();
                 recommendFlag = 2;
+                Toast.makeText(getActivity(),"Searching...",Toast.LENGTH_SHORT).show();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(PostListFragment.this).attach(PostListFragment.this).commit();
+            }
+        });
+
+        button_user = rootView.findViewById(R.id.button_user);
+        button_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchText = et_searchText.getText().toString();
+                recommendFlag = 3;
                 Toast.makeText(getActivity(),"Searching...",Toast.LENGTH_SHORT).show();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(PostListFragment.this).attach(PostListFragment.this).commit();
@@ -133,11 +146,8 @@ public abstract class PostListFragment extends Fragment {
                     }
                 }
                 // if the range of minPrice and maxPrcie isn't big enough
-                if (minPrice - 20.0 > 0.0)
-                    minPrice = minPrice - 20.0;
-                else
-                    minPrice = 0.0;
-                maxPrice = maxPrice + 20.0;
+                minPrice = Math.min(Math.max(minPrice - 20, 0.0), minPrice * 0.8);
+                maxPrice = Math.max(maxPrice + 20.0, maxPrice * 1.2);
 //                avgPricesList = avgPriceList;
             }
 
@@ -173,7 +183,17 @@ public abstract class PostListFragment extends Fragment {
         } else if(recommendFlag == 1) {
             postsQuery = getQueryFromPrice(mDatabase, minPrice, maxPrice);
         } else if(recommendFlag == 2) {
-            postsQuery = getQueryBySearch(mDatabase, searchText);
+            if(searchText.equals("")) {
+                postsQuery = getQuery(mDatabase);
+            } else {
+                postsQuery = getQueryBySearch(mDatabase, searchText);
+            }
+        } else if(recommendFlag == 3) {
+            if(searchText.equals("")) {
+                postsQuery = getQuery(mDatabase);
+            } else {
+                postsQuery = getQueryBySearchUser(mDatabase, searchText);
+            }
         }
 
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Post>()
@@ -292,6 +312,8 @@ public abstract class PostListFragment extends Fragment {
     public abstract Query getQueryFromPrice(DatabaseReference databaseReference, double min, double max);
 
     public abstract Query getQueryBySearch(DatabaseReference databaseReference, String searchText);
+
+    public abstract Query getQueryBySearchUser(DatabaseReference databaseReference, String searchText);
 
     public abstract Query getQuery(DatabaseReference databaseReference);
 }

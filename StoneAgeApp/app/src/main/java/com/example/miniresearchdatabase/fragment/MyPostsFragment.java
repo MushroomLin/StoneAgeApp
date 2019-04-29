@@ -13,6 +13,11 @@ public class MyPostsFragment extends PostListFragment {
     }
 
     @Override
+    public Query getQueryBySearchUser(DatabaseReference databaseReference, String searchText){
+        return null;
+    }
+
+    @Override
     public double[] getQuery3(DatabaseReference databaseReference) {
         return null;
     }

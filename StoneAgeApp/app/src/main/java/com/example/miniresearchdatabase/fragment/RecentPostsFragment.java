@@ -84,6 +84,17 @@ public class RecentPostsFragment extends PostListFragment {
         Query minMaxPricePostsQuery = databaseReference.child("posts").orderByChild("title")
                 .startAt(searchText)
                 .endAt(searchText + "\uf8ff");
+
+//        Log.e("getQueryBySearch", minMaxPricePostsQuery.);
+        return minMaxPricePostsQuery;
+    }
+
+    @Override
+    public Query getQueryBySearchUser(DatabaseReference databaseReference, String searchText) {
+        Query minMaxPricePostsQuery = databaseReference.child("posts").orderByChild("author")
+                .startAt(searchText)
+                .endAt(searchText + "\uf8ff");
+//        Log.e("getQueryBySearch", minMaxPricePostsQuery.);
         return minMaxPricePostsQuery;
     }
 
