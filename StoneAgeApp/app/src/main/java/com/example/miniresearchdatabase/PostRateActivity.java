@@ -218,8 +218,7 @@ public class PostRateActivity extends AppCompatActivity {
                 mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("accepted");
                 sendMessage(getUid(),offeruid,"Hello, I accept your offer of " + offerTitle + ". Let's find a time to meet!");
 
-                Intent intent = new Intent(PostRateActivity.this, MyPostOfferActivity.class);
-                intent.putExtra(MyPostOfferActivity.EXTRA_POSTOFFER_POST_KEY, finalPostKey);
+                Intent intent = new Intent(PostRateActivity.this, MyPostActivity.class);
                 startActivity(intent);
             }
         });
