@@ -53,29 +53,11 @@
             android:textSize="28sp" />
 
         <TextView
-            android:id="@+id/AudioTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/SystemTextView"
-            android:text="Audio"
-            android:textSize="20sp" />
-
-        <SeekBar
-            android:id="@+id/AudioProgressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/AudioTextView"
-            android:layout_marginTop="20dp"
-            android:max="100"
-            android:progress="0" />
-        <TextView
             android:id="@+id/BrightnessTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/AudioProgressBar"
+            android:layout_below="@id/SystemTextView"
             android:text="Brightness"
             android:textSize="20sp" />
 
@@ -87,7 +69,8 @@
             android:layout_below="@id/BrightnessTextView"
             android:layout_marginTop="20dp"
             android:max="100"
-            android:progress="0" />
+            android:progress="50" />
+
     </RelativeLayout>
 
     <RelativeLayout
