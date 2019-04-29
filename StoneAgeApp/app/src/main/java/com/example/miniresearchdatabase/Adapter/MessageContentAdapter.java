@@ -45,37 +45,6 @@ public class MessageContentAdapter extends RecyclerView.Adapter<MessageContentAd
         this.user = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.curr = curr;
         this.other = other;
-
-//        DatabaseReference receive = FirebaseDatabase.getInstance().getReference().child("users").child(otherUser);
-//        receive.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                User user = dataSnapshot.getValue(User.class);
-//                assert user != null;
-//                if(user.avatar != null) {
-//                    curr = user.getAvatar();
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
-//
-//        DatabaseReference send = FirebaseDatabase.getInstance().getReference().child("users").child(user);
-//        send.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                User user = dataSnapshot.getValue(User.class);
-//                assert user != null;
-//                if(user.avatar != null) {
-//                    other = user.getAvatar();
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
-
     }
 
     @NonNull
@@ -120,7 +89,6 @@ public class MessageContentAdapter extends RecyclerView.Adapter<MessageContentAd
                     messageViewHolder.sendImageView.setVisibility(View.VISIBLE);
                     messageViewHolder.sendTextView.setVisibility(ImageView.GONE);
                     messageViewHolder.sendImageView.setImageBitmap(messageRead.get(position).getAvatar());
-                    Log.w("IMG", messageRead.get(position).image);
                 }
                 else {
                     messageViewHolder.receiverLayout.setVisibility(LinearLayout.GONE);

@@ -170,7 +170,6 @@ public class ChatActivity extends BaseActivity{
                         User user = dataSnapshot.getValue(User.class);
                         assert user != null;
                         if(user.avatar != null) {
-                            Log.w("TAG", user.avatar);
                             curr = user.getAvatar();
                         }
                         DatabaseReference send = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
