@@ -19,48 +19,54 @@
 
     </android.support.v7.widget.RecyclerView>
 
-
-
     <Button
         android:id="@+id/bt_search"
-        android:layout_width="69dp"
-        android:layout_height="wrap_content"
+        android:layout_width="56dp"
+        android:layout_height="35dp"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="-2dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="11dp"
         android:layout_toEndOf="@+id/et_searchText"
-        android:text="ITEM" />
+        android:background="@drawable/round_corner_bg"
+        android:text="ITEM"
+        android:textColor="@color/white" />
 
     <EditText
         android:id="@+id/et_searchText"
-        android:layout_width="226dp"
+        android:layout_width="251dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="-2dp"
         android:layout_marginTop="6dp"
         android:layout_toEndOf="@+id/imageButton_recommend"
         android:ems="10"
-        android:hint="item/user"
+        android:hint="search..."
         android:inputType="text" />
 
     <ImageButton
         android:id="@+id/imageButton_recommend"
-        android:layout_width="31dp"
+        android:layout_width="32dp"
         android:layout_height="32dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="3dp"
         android:layout_marginTop="12dp"
-        app:srcCompat="@drawable/quantum_ic_search_grey600_24" />
+        app:srcCompat="@drawable/ic_eye"
+        android:background="@android:color/transparent"
+        />
 
     <Button
         android:id="@+id/button_user"
-        android:layout_width="71dp"
-        android:layout_height="wrap_content"
+        android:layout_width="56dp"
+        android:layout_height="35dp"
         android:layout_alignTop="@+id/bt_search"
-        android:layout_marginStart="-1dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/bt_search"
-        android:text="USER" />
+        android:background="@drawable/round_corner_bg"
+        android:text="USER"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

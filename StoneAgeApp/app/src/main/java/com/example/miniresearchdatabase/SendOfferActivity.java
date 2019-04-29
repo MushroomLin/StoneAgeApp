@@ -117,24 +117,6 @@ public class SendOfferActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 submitOffer();
-                DatabaseReference rateRef = mDatabase.child("posts").child(offerPostKey);
-                rateRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        //Serialize retrieved data to a User object
-                        Post post = dataSnapshot.getValue(Post.class);
-                        //Now you have an object of the User class and can use its getters like this
-                        postuid = String.valueOf(post.uid);
-                        postTitle = String.valueOf(post.title);
-
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-                    }
-                });
-                sendMessage(getUid(),postuid,"Hello, I send you an offer to trade your "+ postTitle + ". Please check your Post's Offer page");
-
             }
         });
         button_selectAddress.setOnClickListener(new View.OnClickListener() {
@@ -209,6 +191,24 @@ public class SendOfferActivity extends AppCompatActivity {
                             String key = offerReference.push().getKey();
                             offerReference.child(key).setValue(offer);
                             offerUserReference.child(userId).child(key).setValue(offer);
+
+                            DatabaseReference rateRef = mDatabase.child("posts").child(offerPostKey);
+                            rateRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    //Serialize retrieved data to a User object
+                                    Post post = dataSnapshot.getValue(Post.class);
+                                    //Now you have an object of the User class and can use its getters like this
+                                    postuid = String.valueOf(post.uid);
+                                    postTitle = String.valueOf(post.title);
+                                    sendMessage(getUid(),postuid,"Hello, I send you an offer to trade your "+ postTitle + ". Please check your Post's Offer page");
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                                }
+                            });
+
                         }
 
                         // Finish this Activity, back to the stream
