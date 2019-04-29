@@ -34,44 +34,47 @@ public class MessageContentAdapter extends RecyclerView.Adapter<MessageContentAd
     private Context mContext;
     private List<Message> messageRead;
     private String user;
-    private static Bitmap curr;
-    private static Bitmap other;
+    private  Bitmap curr;
+    private  Bitmap other;
 
 
 
-    public MessageContentAdapter(Context mContext, List<Message> messageRead, String otherUser) {
+    public MessageContentAdapter(Context mContext, List<Message> messageRead, Bitmap curr, Bitmap other) {
         this.messageRead = messageRead;
         this.mContext = mContext;
         this.user = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference receive = FirebaseDatabase.getInstance().getReference().child("users").child(otherUser);
-        receive.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                assert user != null;
-                if(user.avatar != null && curr != user.getAvatar()) {
-                    curr = user.getAvatar();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
+        this.curr = curr;
+        this.other = other;
 
-        DatabaseReference send = FirebaseDatabase.getInstance().getReference().child("users").child(user);
-        send.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                assert user != null;
-                if(user.avatar != null && other != user.getAvatar()) {
-                    other = user.getAvatar();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
+//        DatabaseReference receive = FirebaseDatabase.getInstance().getReference().child("users").child(otherUser);
+//        receive.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                User user = dataSnapshot.getValue(User.class);
+//                assert user != null;
+//                if(user.avatar != null) {
+//                    curr = user.getAvatar();
+//                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
+//
+//        DatabaseReference send = FirebaseDatabase.getInstance().getReference().child("users").child(user);
+//        send.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                User user = dataSnapshot.getValue(User.class);
+//                assert user != null;
+//                if(user.avatar != null) {
+//                    other = user.getAvatar();
+//                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
 
     }
 
