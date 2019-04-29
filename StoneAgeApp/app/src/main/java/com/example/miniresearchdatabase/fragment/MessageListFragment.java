@@ -44,10 +44,6 @@ public class MessageListFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_all_messages, container, false);
 
-        // [START create_database_reference]
-
-        //        // [END create_database_reference]
-
         mRecycler = rootView.findViewById(R.id.rvMessage);
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecycler.setHasFixedSize(true);
@@ -72,38 +68,44 @@ public class MessageListFragment extends Fragment {
     private void readUsers() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("chats");
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        assert firebaseUser != null;
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mUsers.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Message message = snapshot.getValue(Message.class);
-                    assert  message != null;
-                    if(message.receiver.equals(getUid()) && !mUsers.contains(message.sender)) {
-                        mUsers.add(message.sender);
+        try {
+            assert firebaseUser != null;
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    mUsers.clear();
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Message message = snapshot.getValue(Message.class);
+                        assert  message != null;
+                        assert message.receiver != null;
+                        assert message.sender != null;
+                        assert message.message != null;
+                        assert message.time != null;
+                        if(message.receiver.equals(getUid()) && !mUsers.contains(message.sender)) {
+                            mUsers.add(message.sender);
+                        }
+                        else if(message.sender.equals(getUid()) && !mUsers.contains(message.receiver)) {
+                            mUsers.add(message.receiver);
+                        }
                     }
-                    else if(message.sender.equals(getUid()) && !mUsers.contains(message.receiver)) {
-                        mUsers.add(message.receiver);
-                    }
+                    messageAdapter = new MessageAdapter(mContext, mUsers);
+                    mRecycler.setAdapter(messageAdapter);
+                    RecyclerView.ItemDecoration decor = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
+                    mRecycler.addItemDecoration(decor);
                 }
-                messageAdapter = new MessageAdapter(mContext, mUsers);
-                mRecycler.setAdapter(messageAdapter);
-                RecyclerView.ItemDecoration decor = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
-                mRecycler.addItemDecoration(decor);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
-
     }
 
 }
