@@ -16,8 +16,8 @@ public class Post {
     public String author;
 
     public String title;
-    public int starCount = 0;
-    public Map<String, Boolean> stars = new HashMap<>();
+
+
     public double latitude;
     public double longitude;
     public String address;
@@ -72,8 +72,6 @@ public class Post {
         result.put("uid", uid);
         result.put("author", author);
         result.put("title", title);
-        result.put("starCount", starCount);
-        result.put("stars", stars);
         result.put("address", address);
         result.put("latitude", latitude);
         result.put("longitude", longitude);

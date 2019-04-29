@@ -24,8 +24,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     public ImageView postAuthorPhoto;
     public TextView titleView;
     public TextView authorView;
-    public ImageView starView;
-    public TextView numStarsView;
+
     public TextView bodyView;
     public TextView addressView;
     public TextView starTextView;
@@ -42,8 +41,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         titleView = itemView.findViewById(R.id.postTitle);
         authorView = itemView.findViewById(R.id.postAuthor);
         postAuthorPhoto = itemView.findViewById(R.id.postAuthorPhoto);
-        starView = itemView.findViewById(R.id.star);
-        numStarsView = itemView.findViewById(R.id.postNumStars);
+
         bodyView = itemView.findViewById(R.id.postBody);
         addressView = itemView.findViewById(R.id.postAddress);
         pictureView = itemView.findViewById(R.id.pictureImageView);
@@ -72,7 +70,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
         titleView.setText(post.title);
         authorView.setText(post.author);
-        numStarsView.setText(String.valueOf(post.starCount));
+
         bodyView.setText(post.description);
         addressView.setText(post.address);
         if (post.picture!=null && !post.picture.equals("")){
@@ -82,7 +80,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         else{
             pictureView.setVisibility(View.GONE);
         }
-        starView.setOnClickListener(starClickListener);
+
         if (post.uid!=null) {
             DatabaseReference ref = mDatabase.child("users").child(post.uid);
             ref.addValueEventListener(new ValueEventListener() {

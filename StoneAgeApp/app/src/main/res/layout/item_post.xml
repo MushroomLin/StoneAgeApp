@@ -28,25 +28,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/postAuthorLayout"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/star"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:background="?attr/selectableItemBackground"
-                android:src="@drawable/ic_toggle_star_outline_24" />
-
-            <TextView
-                android:id="@+id/postNumStars"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                tools:text="7" />
-
-        </LinearLayout>
+            android:orientation="horizontal"/>
 
         <include layout="@layout/include_post_text"
             android:layout_width="wrap_content"
