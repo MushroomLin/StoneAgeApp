@@ -21,9 +21,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/BackImageView"
-        android:text="My Offer"
-        android:textSize="30sp"
+        android:text="My Accepted Offer"
         android:textColor="@color/grey_300"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <FrameLayout
