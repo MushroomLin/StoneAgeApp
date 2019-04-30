@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -18,7 +19,7 @@ import android.widget.Toast;
 public class SettingActivity extends AppCompatActivity {
     SeekBar changeBrightness;
     float BackLightValue;
-
+    ImageView backBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +31,13 @@ public class SettingActivity extends AppCompatActivity {
                 startActivityForResult(intent, 200);
             }
         }
-        
+        backBtn = findViewById(R.id.BackImageView);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         changeBrightness = findViewById(R.id.BrightnessProgressBar);
         changeBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)

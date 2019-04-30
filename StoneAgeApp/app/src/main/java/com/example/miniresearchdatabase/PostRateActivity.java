@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,6 @@ import java.util.HashMap;
 
 public class PostRateActivity extends AppCompatActivity {
     private Button button_facebook;
-    private Button button_back;
     private RatingBar starBar;
     private TextView textView_rate;
     private TextView textView_rateother;
@@ -58,7 +58,7 @@ public class PostRateActivity extends AppCompatActivity {
     private float newrate;
     private int newTotalReview;
     private String offerUserName;
-
+    private ImageView button_back;
 
     public static final String FINAL_POST_KEY = "mPostkey";
     public static final String FINAL_OFFER_KEY = "offerkey";
@@ -78,7 +78,7 @@ public class PostRateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_postrate);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         button_facebook = findViewById(R.id.button_facebook);
-        button_back = findViewById(R.id.button_back7);
+        button_back = findViewById(R.id.BackImageView);
         button_submitrate = findViewById(R.id.button_submitrate);
         starBar = findViewById(R.id.starBar);
         textView_rate = findViewById(R.id.textView_rate);
