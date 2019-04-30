@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.miniresearchdatabase.Adapter.MessageAdapter;
+import com.example.miniresearchdatabase.Notifications.Token;
 import com.example.miniresearchdatabase.R;
 import com.example.miniresearchdatabase.models.Message;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +35,8 @@ public class MessageListFragment extends Fragment {
     private RecyclerView mRecycler;
 
     private MessageAdapter messageAdapter;
+    private FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
 
-    private LinearLayoutManager mManager;
     private List<String> mUsers;
     public MessageListFragment() {}
 
@@ -49,6 +52,7 @@ public class MessageListFragment extends Fragment {
         mRecycler.setHasFixedSize(true);
         mUsers = new ArrayList<>();
         readUsers();
+        updateToken(FirebaseInstanceId.getInstance().getToken());
         return rootView;
     }
 
@@ -67,9 +71,8 @@ public class MessageListFragment extends Fragment {
 
     private void readUsers() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("chats");
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         try {
-            assert firebaseUser != null;
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -103,6 +106,13 @@ public class MessageListFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+    private void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(currUser.getUid()).setValue(token1);
+    }
+
 
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
