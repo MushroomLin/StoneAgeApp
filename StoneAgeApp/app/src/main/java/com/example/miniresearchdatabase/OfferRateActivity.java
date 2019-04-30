@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class OfferRateActivity extends AppCompatActivity {
     private Button button_facebook;
-    private Button button_back;
+    private ImageView button_back;
     private String postpicture;
     private String offerpicture;
     private SharePhotoContent sharePhotoContent;
@@ -67,7 +68,7 @@ public class OfferRateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_offerrate);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         button_facebook = findViewById(R.id.button_facebook2);
-        button_back = findViewById(R.id.button_back8);
+        button_back = findViewById(R.id.BackImageView);
         button_submitrate = findViewById(R.id.button_submitrate2);
         starBar = findViewById(R.id.starBar2);
         textView_rate = findViewById(R.id.textView_rate2);

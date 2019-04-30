@@ -1,75 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button_facebook2"
+    <TextView
+        android:id="@+id/textView_rateother2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="300dp"
-        android:text="Share Your trade on Facebook"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:layout_marginTop="128dp"
+        android:layout_centerHorizontal="true"
+        android:text="Please Rate Your trade with "
+        android:textSize="20dp" />
 
     <me.zhanghai.android.materialratingbar.MaterialRatingBar
         android:id="@+id/starBar2"
-        style="@style/RatingBar_CustomColor"
-        android:layout_width="150dp"
+        android:layout_below="@id/textView_rateother2"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="176dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:isIndicator="false"
-        android:rating="5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:rating="5" />
 
     <TextView
         android:id="@+id/textView_rate2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="228dp"
+        android:layout_below="@id/starBar2"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif"
-        android:gravity="center"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="5.0/5.0" />
-
-
+        tools:text="4.0/5.0" />
     <Button
-        android:id="@+id/button_back8"
-        android:layout_width="wrap_content"
+        android:id="@+id/button_facebook2"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="448dp"
-        android:text="Back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/textView_rate2"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:drawableRight="@drawable/com_facebook_button_icon_white"
+        android:background="@drawable/round_corner_bg"
+        android:textColor="@color/white"
+        android:text="Share on  " />
     <Button
         android:id="@+id/button_submitrate2"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="372dp"
-        android:text="Finish Trade and Submit Rating"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/button_facebook2"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:background="@drawable/round_corner_bg"
+        android:textColor="@color/white"
+        android:text="Finish" />
+    <ImageView
+        android:id="@+id/BackImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:tint="@color/grey_500"
+        app:srcCompat="@drawable/ic_back_icon" />
 
-    <TextView
-        android:id="@+id/textView_rateother2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="128dp"
-        android:text="Please Rate Your trade with "
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

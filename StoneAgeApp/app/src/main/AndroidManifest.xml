@@ -78,6 +78,22 @@
         <activity android:name=".PostRateActivity" />
         <activity android:name=".OfferRateActivity" />
 
+        <service android:name=".Notifications.MyFirebaseIdService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service android:name=".Notifications.MyFirebaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
         <provider
             android:authorities="com.facebook.app.FacebookContentProvider2376751019220967"
             android:name="com.facebook.FacebookContentProvider"

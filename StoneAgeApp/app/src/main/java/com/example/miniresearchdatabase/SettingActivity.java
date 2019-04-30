@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -24,8 +25,7 @@ public class SettingActivity extends AppCompatActivity {
     Switch loginSwitch;
     SharedPreferences pref;  // 0 - for private mode
     SharedPreferences.Editor editor;
-
-
+    ImageView backBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +40,13 @@ public class SettingActivity extends AppCompatActivity {
         pref = getApplicationContext().getSharedPreferences("MyPref",0);
         editor = pref.edit();
         loginSwitch = findViewById(R.id.SigninSwitch);
+        backBtn = findViewById(R.id.BackImageView);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         changeBrightness = findViewById(R.id.BrightnessProgressBar);
         changeBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
