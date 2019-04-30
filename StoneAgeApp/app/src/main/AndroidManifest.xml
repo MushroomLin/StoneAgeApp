@@ -33,8 +33,12 @@
             android:name="com.facebook.FacebookActivity"
             android:label="@string/app_name" />
 
-        <activity android:name=".SettingActivity"></activity>
-        <activity android:name=".LaunchScreenActivity">
+        <activity android:name=".SettingActivity"
+                    android:screenOrientation="portrait"
+                    android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        <activity android:name=".LaunchScreenActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,28 +59,60 @@
 
         <activity
             android:name=".MapsActivity_selectAddress"
-            android:label="@string/title_activity_maps_select_address" />
+            android:label="@string/title_activity_maps_select_address"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
-        <activity android:name=".UserEditActivity" />
-        <activity android:name=".SignInActivity" />
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".UserEditActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".SignInActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".NewPostActivity" />
-        <activity android:name=".PostDetailActivity" />
-        <activity android:name=".GoogleSignInActivity" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".MyPostActivity" />
-        <activity android:name=".ChatActivity" />
-        <activity android:name=".SendOfferActivity" />
-        <activity android:name=".MyOfferActivity" />
-        <activity android:name=".MyPostOfferActivity" />
-        <activity android:name=".PostRateActivity" />
-        <activity android:name=".OfferRateActivity" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".NewPostActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".PostDetailActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".GoogleSignInActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".SignupActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".MyPostActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".ChatActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".SendOfferActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".MyOfferActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".MyPostOfferActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".PostRateActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".OfferRateActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
 
         <service android:name=".Notifications.MyFirebaseIdService"
             android:enabled="true"
