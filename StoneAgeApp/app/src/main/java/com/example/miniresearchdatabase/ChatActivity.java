@@ -72,7 +72,6 @@ public class ChatActivity extends BaseActivity{
     private BottomDialog dialog;
     APIService apiService;
     boolean notify = false;
-    String userid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +81,6 @@ public class ChatActivity extends BaseActivity{
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("chats");
         userId = intent.getStringExtra("userId");
-        userid = intent.getStringExtra("userid");
         username = intent.getStringExtra("username");
         this.setTitle(username);
         messageList = new ArrayList<>();

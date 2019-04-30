@@ -21,7 +21,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="20dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="35dp"
+        android:textSize="30dp"
         android:textStyle="bold"
         tools:text="tvSender" />
 
