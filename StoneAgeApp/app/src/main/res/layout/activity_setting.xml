@@ -73,45 +73,13 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/MessageLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/SystemLayout"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:background="@color/white">
-        <TextView
-            android:id="@+id/MessageTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Message"
-            android:textSize="28sp" />
 
-        <TextView
-            android:id="@+id/NotificationText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/MessageTextView"
-            android:text="Notification"
-            android:textSize="20sp" />
-
-        <Switch
-            android:id="@+id/NotificationSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/NotificationText"
-            />
-    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/SigninLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/MessageLayout"
+        android:layout_below="@id/SystemLayout"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:paddingTop="20dp"

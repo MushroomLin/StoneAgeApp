@@ -110,15 +110,11 @@ public class PostDetailActivity extends BaseActivity {
         mOfferButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getUid() == currKey) {
-                    mOfferButton.setEnabled(false);
-                    Toast.makeText(PostDetailActivity.this,"You can't send offer to yourself",Toast.LENGTH_SHORT).show();
-                }
-                else {
+
                     Intent intent = new Intent(PostDetailActivity.this, SendOfferActivity.class);
                     intent.putExtra(SendOfferActivity.OFFER_POST_KEY, mPostKey);
                     startActivity(intent);
-                }
+
 
             }
         });
@@ -165,6 +161,9 @@ public class PostDetailActivity extends BaseActivity {
                 mAuthorView.setText(post.author);
                 author = post.author;
                 currKey =post.uid;
+                if (currKey.equals(getUid())) {
+                    mOfferButton.setVisibility(View.INVISIBLE);
+                }
                 mAuthorPhoto.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {

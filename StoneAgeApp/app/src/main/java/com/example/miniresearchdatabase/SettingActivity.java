@@ -55,40 +55,7 @@ public class SettingActivity extends AppCompatActivity {
         loginSwitch = findViewById(R.id.SigninSwitch);
         backBtn = findViewById(R.id.BackImageView);
 
-        notificationSwitch = findViewById(R.id.NotificationSwitch);
-        notificationSwitch.setChecked(pref.getBoolean("checkedNotify",true));
-        notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // do something, the isChecked will be
-                // true if the switch is in the On position
-                if (isChecked == true) {
-                    editor.putBoolean("checkedNotify",true);
-                    editor.commit();
-//
-//                    NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-//                            CHANNEL_NAME,
-//                            NotificationManager.IMPORTANCE_DEFAULT);
-//                    channel.enableLights(false);
-//                    channel.enableVibration(true);
-//                    channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-//                    getManager().createNotificationChannel(channel);
-                }
-                else{
-//                    getManager();
-                    editor.putBoolean("checkedNotify",false);
-                    editor.commit();
-//                    notificationManager.deleteNotificationChannel(CHANNEL_ID);
-                }
-            }
 
-//            public NotificationManager getManager(){
-//                if (notificationManager == null){
-//                    notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-//                }
-//
-//                return  notificationManager;
-//            }
-        });
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
