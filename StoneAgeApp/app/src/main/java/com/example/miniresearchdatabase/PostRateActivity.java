@@ -215,7 +215,7 @@ public class PostRateActivity extends AppCompatActivity {
                 mDatabase.child("user-posts").child(getUid()).child(finalPostKey).child("status").setValue("closed");
                 mDatabase.child("user-offers").child(offeruid).child(finalOfferKey).child("status").setValue("accepted");
                 mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("accepted");
-                sendMessage(getUid(),offeruid,"Hello, I accept your offer of " + offerTitle + ". Let's find a time to meet!");
+                sendMessage(getUid(),offeruid,"Hello, I accept your offer of " + offerTitle + ". Please check your Accepted Offers page and rate our trade!");
 
                 Intent intent = new Intent(PostRateActivity.this, MyPostActivity.class);
                 startActivity(intent);

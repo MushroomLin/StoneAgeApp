@@ -201,7 +201,7 @@ public class SendOfferActivity extends AppCompatActivity {
                                     //Now you have an object of the User class and can use its getters like this
                                     postuid = String.valueOf(post.uid);
                                     postTitle = String.valueOf(post.title);
-                                    sendMessage(getUid(),postuid,"Hello, I send you an offer to trade your "+ postTitle + ". Please check your Post's Offer page");
+                                    sendMessage(getUid(),postuid,"Hello, I send you an offer to trade your "+ postTitle + "with my "+ title +". Please check your Post's Offer page");
                                 }
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
