@@ -185,8 +185,7 @@ public class OfferRateActivity extends AppCompatActivity {
                 mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("closed");
                 Toast.makeText(OfferRateActivity.this, "Sending Review", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(OfferRateActivity.this, MyOfferActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(OfferRateActivity.this, MyOfferActivity.class));
             }
         });
 

@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -111,12 +112,29 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         }
 
         if (post.status.equals("closed")){
-            closedView.setVisibility(View.GONE);
-            closedView.setLayoutParams(new LinearLayout.LayoutParams(0,0));
+            setVisibility(false);
 
         }
         else {
-            closedView.setVisibility(View.VISIBLE);
+            setVisibility(true);
         }
     }
+    public void setVisibility(boolean visible) {
+        RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+        if (visible) {
+            param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            param.width = LinearLayout.LayoutParams.MATCH_PARENT;
+            param.topMargin = 10;
+            param.bottomMargin = 10;
+            itemView.setVisibility(View.VISIBLE);
+        } else {
+            itemView.setVisibility(View.GONE);
+            param.height = 0;
+            param.width = 0;
+            param.topMargin = 0;
+            param.bottomMargin = 0;
+        }
+        itemView.setLayoutParams(param);
+    }
+
 }

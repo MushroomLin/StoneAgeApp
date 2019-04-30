@@ -146,8 +146,8 @@ public abstract class PostListFragment extends Fragment {
                     }
                 }
                 // if the range of minPrice and maxPrcie isn't big enough
-                minPrice = Math.min(Math.max(minPrice - 20, 0.0), minPrice * 0.8);
-                maxPrice = Math.max(maxPrice + 20.0, maxPrice * 1.2);
+                minPrice = Math.min(Math.max(minPrice - 20, 0.0), minPrice * 0.5);
+                maxPrice = Math.max(maxPrice + 20.0, maxPrice * 1.5);
 //                avgPricesList = avgPriceList;
             }
 
