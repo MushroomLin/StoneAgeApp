@@ -88,7 +88,7 @@ public class MyOfferActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         // Launch PostDetailActivity
                         DatabaseReference ref3 = mDatabase.child("user-offers").child(getUid()).child(offerkey);
-                        ref3.addValueEventListener(new ValueEventListener() {
+                        ref3.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 //Serialize retrieved data to a User object

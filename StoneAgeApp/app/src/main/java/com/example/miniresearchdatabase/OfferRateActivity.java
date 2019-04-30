@@ -183,9 +183,9 @@ public class OfferRateActivity extends AppCompatActivity {
                 mDatabase.child("users").child(postuid).child("totalReview").setValue(newTotalReview+1);
                 mDatabase.child("user-offers").child(getUid()).child(finalOfferKey).child("status").setValue("closed");
                 mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("closed");
-                Toast.makeText(OfferRateActivity.this, "Sending Review", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OfferRateActivity.this,"Sending Review",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), MyOfferActivity.class));
 
-                startActivity(new Intent(OfferRateActivity.this, MyOfferActivity.class));
             }
         });
 

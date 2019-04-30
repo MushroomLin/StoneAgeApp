@@ -110,9 +110,16 @@ public class PostDetailActivity extends BaseActivity {
         mOfferButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PostDetailActivity.this, SendOfferActivity.class);
-                intent.putExtra(SendOfferActivity.OFFER_POST_KEY, mPostKey);
-                startActivity(intent);
+                if (getUid() == currKey) {
+                    mOfferButton.setEnabled(false);
+                    Toast.makeText(PostDetailActivity.this,"You can't send offer to yourself",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent intent = new Intent(PostDetailActivity.this, SendOfferActivity.class);
+                    intent.putExtra(SendOfferActivity.OFFER_POST_KEY, mPostKey);
+                    startActivity(intent);
+                }
+
             }
         });
 

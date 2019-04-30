@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -17,6 +18,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.miniresearchdatabase.Notifications.Client;
+import com.example.miniresearchdatabase.Notifications.Data;
+import com.example.miniresearchdatabase.Notifications.MyResponse;
+import com.example.miniresearchdatabase.Notifications.Sender;
+import com.example.miniresearchdatabase.Notifications.Token;
+import com.example.miniresearchdatabase.fragment.APIService;
 import com.example.miniresearchdatabase.models.Offer;
 import com.example.miniresearchdatabase.models.Post;
 import com.example.miniresearchdatabase.models.User;
@@ -25,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
@@ -35,6 +43,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import rebus.bottomdialog.BottomDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SendOfferActivity extends AppCompatActivity {
     private static final String TAG = "SendOfferActivity";
@@ -60,13 +71,15 @@ public class SendOfferActivity extends AppCompatActivity {
     private BottomDialog dialog;
     private String postuid;
     private String postTitle;
+    APIService apiService;
+    boolean notify = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sendoffer);
         offerPostKey = getIntent().getStringExtra(OFFER_POST_KEY);
-
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         offerTitle = findViewById(R.id.fieldOfferTitle);
         offerdescription = findViewById(R.id.editText_offerdescription);
@@ -201,6 +214,7 @@ public class SendOfferActivity extends AppCompatActivity {
                                     //Now you have an object of the User class and can use its getters like this
                                     postuid = String.valueOf(post.uid);
                                     postTitle = String.valueOf(post.title);
+                                    notify = true;
                                     sendMessage(getUid(),postuid,"Hello, I send you an offer to trade your "+ postTitle + " with my "+ title +". Please check your Post's Offer page");
                                 }
                                 @Override
@@ -270,17 +284,80 @@ public class SendOfferActivity extends AppCompatActivity {
         }
     }
 
-    private void sendMessage(String sender, String receiver, String message) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        HashMap<String, Object> hashMap = new HashMap<>();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
-        Date date = new Date();
-        String time = dateFormat.format(date);
-        hashMap.put("sender", sender);
-        hashMap.put("receiver", receiver);
-        hashMap.put("message", message);
-        hashMap.put("time", time);
-        reference.child("chats").push().setValue(hashMap);
+    private void sendMessage(String sender, final String receiver, String message) {
+        try{
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+            HashMap<String, Object> hashMap = new HashMap<>();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
+            Date date = new Date();
+            String time = dateFormat.format(date);
+            hashMap.put("sender", sender);
+            hashMap.put("receiver", receiver);
+            hashMap.put("message", message);
+            hashMap.put("time", time);
+            reference.child("chats").push().setValue(hashMap);
 
+            final String msg = message;
+            reference = FirebaseDatabase.getInstance().getReference("users").child(getUid());
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    if (notify) {
+                        sendNotificaction(receiver, user.username, msg);
+                    }
+                    notify = false;
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        };
+    }
+
+    private void sendNotificaction(String receiver, final String username, final String message){
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Token token = snapshot.getValue(Token.class);
+                    Data data = new Data(getUid(), R.mipmap.ic_launcher, username+": "+message, "New Message",
+                            postuid);
+
+                    Sender sender = new Sender(data, token.getToken());
+
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                                    if (response.code() == 200){
+                                        if (response.body().success != 1){
+
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
