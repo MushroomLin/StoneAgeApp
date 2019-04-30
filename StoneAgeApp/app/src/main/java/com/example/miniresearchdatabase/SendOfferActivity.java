@@ -193,7 +193,7 @@ public class SendOfferActivity extends AppCompatActivity {
                             offerUserReference.child(userId).child(key).setValue(offer);
 
                             DatabaseReference rateRef = mDatabase.child("posts").child(offerPostKey);
-                            rateRef.addValueEventListener(new ValueEventListener() {
+                            rateRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     //Serialize retrieved data to a User object

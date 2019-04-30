@@ -194,7 +194,7 @@ public class PostRateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DatabaseReference rateRef = mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey);
-                rateRef.addValueEventListener(new ValueEventListener() {
+                rateRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //Serialize retrieved data to a User object
@@ -202,6 +202,7 @@ public class PostRateActivity extends AppCompatActivity {
                         //Now you have an object of the User class and can use its getters like this
                         offeruid = String.valueOf(offer.uid);
                         offerTitle = String.valueOf(offer.title);
+                        sendMessage(getUid(),offeruid,"Hello, I accept your offer of " + offerTitle + ". Please check your Accepted Offers page and rate our trade!");
 
                     }
                     @Override
@@ -215,7 +216,7 @@ public class PostRateActivity extends AppCompatActivity {
                 mDatabase.child("user-posts").child(getUid()).child(finalPostKey).child("status").setValue("closed");
                 mDatabase.child("user-offers").child(offeruid).child(finalOfferKey).child("status").setValue("accepted");
                 mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("accepted");
-                sendMessage(getUid(),offeruid,"Hello, I accept your offer of " + offerTitle + ". Please check your Accepted Offers page and rate our trade!");
+
 
                 Intent intent = new Intent(PostRateActivity.this, MyPostActivity.class);
                 startActivity(intent);
