@@ -80,6 +80,7 @@ public class MapsActivity extends AppCompatActivity
     private HashMap<String, Marker> post2marker = new HashMap<String, Marker>();
     private double currentLatitude = 0.0;
     private double currentLongitude = 0.0;
+    float currentZoomLevel = (float) 13.7;
     Location mLastKnownLocation;
 
     private Marker lastLocation = null;
@@ -137,6 +138,8 @@ public class MapsActivity extends AppCompatActivity
                 }
                 lastLocation.setVisible(true);
                 lastLocation.setTitle(place.getAddress());
+                lastLocation.hideInfoWindow();
+//                lastLocation.showInfoWindow();
                 mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 13.7f));
 //                drawCircle(place.getLatLng(), restrictDistance);
             }
@@ -171,7 +174,10 @@ public class MapsActivity extends AppCompatActivity
             @Override
             public void onMapClick(LatLng latLng) {
                 String address = new LocationToAddress().getAddress(latLng.latitude, latLng.longitude);
-                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13.7f));
+                if (mMap != null) {
+                    currentZoomLevel = mMap.getCameraPosition().zoom;
+                }
+                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, currentZoomLevel));
                 lastLocation.setPosition(latLng);
                 lastLocation.setVisible(true);
                 lastLocation.setTitle(address);

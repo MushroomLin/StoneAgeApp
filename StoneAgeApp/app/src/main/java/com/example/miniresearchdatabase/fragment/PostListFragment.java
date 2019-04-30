@@ -52,6 +52,7 @@ public abstract class PostListFragment extends Fragment {
     private double minPrice = 99999999.0;
     private double maxPrice = 0.0;
     private int recommendFlag = 0;
+    private int noPostFlag = 1;
     private String searchText = "";
 
     private Button bt_search;
@@ -68,10 +69,6 @@ public abstract class PostListFragment extends Fragment {
                               Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);
-
-        Log.e("ppp", String.valueOf(recommendFlag));
-        Log.e("ppp", String.valueOf(minPrice));
-        Log.e("ppp", String.valueOf(maxPrice));
 
         et_searchText = rootView.findViewById(R.id.et_searchText);
 
@@ -143,12 +140,23 @@ public abstract class PostListFragment extends Fragment {
                         if (priceAvg > maxPrice)
                             maxPrice = priceAvg;
                         avgPriceList.add(priceAvg);
+                        noPostFlag = 0;
                     }
                 }
-                // if the range of minPrice and maxPrcie isn't big enough
-                minPrice = Math.min(Math.max(minPrice - 20, 0.0), minPrice * 0.5);
-                maxPrice = Math.max(maxPrice + 20.0, maxPrice * 1.5);
+                Log.e("uuu", "end of onDataChange");
+                Log.e("uuu", String.valueOf(noPostFlag));
+                // user hasn't posted yet
+                if (noPostFlag == 1) {
+                    minPrice = 20.0;
+                    maxPrice = 80.0;
+                }
+                // user has posts
+                else {
+                    // if the range of minPrice and maxPrice isn't big enough
+                    minPrice = Math.min(Math.max(minPrice - 20, 0.0), minPrice * 0.5);
+                    maxPrice = Math.max(maxPrice + 20.0, maxPrice * 1.5);
 //                avgPricesList = avgPriceList;
+                }
             }
 
             @Override
