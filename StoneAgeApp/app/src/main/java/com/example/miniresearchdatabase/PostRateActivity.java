@@ -138,7 +138,6 @@ public class PostRateActivity extends AppCompatActivity {
                         Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
                     }
                 });
-                Toast.makeText(PostRateActivity.this, String.valueOf(newrate), Toast.LENGTH_SHORT).show();
 
             }
         });

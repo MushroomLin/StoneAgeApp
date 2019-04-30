@@ -59,13 +59,17 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     public void onStart() {
         super.onStart();
         // Check auth on Activity start
-        if (mAuth.getCurrentUser() != null) {
-            onAuthSuccess(mAuth.getCurrentUser());
+        boolean check = getSharedPreferences("MyPref",0).getBoolean("checked",false);
+        if (check == true) {
+            if (mAuth.getCurrentUser() != null) {
+                onAuthSuccess(mAuth.getCurrentUser());
+            }
         }
     }
 
     private void signIn() {
         Log.d(TAG, "signIn");
+
         if (!validateForm()) {
             return;
         }

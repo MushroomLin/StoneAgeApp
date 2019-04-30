@@ -205,7 +205,7 @@ public class MapsActivity extends AppCompatActivity
         }
         // connect to firebase for posts collection
         mPostReference = FirebaseDatabase.getInstance().getReference()
-                .child("posts");
+                .child("posts").orderByChild("status").equalTo("open");
 
         // get posts and extract some key info
         mPostReference.addValueEventListener(new ValueEventListener() {

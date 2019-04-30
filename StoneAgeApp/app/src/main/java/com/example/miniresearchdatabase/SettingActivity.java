@@ -1,6 +1,7 @@
 package com.example.miniresearchdatabase;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -10,7 +11,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 
@@ -18,6 +21,10 @@ import android.widget.Toast;
 public class SettingActivity extends AppCompatActivity {
     SeekBar changeBrightness;
     float BackLightValue;
+    Switch loginSwitch;
+    SharedPreferences pref;  // 0 - for private mode
+    SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +37,9 @@ public class SettingActivity extends AppCompatActivity {
                 startActivityForResult(intent, 200);
             }
         }
-        
+        pref = getApplicationContext().getSharedPreferences("MyPref",0);
+        editor = pref.edit();
+        loginSwitch = findViewById(R.id.SigninSwitch);
         changeBrightness = findViewById(R.id.BrightnessProgressBar);
         changeBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
@@ -58,6 +67,21 @@ public class SettingActivity extends AppCompatActivity {
                             android.provider.Settings.System.SCREEN_BRIGHTNESS,
                             SysBackLightValue);
 //                    Toast.makeText(SettingActivity.this,"Regular Mode",Toast.LENGTH_SHORT).
+                }
+            }
+        });
+        loginSwitch.setChecked(pref.getBoolean("checked",false));
+        loginSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // do something, the isChecked will be
+                // true if the switch is in the On position
+                if (isChecked == true) {
+                    editor.putBoolean("checked",true);
+                    editor.commit();
+                }
+                else {
+                    editor.putBoolean("checked", false);
+                    editor.commit();
                 }
             }
         });

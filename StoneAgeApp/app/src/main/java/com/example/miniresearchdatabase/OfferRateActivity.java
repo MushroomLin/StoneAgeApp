@@ -113,7 +113,6 @@ public class OfferRateActivity extends AppCompatActivity {
                                 newTotalReview = user.totalReview;
 
                                 //Now you have an object of the User class and can use its getters like this
-
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {

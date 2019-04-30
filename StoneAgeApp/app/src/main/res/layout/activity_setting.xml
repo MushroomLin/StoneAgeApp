@@ -107,4 +107,38 @@
             />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/SigninLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/MessageLayout"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:background="@color/white">
+        <TextView
+            android:id="@+id/SigninTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Signin"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/AutoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/SigninTextView"
+            android:text="Automatically Login Me In "
+            android:textSize="20sp" />
+
+        <Switch
+            android:id="@+id/SigninSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/AutoText"
+            />
+    </RelativeLayout>
+
 </RelativeLayout>
