@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -95,7 +96,16 @@ public class SettingActivity extends AppCompatActivity {
                 finish();
             }
         });
+        int brightness;
+        try {
+            brightness = Settings.System.getInt(getContentResolver(),
+                    Settings.System.SCREEN_BRIGHTNESS);
+        }
+        catch (Exception e){
+            brightness = 128;
+        }
         changeBrightness = findViewById(R.id.BrightnessProgressBar);
+        changeBrightness.setProgress(brightness*100/255);
         changeBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -116,11 +126,13 @@ public class SettingActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                Log.w("BRI", String.valueOf(BackLightValue));
                 if (Settings.System.canWrite(getApplicationContext())) {
                     int SysBackLightValue = (int) (BackLightValue * 255);
                     android.provider.Settings.System.putInt(getContentResolver(),
                             android.provider.Settings.System.SCREEN_BRIGHTNESS,
                             SysBackLightValue);
+                    Log.w("BRI", String.valueOf(SysBackLightValue));
 //                    Toast.makeText(SettingActivity.this,"Regular Mode",Toast.LENGTH_SHORT).
                 }
             }
