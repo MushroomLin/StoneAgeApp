@@ -3,22 +3,17 @@ package com.example.miniresearchdatabase.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.miniresearchdatabase.ChatActivity;
 import com.example.miniresearchdatabase.R;
 
-import com.example.miniresearchdatabase.models.Message;
+
 import com.example.miniresearchdatabase.models.User;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,11 +25,11 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+// adapter for recycler view in message list where you can see you have chatted  with whom.
 public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.MessageViewHolder>{
     private Context mContext;
     private List<String> mUsers;
     private List<String> username;
-    private String currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
     public MessageAdapter(Context mContext, List<String> mUsers) {
@@ -46,12 +41,14 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+//       create view holder.
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_message, parent, false);
         return new MessageViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MessageViewHolder messageViewHolder, int position) {
+//      bind view holder with the users list gotten from MessageListFragment.
         String user = mUsers.get(position);
         if(getItemCount() != 0) {
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users").child(user);
@@ -71,7 +68,7 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
                     }
                 });
         }
-
+//      set on lick listener when user click one of the item listed in recyclerview, it will jump to one-one chat room activity.
         messageViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

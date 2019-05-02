@@ -12,11 +12,11 @@ public class LaunchScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch_screen);
+        // User background task to load launch screen
         new BackgroundTask().execute();
     }
     private class BackgroundTask extends AsyncTask {
         Intent intent;
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -26,9 +26,6 @@ public class LaunchScreenActivity extends AppCompatActivity {
 
         @Override
         protected Object doInBackground(Object[] params) {
-
-            /*  Use this method to load background
-             * data that your app needs. */
 
             try {
                 Thread.sleep(2000);

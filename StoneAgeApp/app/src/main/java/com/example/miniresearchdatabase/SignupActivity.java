@@ -75,9 +75,8 @@ public class SignupActivity extends BaseActivity{
         });
     }
 
-
+    // Signup
     private void signUp() {
-        Log.d(TAG, "signUp");
         if (!validateForm()) {
             return;
         }
@@ -115,7 +114,7 @@ public class SignupActivity extends BaseActivity{
         startActivity(new Intent(SignupActivity.this, MainActivity.class));
         finish();
     }
-
+    // Validate sign up form
     private boolean validateForm() {
         boolean result = true;
         if (TextUtils.isEmpty(editText_name.getText().toString())) {
@@ -145,7 +144,7 @@ public class SignupActivity extends BaseActivity{
         return result;
     }
 
-
+    // Get user from from email, we use prefix of email as username
     private String usernameFromEmail(String email) {
         if (email.contains("@")) {
             return email.split("@")[0];
@@ -154,7 +153,7 @@ public class SignupActivity extends BaseActivity{
         }
     }
 
-    // write new user function based on user format. Format is in models/User
+    // Write new user function based on user format. Format is in models/User
     private void writeNewUser(String userId, String name, String email, String address, String phone, String intro, double rate, String avatar, int totalReview) {
         User user = new User(name, email, address, phone, intro, rate, avatar, totalReview);
         mDatabase.child("users").child(userId).setValue(user);

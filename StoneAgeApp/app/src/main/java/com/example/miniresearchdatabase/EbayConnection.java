@@ -25,18 +25,11 @@ public class EbayConnection {
     private final String GLOBAL_ID="EBAY-US";
     private final String SITEID="0";
 
-//        public static void main(String[] args) throws Exception {
-//
-//                EbayConnection http = new EbayConnection();
-//
-//                System.out.println("Testing - Send Http GET request");
-//                String response = http.sendGet("iPhone8", 3);
-//                System.out.println(http.parseResponse(response));
-//        }
 
     // HTTP GET request
     protected String sendGet(String keyword, int numPerPage) throws Exception {
         try {
+            // Define the Ebay service url
             String url = "https://svcs.ebay.com/services/search/FindingService/v1?"
                     + "SECURITY-APPNAME="+SECURITY_APPNAME+"&"
                     + "OPERATION-NAME="+OPERATION_NAME+"&"
@@ -81,7 +74,7 @@ public class EbayConnection {
             return null;
         }
     }
-
+    // Get a list of prices of the item from response
     public List<Double> getPrices(String response) {
         try{
             List<Double> pricesList = new LinkedList<>();
@@ -98,9 +91,6 @@ public class EbayConnection {
                 JSONObject currentPriceObject = sellingStatusObject.getJSONArray("currentPrice").getJSONObject(0);
                 double price = currentPriceObject.getDouble("__value__");
                 pricesList.add(price);
-//                result.append("Itemid: "+item.get("itemId").toString()+"\n");
-//                result.append("Title: "+item.get("title").toString()+"\n");
-//                result.append("URL: "+item.get("viewItemURL").toString()+"\n");
             }
             return pricesList;
         }
