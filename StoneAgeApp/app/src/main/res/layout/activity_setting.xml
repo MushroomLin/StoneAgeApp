@@ -49,7 +49,7 @@
             android:id="@+id/SystemTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="System"
+            android:text="@string/system"
             android:textSize="28sp" />
 
         <TextView
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_below="@id/SystemTextView"
-            android:text="Brightness"
+            android:text="@string/brightness"
             android:textSize="20sp" />
 
         <SeekBar
@@ -89,7 +89,7 @@
             android:id="@+id/SigninTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Signin"
+            android:text="@string/sign_in"
             android:textSize="28sp" />
 
         <TextView
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_below="@id/SigninTextView"
-            android:text="Automatically Login Me In "
+            android:text="@string/auto_login"
             android:textSize="20sp" />
 
         <Switch

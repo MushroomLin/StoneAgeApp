@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="128dp"
         android:layout_centerHorizontal="true"
-        android:text="Please Rate Your trade with "
+        android:text="@string/please_rate_trade"
         android:textSize="20dp" />
 
     <me.zhanghai.android.materialratingbar.MaterialRatingBar
@@ -45,7 +45,7 @@
         android:drawableRight="@drawable/com_facebook_button_icon_white"
         android:background="@drawable/round_corner_bg"
         android:textColor="@color/white"
-        android:text="Share on  " />
+        android:text="@string/share_on" />
     <Button
         android:id="@+id/button_submitrate2"
         android:layout_width="140dp"
@@ -56,7 +56,7 @@
         android:padding="10dp"
         android:background="@drawable/round_corner_bg"
         android:textColor="@color/white"
-        android:text="Finish" />
+        android:text="@string/finish" />
     <ImageView
         android:id="@+id/BackImageView"
         android:layout_width="50dp"

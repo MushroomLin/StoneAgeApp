@@ -22,7 +22,7 @@
         android:fontFamily="casual"
         android:layout_below="@id/StoneAgeIcon"
         android:layout_centerHorizontal="true"
-        android:text="Stone Age"
+        android:text="@string/stoneage"
         android:textSize="40sp"
         android:textStyle="bold" />
 </RelativeLayout>

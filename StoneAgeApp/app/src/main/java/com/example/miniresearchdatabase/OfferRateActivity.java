@@ -58,7 +58,7 @@ public class OfferRateActivity extends AppCompatActivity {
     public static final String FINAL_POST_KEY2 = "mPostkey";
     public static final String FINAL_OFFER_KEY2 = "offerkey";
 
-
+    // Reference: From Facebook Developer Guide
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +105,7 @@ public class OfferRateActivity extends AppCompatActivity {
                         //Now you have an object of the User class and can use its getters like this
                         postuid = String.valueOf(post.uid);
                         postUserName = String.valueOf(post.author);
-                        textView_rateother.setText("Please Rate Your Trade with "+postUserName);
+                        textView_rateother.setText(getString(R.string.please_rate_trade)+ " " +postUserName);
 
                         DatabaseReference userRef2 = mDatabase.child("users").child(postuid);
                         userRef2.addValueEventListener(new ValueEventListener() {
@@ -146,7 +146,7 @@ public class OfferRateActivity extends AppCompatActivity {
                 //Now you have an object of the User class and can use its getters like this
                 postuid = String.valueOf(post.uid);
                 postUserName = String.valueOf(post.author);
-                textView_rateother.setText("Please Rate Your Trade with "+postUserName);
+                textView_rateother.setText(getString(R.string.please_rate_trade)+" " +postUserName);
 
                 DatabaseReference userRef2 = mDatabase.child("users").child(postuid);
                 userRef2.addValueEventListener(new ValueEventListener() {

@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="My Information"
+            android:text="@string/my_information"
             android:textAlignment="center"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -64,7 +64,7 @@
                     android:id="@+id/UserNameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name"
+                    android:text="@string/name"
                     android:textSize="16sp" />
 
                 <TextView
@@ -89,7 +89,7 @@
                     android:id="@+id/EmailTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email"
+                    android:text="@string/hint_email"
                     android:textSize="16sp" />
 
                 <TextView
@@ -113,7 +113,7 @@
                     android:id="@+id/PhoneTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Phone"
+                    android:text="@string/phone"
                     android:textSize="16sp" />
 
                 <EditText
@@ -138,7 +138,7 @@
                     android:id="@+id/AddressTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Address"
+                    android:text="@string/address"
                     android:textSize="16sp" />
 
                 <EditText
@@ -162,7 +162,7 @@
                     android:id="@+id/IntroductionTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Introduction"
+                    android:text="@string/introduction"
                     android:textSize="16sp" />
 
                 <EditText
@@ -183,7 +183,7 @@
                 android:layout_weight="1"
                 android:textColor="@color/white"
                 android:background="@drawable/round_corner_bg"
-                android:text="Save" />
+                android:text="@string/save" />
 
         </LinearLayout>
 

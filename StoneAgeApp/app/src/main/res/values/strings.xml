@@ -28,6 +28,52 @@
     <string name="disconnect">Disconnect</string>
     <string name="title_activity_user_information">UserInformation</string>
 
+    <string name="send_cap">SEND</string>
+    <string name="stoneage">Stone Age</string>
+    <string name="confirm">Confirm</string>
+    <string name="my_accepted_offer">My Accepted Offers</string>
+    <string name="my_posts">My Posts</string>
+    <string name="offers_of_post">Offers of this Post</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="please_rate_trade">Please rate your trade with </string>
+    <string name="share_on">Share On  </string>
+    <string name="finish">Finish</string>
+    <string name="send_offer">SEND OFFER</string>
+    <string name="post">POST</string>
+    <string name="hello_accept">Hello, I accept your offer of </string>
+    <string name="check_accepted">. Please check your Accepted Offers page and rate our trade!</string>
+    <string name="sorry_reject">Sorry I already accepted another offer and I had to reject your offer of </string>
+    <string name="please_check_other">. Please check other posts on the Main Page!</string>
+    <string name="system">System</string>
+    <string name="brightness">Brightness</string>
+    <string name="auto_login">Automatically Login Me In</string>
+    <string name="swap">Let\'s Swap!</string>
+    <string name="signin_google">GOOGLE SIGN-IN</string>
+    <string name="address">Address</string>
+    <string name="phone">Phone</string>
+    <string name="introduction">Introduction</string>
+    <string name="back">Back</string>
+    <string name="my_information">My Information</string>
+    <string name="name">Name</string>
+    <string name="save">SAVE</string>
+    <string name="item">ITEM</string>
+    <string name="search">Search</string>
+    <string name="user">USER</string>
+    <string name="write_address">Write your address</string>
+    <string name="edit">Edit</string>
+    <string name="accept">Accept</string>
+    <string name="loading">loading…</string>
+    <string name="select_location">select location:\n</string>
+    <string name="posting">Posting…</string>
+    <string name="hello_send_offer">Hello, I send you an offer to trade your </string>
+    <string name="with_my"> with my </string>
+    <string name="please_check_postoffer">. Please check your Post\'s Offer page</string>
+    <string name="sending">Sending…</string>
+    <string name="signin_failed">Sign In Failed</string>
+
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

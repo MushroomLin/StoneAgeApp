@@ -34,7 +34,7 @@
             android:background="@drawable/round_corner"
             android:layout_alignParentEnd="true"
             android:textColor="@color/white"
-            android:text="Accept" />
+            android:text="@string/accept" />
 
     </RelativeLayout>
 

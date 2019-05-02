@@ -21,7 +21,7 @@
         android:fontFamily="casual"
         android:layout_below="@id/StoneAgeIcon"
         android:layout_centerHorizontal="true"
-        android:text="Stone Age"
+        android:text="@string/stoneage"
         android:textSize="25sp"
         android:textStyle="bold" />
 
@@ -32,7 +32,7 @@
         android:layout_below="@id/StoneAgeTextView"
         android:layout_centerHorizontal="true"
         android:fontFamily="casual"
-        android:text="Let's Swap!"
+        android:text="@string/swap"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -107,7 +107,7 @@
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:drawablePadding="10dp"
-        android:text="SIGN WITH GOOGLE" />
+        android:text="@string/signin_google" />
 
 
 </RelativeLayout>

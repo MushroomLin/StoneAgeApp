@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 
 // Firebase Authentication using a Google ID Token.
+// Reference: Google Firebase QuickStart Guide
 
 public class GoogleSignInActivity extends BaseActivity implements
         View.OnClickListener {

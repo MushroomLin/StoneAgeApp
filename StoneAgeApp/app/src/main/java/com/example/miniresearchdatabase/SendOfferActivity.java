@@ -181,7 +181,7 @@ public class SendOfferActivity extends AppCompatActivity {
             return;
         }
         setEditingEnabled(false);
-        Toast.makeText(this, "Sending...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.sending), Toast.LENGTH_SHORT).show();
 
         final String userId = getUid();
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
@@ -219,7 +219,7 @@ public class SendOfferActivity extends AppCompatActivity {
                                     postuid = String.valueOf(post.uid);
                                     postTitle = String.valueOf(post.title);
                                     notify = true;
-                                    sendMessage(getUid(),postuid,"Hello, I send you an offer to trade your "+ postTitle + " with my "+ title +". Please check your Post's Offer page");
+                                    sendMessage(getUid(),postuid,getString(R.string.hello_send_offer)+" " + postTitle + " "+getString(R.string.with_my) +" "+ title +getString(R.string.please_check_postoffer));
                                 }
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {

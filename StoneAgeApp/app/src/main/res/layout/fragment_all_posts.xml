@@ -26,7 +26,7 @@
         android:layout_marginTop="11dp"
         android:layout_toEndOf="@+id/et_searchText"
         android:background="@drawable/round_corner_bg"
-        android:text="ITEM"
+        android:text="@string/item"
         android:textColor="@color/white" />
 
     <EditText
@@ -37,7 +37,7 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/imageButton_recommend"
         android:ems="10"
-        android:hint="Search..."
+        android:hint="@string/search"
         android:inputType="text" />
 
     <ImageButton
@@ -61,7 +61,7 @@
         android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/bt_search"
         android:background="@drawable/round_corner_bg"
-        android:text="USER"
+        android:text="@string/user"
         android:textColor="@color/white" />
 
 </RelativeLayout>

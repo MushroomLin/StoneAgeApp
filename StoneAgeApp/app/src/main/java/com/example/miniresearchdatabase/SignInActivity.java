@@ -91,7 +91,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                         if (task.isSuccessful()) {
                             onAuthSuccess(task.getResult().getUser());
                         } else {
-                            Toast.makeText(SignInActivity.this, "Sign In Failed",
+                            Toast.makeText(SignInActivity.this, getString(R.string.signin_failed),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }

@@ -20,7 +20,7 @@
         android:fontFamily="casual"
         android:layout_below="@id/StoneAgeIcon"
         android:layout_centerHorizontal="true"
-        android:text="Stone Age"
+        android:text="@string/stoneage"
         android:textSize="25sp"
         android:textStyle="bold" />
 
@@ -30,7 +30,7 @@
         android:id="@+id/editText_name"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="@string/hint_email"
         android:layout_centerHorizontal="true"
         android:inputType="textEmailAddress" />
 
@@ -38,7 +38,7 @@
         android:id="@+id/editText_pwd"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="@string/hint_password"
         android:layout_below="@id/editText_name"
         android:layout_centerHorizontal="true"
         android:inputType="textPassword" />
@@ -47,7 +47,7 @@
         android:id="@+id/editText_add"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:hint="Address"
+        android:hint="@string/address"
         android:layout_below="@id/editText_pwd"
         android:layout_centerHorizontal="true"
         android:inputType="textPostalAddress" />
@@ -56,7 +56,7 @@
         android:id="@+id/editText_phone"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:hint="Phone"
+        android:hint="@string/phone"
         android:layout_below="@id/editText_add"
         android:layout_centerHorizontal="true"
         android:inputType="phone" />
@@ -65,7 +65,7 @@
         android:id="@+id/editText_intro"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:hint="Introduction"
+        android:hint="@string/introduction"
         android:layout_below="@id/editText_phone"
         android:layout_centerHorizontal="true"
         android:inputType="text" />
@@ -83,7 +83,7 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:background="@drawable/round_corner_bg"
-            android:text="Sign up" />
+            android:text="@string/sign_up" />
 
         <Button
             android:id="@+id/button_back2"
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:background="@drawable/round_corner_bg"
-            android:text="Back" />
+            android:text="@string/back" />
 
     </LinearLayout>
 

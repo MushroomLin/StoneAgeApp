@@ -81,7 +81,7 @@ public class PostRateActivity extends AppCompatActivity {
     public static final String FINAL_POST_KEY = "mPostkey";
     public static final String FINAL_OFFER_KEY = "offerkey";
 
-
+    // Reference: From Facebook Developer Guide
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,7 +129,7 @@ public class PostRateActivity extends AppCompatActivity {
                         //Now you have an object of the User class and can use its getters like this
                         offeruid = String.valueOf(offer.uid);
                         offerUserName = String.valueOf(offer.author);
-                        textView_rateother.setText("Please Rate Your Trade with "+offerUserName);
+                        textView_rateother.setText(getString(R.string.please_rate_trade)+ " " +offerUserName);
 
                         DatabaseReference userRef = mDatabase.child("users").child(offeruid);
                         userRef.addValueEventListener(new ValueEventListener() {
@@ -172,7 +172,7 @@ public class PostRateActivity extends AppCompatActivity {
                 //Now you have an object of the User class and can use its getters like this
                 offeruid = String.valueOf(offer.uid);
                 offerUserName = String.valueOf(offer.author);
-                textView_rateother.setText("Please Rate Your Trade with "+offerUserName);
+                textView_rateother.setText(getString(R.string.please_rate_trade)+ " " +offerUserName);
 
                 DatabaseReference userRef = mDatabase.child("users").child(offeruid);
                 userRef.addValueEventListener(new ValueEventListener() {
@@ -228,7 +228,7 @@ public class PostRateActivity extends AppCompatActivity {
                         mDatabase.child("user-offers").child(offeruid).child(finalOfferKey).child("status").setValue("accepted");
                         mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("accepted");
                         // Send message to tell user that his/her offer is accepted.
-                        sendMessage(getUid(),offeruid,"Hello, I accept your offer of " + offerTitle + ". Please check your Accepted Offers page and rate our trade!");
+                        sendMessage(getUid(),offeruid, getString(R.string.hello_accept)+ " " + offerTitle + getString(R.string.check_accepted));
 
                         DatabaseReference rejectedRef = mDatabase.child("post-offers").child(finalPostKey);
                         rejectedRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -242,7 +242,7 @@ public class PostRateActivity extends AppCompatActivity {
                                     if (!s.equals("accepted")) {
                                         alloffer.child("status").getRef().setValue("closed");
                                         // Send message to tell all other users that his/her offer is rejected.
-                                        sendMessage(getUid(),offeruids,"Sorry I already accepted other people's offer and I had to reject your offer of " + offerTitles + ". Please check other posts on the Main Page!");
+                                        sendMessage(getUid(),offeruids,getString(R.string.sorry_reject) + " " +offerTitles + getString(R.string.please_check_other));
                                     }
                                 }
                             }

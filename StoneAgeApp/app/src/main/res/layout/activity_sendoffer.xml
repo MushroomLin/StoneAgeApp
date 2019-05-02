@@ -17,7 +17,7 @@
             android:id="@+id/fieldOfferTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title"
+            android:hint="@string/title"
             android:maxLines="1"
             tools:text="An apple"  />
 
@@ -41,7 +41,7 @@
             android:layout_below="@id/fieldOfferTitle"
             android:layout_marginTop="5dp"
             android:maxLines="8"
-            android:hint="description"
+            android:hint="@string/description"
             tools:text="@string/lorem" />
         <include
             android:id="@+id/newAddressLayout"

@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/BackImageView"
-        android:text="My Post"
+        android:text="@string/my_posts"
         android:textSize="30sp"
         android:textColor="@color/grey_300"
         android:textStyle="bold" />

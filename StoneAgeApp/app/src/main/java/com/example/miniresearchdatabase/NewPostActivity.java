@@ -203,7 +203,7 @@ public class NewPostActivity extends BaseActivity {
 
         // Disable button so there are no multi-posts
         setEditingEnabled(false);
-        Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.posting), Toast.LENGTH_SHORT).show();
 
 
 

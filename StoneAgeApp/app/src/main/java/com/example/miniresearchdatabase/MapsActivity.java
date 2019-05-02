@@ -182,7 +182,7 @@ public class MapsActivity extends AppCompatActivity
                 lastLocation.setVisible(true);
                 lastLocation.setTitle(address);
 //                drawCircle(latLng, restrictDistance);
-                Toast.makeText(MapsActivity.this, "select location:\n" + address, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivity.this, getString(R.string.select_location) +" " + address, Toast.LENGTH_SHORT).show();
 //                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             }
         });

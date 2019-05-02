@@ -94,7 +94,7 @@ public class MapsActivity_selectAddress extends AppCompatActivity
                 }
                 mVisitingMarker.setTitle(place.getAddress());
                 selectAddress = place.getAddress();
-                Toast.makeText(MapsActivity_selectAddress.this, "select location:\n" + selectAddress, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivity_selectAddress.this, getString(R.string.select_location) +" "+ selectAddress, Toast.LENGTH_SHORT).show();
 //                // change the color of the marker
 //                Marker tem = mMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 //                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 14.0f));

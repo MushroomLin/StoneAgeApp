@@ -19,7 +19,7 @@
             android:id="@+id/fieldTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title"
+            android:hint="@string/title"
             android:maxLines="1"
             tools:text="An apple" />
 
@@ -30,7 +30,7 @@
             android:layout_below="@id/fieldTitle"
             android:layout_marginTop="5dp"
             android:maxLines="4"
-            android:hint="Description"
+            android:hint="@string/description"
             tools:text="@string/lorem"
             />
 

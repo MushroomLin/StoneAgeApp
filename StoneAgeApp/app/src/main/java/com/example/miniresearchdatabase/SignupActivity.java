@@ -96,7 +96,7 @@ public class SignupActivity extends BaseActivity{
                             // if success, go to onAuthSuccess function
                             onAuthSuccess(task.getResult().getUser());
                         } else {
-                            Toast.makeText(SignupActivity.this, "Sign Up Failed",
+                            Toast.makeText(SignupActivity.this, getString(R.string.signin_failed),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
