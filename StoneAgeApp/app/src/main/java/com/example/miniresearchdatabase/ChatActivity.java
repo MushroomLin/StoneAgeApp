@@ -79,7 +79,10 @@ public class ChatActivity extends BaseActivity{
         setContentView(R.layout.activity_chat);
         Intent intent = getIntent();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        // get reference for chats category.
         reference = FirebaseDatabase.getInstance().getReference("chats");
+        // get two string from intent, the first one is the user id which the current user would chat with,
+        // the second user is to set the ChatActivity title to the username which the user would chat with.
         userId = intent.getStringExtra("userId");
         username = intent.getStringExtra("username");
         this.setTitle(username);
@@ -98,6 +101,7 @@ public class ChatActivity extends BaseActivity{
         dialog.cancelable(true);
         dialog.inflateMenu(R.menu.menu_choose_picture);
         dialog.setOnItemSelectedListener(new BottomDialog.OnItemSelectedListener() {
+            // choose or take a photo if the user would like to send an image to ther user he or she is chatting with.
             @Override
             public boolean onItemSelected(int id) {
                 switch (id) {
@@ -113,8 +117,6 @@ public class ChatActivity extends BaseActivity{
                 }
             }
         });
-
-
 
 
         mMessageEditText.addTextChangedListener(new TextWatcher() {
@@ -232,8 +234,8 @@ public class ChatActivity extends BaseActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // check the request code to decide whether user choose to take the photo or he or she would like to upload photo from local file.
         super.onActivityResult(requestCode, resultCode, data);
-//        Log.w("TAG", String.valueOf(requestCode)+" "+String.valueOf(resultCode));
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null )
         {
@@ -268,9 +270,11 @@ public class ChatActivity extends BaseActivity{
         }
     }
 
+    // method for sending image adn save it to the database.
     public void sendImage(String sender, String receiver, String image) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         HashMap<String, Object> hashMap = new HashMap<>();
+        //  time mark for this message.
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
         Date date = new Date();
         String time = dateFormat.format(date);
@@ -280,9 +284,10 @@ public class ChatActivity extends BaseActivity{
         hashMap.put("time", time);
         reference.child("chats").push().setValue(hashMap);
     }
-
+    // method for sending message adn save it to the database.
     private void sendMessage(String sender, final String receiver, String message) {
         try{
+            //  time mark for this message.
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
             HashMap<String, Object> hashMap = new HashMap<>();
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
@@ -329,6 +334,7 @@ public class ChatActivity extends BaseActivity{
         return data;
     }
 
+    // method for user to choose image.
     private void chooseImage() {
         // set up intent to choose a picture from phone
         Intent intent = new Intent();
@@ -337,6 +343,7 @@ public class ChatActivity extends BaseActivity{
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
+    // method for sending notification, when user press the sending button.
     private void sendNotificaction(String receiver, final String username, final String message){
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = tokens.orderByKey().equalTo(receiver);
@@ -376,30 +383,4 @@ public class ChatActivity extends BaseActivity{
             }
         });
     }
-
-//    public class ScrollLinearLayoutManager extends LinearLayoutManager {
-//        private static final float MILLISECONDS_PER_INCH = 100f;
-//        public ScrollLinearLayoutManager(Context context) {
-//            super(context);
-//        }
-//
-//        @Override
-//        public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, final int position) {
-//            LinearSmoothScroller linearSmoothScroller = new LinearSmoothScroller(recyclerView.getContext())
-//            {
-//                @Nullable
-//                @Override
-//                public PointF computeScrollVectorForPosition(int targetPosition) {
-//                    return ScrollLinearLayoutManager.this.computeScrollVectorForPosition(targetPosition);
-//                }
-//
-//                @Override
-//                protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-//                    return MILLISECONDS_PER_INCH / displayMetrics.densityDpi;
-//                }
-//            };
-//            linearSmoothScroller.setTargetPosition(position);
-//            startSmoothScroll(linearSmoothScroller);
-//        }
-//    }
 }
