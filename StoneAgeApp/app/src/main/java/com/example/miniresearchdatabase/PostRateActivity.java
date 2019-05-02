@@ -208,6 +208,7 @@ public class PostRateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DatabaseReference rateRef = mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey);
+
                 rateRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -217,7 +218,30 @@ public class PostRateActivity extends AppCompatActivity {
                         offeruid = String.valueOf(offer.uid);
                         offerTitle = String.valueOf(offer.title);
                         notify = true;
+                        mDatabase.child("user-offers").child(offeruid).child(finalOfferKey).child("status").setValue("accepted");
+                        mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("accepted");
                         sendMessage(getUid(),offeruid,"Hello, I accept your offer of " + offerTitle + ". Please check your Accepted Offers page and rate our trade!");
+
+                        DatabaseReference rejectedRef = mDatabase.child("post-offers").child(finalPostKey);
+                        rejectedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot alloffer : dataSnapshot.getChildren()) {
+                                    Offer offer = alloffer.getValue(Offer.class);
+                                    String s = String.valueOf(offer.status);
+                                    String offeruids = String.valueOf(offer.uid);
+                                    String offerTitles = String.valueOf(offer.title);
+                                    if (!s.equals("accepted")) {
+                                        alloffer.child("status").getRef().setValue("closed");
+                                        sendMessage(getUid(),offeruids,"Sorry I already accepted other people's offer and I had to reject your offer of " + offerTitles + ". Please check other posts on the Main Page!");
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                            }
+                        });
 
                     }
                     @Override
@@ -225,12 +249,12 @@ public class PostRateActivity extends AppCompatActivity {
                         Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
                     }
                 });
+
                 mDatabase.child("users").child(offeruid).child("rate").setValue((double)newrate);
                 mDatabase.child("users").child(offeruid).child("totalReview").setValue(newTotalReview+1);
                 mDatabase.child("posts").child(finalPostKey).child("status").setValue("closed");
                 mDatabase.child("user-posts").child(getUid()).child(finalPostKey).child("status").setValue("closed");
-                mDatabase.child("user-offers").child(offeruid).child(finalOfferKey).child("status").setValue("accepted");
-                mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("accepted");
+
 
 
                 Intent intent = new Intent(PostRateActivity.this, MyPostActivity.class);
