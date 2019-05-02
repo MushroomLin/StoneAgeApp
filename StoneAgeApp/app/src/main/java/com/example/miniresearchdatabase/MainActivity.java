@@ -107,6 +107,7 @@ public class  MainActivity extends BaseActivity implements BottomNavigationView.
                 ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.container, currentFragment);
                 ft.commit();
+                Toast.makeText(getApplicationContext(),"loading",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.navigation_map:
                 startActivity(new Intent(this, MapsActivity.class));
