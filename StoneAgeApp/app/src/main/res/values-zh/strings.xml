@@ -1,0 +1,89 @@
+<resources>
+    <string name="app_name">石器时代</string>
+    <string name="action_settings">设置</string>
+    <string name="menu_login">登陆</string>
+    <string name="menu_logout">登出</string>
+    <string name="login_label">登陆</string>
+    <string name="email_label">邮箱</string>
+    <string name="settings">设置</string>
+    <string name="password_label">密码</string>
+    <string name="send_text">发送</string>
+    <string name="lorem">吃葡萄不吐葡萄皮，不吃葡萄倒吐葡萄皮。今天吃了好多饭，吃的很饱我很开心。</string>
+    <string name="title_sign_in">欢迎</string>
+    <string name="sign_up">注册</string>
+    <string name="hint_password">密码</string>
+    <string name="hint_email">邮箱</string>
+    <string name="sign_in">登陆</string>
+    <string name="heading_recent">探索</string>
+    <string name="heading_my_posts">我的提议</string>
+    <string name="heading_my_top_posts">我的高级提议</string>
+    <string name="label_google_sign_in">Firebase + Google Sign In</string>
+    <string name="desc_google_sign_in">使用谷歌登陆Firebase.</string>
+    <string name="google_status_fmt">Google用户: %s</string>
+    <string name="google_title_text">Google登陆</string>
+    <string name="firebase_status_fmt">Firebase用户: %s</string>
+    <string name="signed_out">登出</string>
+    <string name="desc_firebase_lockup">Firebase图标</string>
+    <string name="sign_out">登出</string>
+    <string name="disconnect">断开连接</string>
+    <string name="title_activity_user_information">用户信息</string>
+
+    <string name="send_cap">发送</string>
+    <string name="stoneage">石器时代</string>
+    <string name="confirm">确定</string>
+    <string name="my_accepted_offer">被接受的提议</string>
+    <string name="my_posts">我的发布</string>
+    <string name="offers_of_post">此发布的提议</string>
+    <string name="title">标题</string>
+    <string name="description">描述</string>
+    <string name="please_rate_trade">请打分给</string>
+    <string name="share_on">分享到 </string>
+    <string name="finish">完成</string>
+    <string name="send_offer">发送提议</string>
+    <string name="post">发布</string>
+    <string name="hello_accept">你好，我接受了你的提议 </string>
+    <string name="check_accepted">。 请查看被接受的提议界面并给我打分。</string>
+    <string name="sorry_reject">抱歉我接受了另一个提议，并拒绝了你的提议 </string>
+    <string name="please_check_other">。 请查看主页的其他发布。</string>
+    <string name="system">系统</string>
+    <string name="brightness">亮度</string>
+    <string name="auto_login">自动登录</string>
+    <string name="swap">快来交换吧!</string>
+    <string name="signin_google">谷歌登陆</string>
+    <string name="address">地址</string>
+    <string name="phone">电话</string>
+    <string name="introduction">介绍</string>
+    <string name="back">返回</string>
+    <string name="my_information">个人信息</string>
+    <string name="name">用户名</string>
+    <string name="save">保存</string>
+    <string name="item">物品</string>
+    <string name="search">搜索</string>
+    <string name="user">用户</string>
+    <string name="write_address">写下地址</string>
+    <string name="edit">编辑</string>
+    <string name="accept">接受</string>
+    <string name="loading">载入中</string>
+    <string name="select_location">选择地址\n</string>
+    <string name="posting">发布中</string>
+    <string name="hello_send_offer">你好，我发送了一个交换提议，用你的</string>
+    <string name="with_my"> 交换我的</string>
+    <string name="please_check_postoffer">。 请查看我的提议界面。</string>
+    <string name="sending">发送中</string>
+    <string name="signin_failed">登陆失败！</string>
+    <string name="home">主页</string>
+    <string name="map">地图</string>
+    <string name="post_small">发布</string>
+    <string name="message">信息</string>
+    <string name="me">我</string>
+    <string name="choose_picture">选择图片</string>
+    <string name="take_photo">拍照</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">空白</string>
+    <string name="title_activity_maps">地图</string>
+    <string name="title_activity_maps_select_address">地图</string>
+
+
+</resources>
