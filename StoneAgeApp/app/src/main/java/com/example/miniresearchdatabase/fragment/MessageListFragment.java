@@ -59,24 +59,24 @@ public class MessageListFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
     @Override
     public void onAttach(Context context) {
+//      get current context.
         super.onAttach(context);
         mContext = context;
     }
 
-
+    //read data from database under "chats", category.
     private void readUsers() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("chats");
-
         try {
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     mUsers.clear();
+                    //get through the chats category.
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Message message = snapshot.getValue(Message.class);
                         assert  message != null;
@@ -84,6 +84,8 @@ public class MessageListFragment extends Fragment {
                         assert message.sender != null;
                         assert message.message != null;
                         assert message.time != null;
+                        //make sure that this messages' sender or user contains current user id, if so,
+                        //this message will be added to the list that will be sent to MessageAdapter.
                         if(message.receiver.equals(getUid()) && !mUsers.contains(message.sender)) {
                             mUsers.add(message.sender);
                         }
@@ -106,7 +108,7 @@ public class MessageListFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
+    //this method is for update notification token.
     private void updateToken(String token){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
         Token token1 = new Token(token);

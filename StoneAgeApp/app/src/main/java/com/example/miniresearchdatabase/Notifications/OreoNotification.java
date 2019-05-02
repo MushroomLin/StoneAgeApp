@@ -10,6 +10,8 @@ import android.content.ContextWrapper;
 import android.net.Uri;
 import android.os.Build;
 
+
+//reference: https://github.com/KODDevYouTube/ChatAppTutorial/tree/master/app/src/main/java/com/koddev/chatapp/Notifications
 public class OreoNotification extends ContextWrapper {
 
     private static final String CHANNEL_ID = "com.example.miniresearchdatabase";
@@ -27,7 +29,7 @@ public class OreoNotification extends ContextWrapper {
 
     @TargetApi(Build.VERSION_CODES.O)
     private void createChannel() {
-
+        // create channel for sending notification.
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT);

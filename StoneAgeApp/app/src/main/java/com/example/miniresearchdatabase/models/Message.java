@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import com.example.miniresearchdatabase.ImageUtils;
 import com.google.firebase.database.IgnoreExtraProperties;
 
-
+//a class for load message from database to mobile device and save and push the message to the database.
 @IgnoreExtraProperties
 public class Message {
     public String sender;
@@ -20,6 +20,8 @@ public class Message {
     }
 
     public Message(String sender, String receiver, String message, String time, String image) {
+        // it has sender and receiver as the message's sender and receiver. And time for then message when it is sent,
+        // image for users who send would like to send image to others.
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;

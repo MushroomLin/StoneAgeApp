@@ -7,6 +7,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+
+//reference: https://github.com/KODDevYouTube/ChatAppTutorial/tree/master/app/src/main/java/com/koddev/chatapp/Notifications
 public class MyFirebaseIdService extends FirebaseInstanceIdService {
 
     @Override
