@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.example.miniresearchdatabase.R;
 import com.example.miniresearchdatabase.models.User;
 
+// Signin page.
 public class SignInActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "SignInActivity";
@@ -55,6 +56,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         mGoogleButton.setOnClickListener(this);
     }
 
+    // Get information from the Setting, see if the user enable the auto login function or not.
     @Override
     public void onStart() {
         super.onStart();
@@ -67,6 +69,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    // Check sign information with database.
     private void signIn() {
         Log.d(TAG, "signIn");
 
@@ -112,6 +115,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    // have to input text for username and password.
     private boolean validateForm() {
         boolean result = true;
         if (TextUtils.isEmpty(mEmailField.getText().toString())) {
@@ -131,9 +135,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         return result;
     }
 
-    // basic write
-
-
+    // Go to signup page or Google signin page.
     @Override
     public void onClick(View v) {
         int i = v.getId();

@@ -19,7 +19,7 @@ public class Offer {
 
 
     public Offer() {
-        // Default constructor required for calls to DataSnapshot.getValue(Post.class)
+        // Default constructor required for calls to DataSnapshot.getValue(Offer.class)
     }
 
     public Offer(String uid, String author, String title, String description, String address, String picture, String postid, String status) {
@@ -33,7 +33,7 @@ public class Offer {
         this.status = status;
     }
 
-    // post_to_map
+    // offer_to_map
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();

@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+// Help recyclerView to show appropriate information to each offer to specific post
 public class PostOfferViewHolder extends RecyclerView.ViewHolder {
     public ImageView postOfferAuthorPhoto;
     public TextView titlePostOfferView;

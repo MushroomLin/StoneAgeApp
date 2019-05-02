@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+// Show offers to this post, choose one to accept.
 public class MyPostOfferActivity extends AppCompatActivity {
     private ImageView button_back;
     private static final String TAG = "MyPostOfferActivity";
@@ -56,7 +57,7 @@ public class MyPostOfferActivity extends AppCompatActivity {
             }
         });
 
-
+        // Setup RecyclerView
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Offer>()
                 .setQuery(postoffersQuery, Offer.class)
                 .build();
@@ -69,6 +70,7 @@ public class MyPostOfferActivity extends AppCompatActivity {
                 return new PostOfferViewHolder(inflater.inflate(R.layout.item_acceptable_offer, viewGroup, false), getApplicationContext());
             }
 
+            // Bind information from Viewholder
             @Override
             protected void onBindViewHolder(PostOfferViewHolder viewHolder3, int position, final Offer model) {
                 final DatabaseReference offerRef = getRef(position);
@@ -76,6 +78,7 @@ public class MyPostOfferActivity extends AppCompatActivity {
                 // Set click listener for the whole post view
                 final String offerKey = offerRef.getKey();
 
+                // when click accept, go to PostRateActivity
                 viewHolder3.bindToPostOffer(model, new View.OnClickListener() {
                     @Override
                     public void onClick(View button_accept) {
@@ -90,6 +93,7 @@ public class MyPostOfferActivity extends AppCompatActivity {
         mPostOfferRecycler.setAdapter(mPostOfferAdapter);
 
     }
+    // Query database and only show offers to this specific post.
     public Query getPostOfferQuery(DatabaseReference databaseReference) {
 
         return databaseReference.child("post-offers")

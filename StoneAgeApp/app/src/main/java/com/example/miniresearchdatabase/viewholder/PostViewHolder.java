@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import android.content.Context;
+
+// Help recyclerView to show appropriate information to each post item
 public class PostViewHolder extends RecyclerView.ViewHolder {
     public ImageView postAuthorPhoto;
     public TextView titleView;

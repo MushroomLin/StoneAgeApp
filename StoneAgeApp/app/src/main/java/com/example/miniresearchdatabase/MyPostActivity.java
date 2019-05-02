@@ -25,6 +25,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 
+// Check all my posts, click each posts to see its offers by jumping to MyPostOfferActivity
 public class MyPostActivity extends AppCompatActivity {
     private ImageView button_back;
     private static final String TAG = "MyPostActivity";
@@ -60,6 +61,7 @@ public class MyPostActivity extends AppCompatActivity {
             }
         });
 
+        // Setup RecyclerView
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Post>()
                 .setQuery(postsQuery, Post.class)
                 .build();
@@ -72,6 +74,7 @@ public class MyPostActivity extends AppCompatActivity {
                 return new PostViewHolder(inflater.inflate(R.layout.item_post, viewGroup, false), getApplicationContext());
             }
 
+            // Bind information from Viewholder
             @Override
             protected void onBindViewHolder(PostViewHolder viewHolder, int position, final Post model) {
                 final DatabaseReference postRef = getRef(position);
@@ -108,16 +111,12 @@ public class MyPostActivity extends AppCompatActivity {
 
     }
 
+    // Query the database and only show my open posts
     public Query getPostQuery(DatabaseReference databaseReference) {
         // All my posts
         return databaseReference.child("user-posts")
                 .child(getUid()).orderByChild("status").equalTo("open");
     }
-
-
-
-    // [END post_stars_transaction]
-
 
     @Override
     public void onStart() {

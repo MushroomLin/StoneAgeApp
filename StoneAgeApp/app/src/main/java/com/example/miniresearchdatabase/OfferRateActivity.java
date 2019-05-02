@@ -27,6 +27,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+// After your offer get accepted, go to this page and rate the user who you trade with. You can also send pictures to Facebook.
+// Please make sure your phone has Google Play Service, had Facebook app installed in order to use the Facebook function.
+// Please use this testing account to log in to your Facebook app first:
+// Username: test_yzdjnnb_zhu@tfbnw.net   Password:199613
+
 public class OfferRateActivity extends AppCompatActivity {
     private Button button_facebook;
     private ImageView button_back;
@@ -77,8 +82,7 @@ public class OfferRateActivity extends AppCompatActivity {
         finalOfferKey = getIntent().getStringExtra(FINAL_OFFER_KEY2);
         textView_rate.setText("5.0/5.0");
 
-
-
+        // run Facebook function when click this button
         button_facebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +90,7 @@ public class OfferRateActivity extends AppCompatActivity {
             }
         });
 
+        // Calculate new rate in case user change the rating bar.
         starBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar2, float rating2, boolean fromUser2) {
@@ -131,6 +136,7 @@ public class OfferRateActivity extends AppCompatActivity {
             }
         });
 
+        // Calculate new rate in case user never touch the rating bar.
         DatabaseReference rateRef2 = mDatabase.child("posts").child(finalPostKey);
         rateRef2.addValueEventListener(new ValueEventListener() {
             @Override
@@ -176,6 +182,7 @@ public class OfferRateActivity extends AppCompatActivity {
             }
         });
 
+        // when click submit button, update the rating, change this accepted offer's status to closed.
         button_submitrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,6 +196,7 @@ public class OfferRateActivity extends AppCompatActivity {
             }
         });
 
+        //Get the two picture of the post and the accepted offer.Add them to Facebook's photo content.
         DatabaseReference refOffer = mDatabase.child("user-offers").child(getUid()).child(finalOfferKey);
         refOffer.addValueEventListener(new ValueEventListener() {
             @Override

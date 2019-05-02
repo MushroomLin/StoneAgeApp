@@ -47,6 +47,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+// Use this page to send offer to a post you want.
 public class SendOfferActivity extends AppCompatActivity {
     private static final String TAG = "SendOfferActivity";
     private static final String REQUIRED = "Required";
@@ -156,6 +157,7 @@ public class SendOfferActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
+    // convert bitmap to string
     private String convertImage() {
         String data;
         if(bitmap_offer != null)
@@ -166,6 +168,8 @@ public class SendOfferActivity extends AppCompatActivity {
         return data;
     }
 
+    // Write user-offers and post-offers in Firebase database.
+    // Also send a message to the post owner, tell this person that I send an offer to him/her
     private void submitOffer() {
         final String title = offerTitle.getText().toString();
         final String description = offerdescription.getText().toString();
@@ -284,6 +288,7 @@ public class SendOfferActivity extends AppCompatActivity {
         }
     }
 
+    // Helper function to send message.
     private void sendMessage(String sender, final String receiver, String message) {
         try{
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -322,6 +327,7 @@ public class SendOfferActivity extends AppCompatActivity {
         };
     }
 
+    // helper function to send notification
     private void sendNotificaction(String receiver, final String username, final String message){
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = tokens.orderByKey().equalTo(receiver);

@@ -28,6 +28,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+// Check all my acceptable offers
 public class MyOfferActivity extends AppCompatActivity {
     private ImageView button_back;
     private static final String TAG = "MyOfferActivity";
@@ -64,6 +65,7 @@ public class MyOfferActivity extends AppCompatActivity {
             }
         });
 
+        // Setup RecelyerView
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Offer>()
                 .setQuery(offersQuery, Offer.class)
                 .build();
@@ -76,6 +78,7 @@ public class MyOfferActivity extends AppCompatActivity {
                 return new OfferViewHolder(inflater.inflate(R.layout.item_offer, viewGroup, false), getApplicationContext());
             }
 
+            // Bind information from vieholder
             @Override
             protected void onBindViewHolder(OfferViewHolder viewHolder2, int position, final Offer model) {
                 final DatabaseReference offerRef = getRef(position);
@@ -83,12 +86,13 @@ public class MyOfferActivity extends AppCompatActivity {
                 // Set click listener for the whole post view
                 final String offerkey = offerRef.getKey();
 
+                // Go to
                 viewHolder2.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Launch PostDetailActivity
-                        DatabaseReference ref3 = mDatabase.child("user-offers").child(getUid()).child(offerkey);
-                        ref3.addListenerForSingleValueEvent(new ValueEventListener() {
+                        DatabaseReference ref_postoffer = mDatabase.child("user-offers").child(getUid()).child(offerkey);
+                        ref_postoffer.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 //Serialize retrieved data to a User object
@@ -118,6 +122,7 @@ public class MyOfferActivity extends AppCompatActivity {
 
     }
 
+    // query database and only show my acceptted offers
     public Query getOfferQuery(DatabaseReference databaseReference) {
         // All my posts
         return databaseReference.child("user-offers")

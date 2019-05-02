@@ -47,6 +47,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+// After accept an offer, go to this page and rate the user who you trade with. You can also send pictures to Facebook.
+// Please make sure your phone has Google Play Service, had Facebook app installed in order to use the Facebook function.
+// Please use this testing account to log in to your Facebook app first:
+// Username: test_yzdjnnb_zhu@tfbnw.net   Password:199613
+
 public class PostRateActivity extends AppCompatActivity {
     private Button button_facebook;
     private RatingBar starBar;
@@ -101,7 +106,7 @@ public class PostRateActivity extends AppCompatActivity {
         finalOfferKey = getIntent().getStringExtra(FINAL_OFFER_KEY);
         textView_rate.setText("5.0/5.0");
 
-
+        // run Facebook function when click this button
         button_facebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,6 +114,7 @@ public class PostRateActivity extends AppCompatActivity {
             }
         });
 
+        // Calculate new rate in case user change the rating bar.
         starBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
@@ -156,6 +162,7 @@ public class PostRateActivity extends AppCompatActivity {
             }
         });
 
+        // Calculate new rate in case user never touch the rating bar.
         DatabaseReference rateRef = mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey);
         rateRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -178,9 +185,6 @@ public class PostRateActivity extends AppCompatActivity {
                         newrate = (totalrate + starRate) / ((float)user.totalReview+1);
                         newTotalReview = user.totalReview;
 
-
-                        //Now you have an object of the User class and can use its getters like this
-
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -195,6 +199,7 @@ public class PostRateActivity extends AppCompatActivity {
             }
         });
 
+        // Go back to MyPost page
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,6 +209,8 @@ public class PostRateActivity extends AppCompatActivity {
             }
         });
 
+        // when click submit button, update the rating, change post and rejected offers' status to closed.
+        // change the status of accepted offer to accepted. Send appropriate messages to users who send offers.
         button_submitrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,6 +227,7 @@ public class PostRateActivity extends AppCompatActivity {
                         notify = true;
                         mDatabase.child("user-offers").child(offeruid).child(finalOfferKey).child("status").setValue("accepted");
                         mDatabase.child("post-offers").child(finalPostKey).child(finalOfferKey).child("status").setValue("accepted");
+                        // Send message to tell user that his/her offer is accepted.
                         sendMessage(getUid(),offeruid,"Hello, I accept your offer of " + offerTitle + ". Please check your Accepted Offers page and rate our trade!");
 
                         DatabaseReference rejectedRef = mDatabase.child("post-offers").child(finalPostKey);
@@ -233,6 +241,7 @@ public class PostRateActivity extends AppCompatActivity {
                                     String offerTitles = String.valueOf(offer.title);
                                     if (!s.equals("accepted")) {
                                         alloffer.child("status").getRef().setValue("closed");
+                                        // Send message to tell all other users that his/her offer is rejected.
                                         sendMessage(getUid(),offeruids,"Sorry I already accepted other people's offer and I had to reject your offer of " + offerTitles + ". Please check other posts on the Main Page!");
                                     }
                                 }
@@ -249,19 +258,18 @@ public class PostRateActivity extends AppCompatActivity {
                         Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
                     }
                 });
-
+                // update rating and close the post.
                 mDatabase.child("users").child(offeruid).child("rate").setValue((double)newrate);
                 mDatabase.child("users").child(offeruid).child("totalReview").setValue(newTotalReview+1);
                 mDatabase.child("posts").child(finalPostKey).child("status").setValue("closed");
                 mDatabase.child("user-posts").child(getUid()).child(finalPostKey).child("status").setValue("closed");
-
-
 
                 Intent intent = new Intent(PostRateActivity.this, MyPostActivity.class);
                 startActivity(intent);
             }
         });
 
+        //Get the two picture of the post and the accepted offer.Add them to Facebook's photo content.
         DatabaseReference ref = mDatabase.child("posts").child(finalPostKey);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -322,7 +330,7 @@ public class PostRateActivity extends AppCompatActivity {
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
-
+    // Helper function to send message.
     private void sendMessage(String sender, final String receiver, String message) {
         try{
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -360,7 +368,7 @@ public class PostRateActivity extends AppCompatActivity {
             e.printStackTrace();
         };
     }
-
+    // Helper function to send notification.
     private void sendNotificaction(String receiver, final String username, final String message){
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = tokens.orderByKey().equalTo(receiver);

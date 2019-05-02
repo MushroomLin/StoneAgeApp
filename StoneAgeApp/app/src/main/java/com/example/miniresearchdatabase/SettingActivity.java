@@ -24,7 +24,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 
-
+// Set brightness and auto login
 public class SettingActivity extends AppCompatActivity {
     private static final String CHANNEL_ID = "com.example.miniresearchdatabase";
     private static final String CHANNEL_NAME = "Android Database Demo";
@@ -50,8 +50,10 @@ public class SettingActivity extends AppCompatActivity {
                 startActivityForResult(intent, 200);
             }
         }
+        // Set up SharedPreferences and editor
         pref = getApplicationContext().getSharedPreferences("MyPref",0);
         editor = pref.edit();
+
         loginSwitch = findViewById(R.id.SigninSwitch);
         backBtn = findViewById(R.id.BackImageView);
 
@@ -104,6 +106,7 @@ public class SettingActivity extends AppCompatActivity {
                 }
             }
         });
+        // See if the auto login switch is checked or not and store this information
         loginSwitch.setChecked(pref.getBoolean("checked",false));
         loginSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
