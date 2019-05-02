@@ -60,6 +60,7 @@ public class UserEditActivity extends AppCompatActivity {
         SaveButton = findViewById(R.id.SaveButton);
         // Load the data from the Database
         // [START create_database_reference]
+        // Long click edit address
         AddressEditText.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -67,18 +68,15 @@ public class UserEditActivity extends AppCompatActivity {
                 return false;
             }
         });
-
+        // Syn
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(getUid());
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //Serialize retrieved data to a User object
                 User user = dataSnapshot.getValue(User.class);
-                //Now you have an object of the User class and can use its getters like this
+                // Get Object of the User class and change value
                 if (user!=null){
-                    Log.w("TAG", user.email);
-                    Log.w("TAG", user.username);
-                    Log.w("TAG",Double.toString(user.rate));
                     if (user.avatar!=null){
                         AvatarImageView.setImageBitmap(user.getAvatar());
                     }
@@ -149,9 +147,12 @@ public class UserEditActivity extends AppCompatActivity {
         });
 
     }
+    // Get UID of current user
     public String getUid() {
+
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
+    // choose a image from gallery
     private void chooseImage() {
         // set up intent to choose a picture from phone
         Intent intent = new Intent();
@@ -159,6 +160,7 @@ public class UserEditActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
+    // on Activity result update corresponding data
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -187,7 +189,7 @@ public class UserEditActivity extends AppCompatActivity {
             AddressEditText.setText(selectAddress);
         }
     }
-
+    // convert the image bitmap into string to store in Firebase
     private String convertImage() {
         String data;
         if(bitmap != null)

@@ -42,8 +42,6 @@ public class UserInformationFragment extends Fragment {
 
     private DatabaseReference mDatabase;
     // [END define_database_reference]
-
-    private OnFragmentInteractionListener mListener;
     private TextView UserNameTextView;
     private TextView UserEmailTextView;
     private RatingBar UserRatingBar;
@@ -52,7 +50,7 @@ public class UserInformationFragment extends Fragment {
     private FrameLayout UserInformationLayout;
     private RelativeLayout MeMenuLayout;
     private RelativeLayout EditMenuItem;
-//    private RelativeLayout LikeMenuItem;
+//  private RelativeLayout LikeMenuItem;
     private RelativeLayout PostMenuItem;
     private RelativeLayout OfferMenuItem;
     private RelativeLayout SignoutMenuItem;
@@ -167,10 +165,5 @@ public class UserInformationFragment extends Fragment {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-
-    }
 
 }

@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 
 public class ImageUtils
 {
+    // Method to convert string to bitmap
     public static Bitmap stringToBitmap(String base64Str) throws IllegalArgumentException
     {
         byte[] decodedBytes = Base64.decode(
@@ -16,7 +17,7 @@ public class ImageUtils
 
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
-
+    // Method to convert bitmap to string
     public static String bitmapToString(Bitmap bitmap)
     {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
