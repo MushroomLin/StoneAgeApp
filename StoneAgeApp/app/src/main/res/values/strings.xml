@@ -71,9 +71,13 @@
     <string name="please_check_postoffer">. Please check your Post\'s Offer page</string>
     <string name="sending">Sending…</string>
     <string name="signin_failed">Sign In Failed</string>
-
-
-
+    <string name="home">Home</string>
+    <string name="map">Map</string>
+    <string name="post_small">Post</string>
+    <string name="message">Message</string>
+    <string name="me">Me</string>
+    <string name="choose_picture">Choose Picture</string>
+    <string name="take_photo">Take Photo</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

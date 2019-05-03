@@ -1,5 +1,8 @@
 package com.example.miniresearchdatabase;
 
+/**
+ * Reference: https://developers.google.com/maps/documentation/geocoding/start
+ */
 
 import android.util.Log;
 
@@ -24,6 +27,7 @@ import java.io.IOException;
 //import okhttp3.Request;
 
 
+// aims to convert address string to coordinate(latitude,longitude)
 public class AddressToLocation {
     public double lat;
     public double lng;
@@ -77,11 +81,13 @@ public class AddressToLocation {
     // address pattern: "1600 Amphitheatre Parkway Mountain View, CA 94043"
     // return double[2] double[0]=latitude  double[1]=longitude
     public double[] getLocation(String address) throws InterruptedException, ApiException, IOException {
+        // build connection between google and app
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyCaUcdLLm4ifpW9ZYMhcCm_6RMvArAz-hA")
                 .build();
         double[] loc = new double[2];
         try {
+            // get location from GoogleGeoAPI
             GeocodingResult[] results = GeocodingApi.geocode(context,
                     address).await();
             double lat = results[0].geometry.location.lat;
@@ -94,6 +100,7 @@ public class AddressToLocation {
 
             return loc;
         } catch (Exception e) {
+            // if connection failed then return mark (lat, lng)
             Log.e("AddressToLocation", e.toString());
             this.lng = -999999.99999;
             this.lat = -999999.99999;

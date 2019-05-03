@@ -34,6 +34,10 @@ import java.util.Arrays;
 
 import static android.view.View.*;
 
+/**
+ * Reference: https://developers.google.com/maps/documentation/android-sdk
+ */
+
 public class MapsActivity_selectAddress extends AppCompatActivity
         implements
         OnMapReadyCallback,
@@ -41,11 +45,13 @@ public class MapsActivity_selectAddress extends AppCompatActivity
         OnMyLocationClickListener,
         ActivityCompat.OnRequestPermissionsResultCallback {
 
+    // initialize the map and select marker
     private GoogleMap mMap;
     private Marker mVisitingMarker = null;
     private String selectAddress = "";
     private Button confirm;
 
+    // permission set
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private boolean mPermissionDenied = false;
 
@@ -80,10 +86,13 @@ public class MapsActivity_selectAddress extends AppCompatActivity
 
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS));
 
+        // set event listener for autocomplete search bar
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull com.google.android.libraries.places.api.model.Place place) {
+                // initialize the camera position
                 mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 14.0f));
+                // set marker position for search
                 if (mVisitingMarker == null) {
                     mVisitingMarker = mMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                     mVisitingMarker.setVisible(true);
@@ -92,6 +101,7 @@ public class MapsActivity_selectAddress extends AppCompatActivity
                     mVisitingMarker.setPosition(place.getLatLng());
                     mVisitingMarker.setVisible(true);
                 }
+                // set title and info for the marker
                 mVisitingMarker.setTitle(place.getAddress());
                 selectAddress = place.getAddress();
                 Toast.makeText(MapsActivity_selectAddress.this, getString(R.string.select_location) +" "+ selectAddress, Toast.LENGTH_SHORT).show();
@@ -127,6 +137,7 @@ public class MapsActivity_selectAddress extends AppCompatActivity
         mVisitingMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(0.0, 0.0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         mVisitingMarker.setVisible(false);
 
+        // tap on map then a blue will be drawn and show the address
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
