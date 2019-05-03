@@ -105,6 +105,7 @@ public class SendOfferActivity extends AppCompatActivity {
         dialog.canceledOnTouchOutside(true);
         dialog.cancelable(true);
         dialog.inflateMenu(R.menu.menu_choose_picture);
+        // choose image from gallery or take picture by using camera
         dialog.setOnItemSelectedListener(new BottomDialog.OnItemSelectedListener() {
             @Override
             public boolean onItemSelected(int id) {
