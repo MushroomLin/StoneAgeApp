@@ -73,7 +73,6 @@ public class NewPostActivity extends BaseActivity {
         // initialize database_ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-
         mTitleField = findViewById(R.id.fieldTitle);
         mSubmitButton = findViewById(R.id.fabSubmitPost);
         mCencelButton = findViewById(R.id.fabCancelPost);
@@ -136,7 +135,7 @@ public class NewPostActivity extends BaseActivity {
             }
         });
     }
-
+    // start a new activity to choose an image from the storage
     private void chooseImage() {
         // set up intent to choose a picture from phone
         Intent intent = new Intent();
@@ -145,6 +144,7 @@ public class NewPostActivity extends BaseActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
+    // convert selected image to String
     private String convertImage() {
         String data;
         if(bitmap != null)
@@ -185,6 +185,7 @@ public class NewPostActivity extends BaseActivity {
         }
     }
 
+    // submit the new post
     private void submitPost() {
         final String title = mTitleField.getText().toString();
         final String address = mAddressField.getText().toString();
@@ -200,17 +201,9 @@ public class NewPostActivity extends BaseActivity {
             return;
         }
 
-
         // Disable button so there are no multi-posts
         setEditingEnabled(false);
         Toast.makeText(this, getString(R.string.posting), Toast.LENGTH_SHORT).show();
-
-
-
-
-//        getQuery2(mDatabase);
-
-
 
         // single value read
         final String userId = getUid();
@@ -218,8 +211,7 @@ public class NewPostActivity extends BaseActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-
-//                        double[] estimatedPrices = new HttpRequest().request(title);
+                        // call eBay API
                         EbayConnection ebay = new EbayConnection();
                         String response;
                         try{
@@ -231,6 +223,7 @@ public class NewPostActivity extends BaseActivity {
                         }
                         List<Double> pricesList = ebay.getPrices(response);
 
+                        // get the average price of an item from all eBay results
                         double avgPrice = 0.0;
                         if(pricesList != null) {
                             double priceSum = 0.0;
@@ -240,7 +233,6 @@ public class NewPostActivity extends BaseActivity {
                             }
                             avgPrice = priceSum / pricesList.size();
                         }
-
 
                         // Get user value
                         User user = dataSnapshot.getValue(User.class);
@@ -259,13 +251,11 @@ public class NewPostActivity extends BaseActivity {
                             }
                             writeNewPost(userId, user.username, title, address,
                                     description, originalType, targetType, picture, pricesList, avgPrice, status);
-
                         }
 
                         // Finish this Activity, back to the stream
                         setEditingEnabled(true);
                         finish();
-
                     }
 
                     @Override
@@ -310,142 +300,5 @@ public class NewPostActivity extends BaseActivity {
             Toast.makeText(NewPostActivity.this, e.toString(),
                     Toast.LENGTH_SHORT).show();
         }
-
     }
-
-    public Query getQuery2(DatabaseReference databaseReference) {
-        final String userId = getUid();
-        DatabaseReference databaseReference2 = databaseReference.child("user-posts").child(userId);
-
-        databaseReference2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String titles = "";
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Post post = postSnapshot.getValue(Post.class);
-                    titles += post.title + ",";
-
-                }
-                Log.e("testQuery2", titles);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return null;
-
-    }
-
-
-
 }
-
-/*
-class HttpRequest {
-
-    private final String TOKEN = "CUJYSOVFIARKJWJXSXSBEFQIVEDPZUXQILFCXHPSNLEMOFGYQTIYTJGCDPDWNECZ";
-
-
-
-    private String firstURL = null;
-    private String secondURL = null;
-    private String thirdURL = null;
-
-    public double[] request(String itemName){
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-        StrictMode.setThreadPolicy(policy);
-
-        firstURL = "https://api.priceapi.com/v2/jobs?token=" + TOKEN + "&source=google_shopping&country=us&topic=product_and_offers&key=term&values=" + itemName;
-
-        try{
-
-            // first step
-            HttpEntity firstEntity = GetPostUrl.post(firstURL);
-
-            if (firstEntity != null) { // success
-
-                String jobIdValue = getValue(firstEntity, "job_id");
-
-                // second step
-                secondURL = "https://api.priceapi.com/v2/jobs/" + jobIdValue + "?token=" + TOKEN;
-                thirdURL = "https://api.priceapi.com/v2/jobs/" + jobIdValue + "/download?token=" + TOKEN;
-                HttpEntity secondEntity = null;
-                while(true) {
-                    secondEntity = GetPostUrl.get(secondURL);
-                    if(secondEntity == null) {
-                        return new double[0];
-                    } else {
-                        Thread.sleep(1000);
-                        String secondStatusValue = getValue(secondEntity, "status");
-
-                        if(secondStatusValue == null) {
-                            return new double[0];
-                        }
-                        if(secondStatusValue.equals("finished")) {
-                            break;
-                        }
-                    }
-                }
-
-                // third step
-
-                HttpEntity thirdEntity = GetPostUrl.get(thirdURL);
-                String thirdEntityString = EntityUtils.toString(thirdEntity);
-                JSONObject thirdObject = new JSONObject(thirdEntityString);
-
-//                        JSONObject object = thirdObject.getJSONObject("results");      //通过getString("cartypes")取出里面的信息
-                JSONArray resultsArray = thirdObject.getJSONArray("results");
-                JSONObject resultsObject = resultsArray.getJSONObject(0);
-                JSONObject contentObject = resultsObject.getJSONObject("content");
-                JSONArray offersArray = contentObject.getJSONArray("offers");
-
-                double[] prices = new double[offersArray.length()];
-                for(int i = 0; i < offersArray.length(); i++) {
-                    JSONObject offerObject = offersArray.getJSONObject(i);
-                    String price = offerObject.getString("price");
-                    prices[i] = Double.valueOf(price);
-                }
-
-//                if(count >= 1) {
-//                    JSONObject offerObject0 = offersArray.getJSONObject(0);
-//                    editText_name1.setText(offerObject0.getString("shop_name"));
-//                    editText_url1.setText(offerObject0.getString("url"));
-//                    editText_price1.setText(offerObject0.getString("price"));
-//                }
-//
-//                if(count >= 2) {
-//                    JSONObject offerObject1 = offersArray.getJSONObject(1);
-//                    editText_name2.setText(offerObject1.getString("shop_name"));
-//                    editText_url2.setText(offerObject1.getString("url"));
-//                    editText_price2.setText(offerObject1.getString("price"));
-//                }
-
-            }
-        } catch(Exception e) {
-            return new double[0];
-        }
-
-        return new double[0];
-
-    }
-
-    private String getValue (HttpEntity entity, String key) {
-        String value = null;
-        try {
-            String entityString = EntityUtils.toString(entity);
-            JSONObject jsonObject = new JSONObject(entityString);
-            value = jsonObject.getString(key);
-        } catch (Exception e) {
-            value = null;
-        }
-        return value;
-    }
-
-
-}
-
-*/

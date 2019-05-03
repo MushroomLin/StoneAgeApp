@@ -45,13 +45,18 @@ public abstract class PostListFragment extends Fragment {
     private DatabaseReference mDatabase;
     // [END define_database_reference]
 
-
     private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
     private double minPrice = 99999999.0;
     private double maxPrice = 0.0;
+
+    // recommendFlag == 0: query the "posts" without any limit
+    // recommendFlag == 1: execute the recommendation query with limiting the max and min prices
+    // recommendFlag == 2: query the "posts" by searching items' name
+    // recommendFlag == 3: query the "posts" by searching items' owner
     private int recommendFlag = 0;
+
     private int noPostFlag = 1;
     private String searchText = "";
 
@@ -69,27 +74,27 @@ public abstract class PostListFragment extends Fragment {
                               Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);
-
         et_searchText = rootView.findViewById(R.id.et_searchText);
-
         ImageButton imageButton = rootView.findViewById(R.id.imageButton_recommend);
+
+        // see detailed recommendFlag definition above
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (recommendFlag == 0 || recommendFlag == 2) {
-                    recommendFlag = 1;
+                    recommendFlag = 1; // switch to recommendation mode
                     Toast.makeText(getActivity(),"Price Recommend Mode",Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    recommendFlag = 0;
+                    recommendFlag = 0; // switch to regular mode
                     Toast.makeText(getActivity(),"Regular Mode",Toast.LENGTH_SHORT).show();
                 }
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(PostListFragment.this).attach(PostListFragment.this).commit();
-                Log.e("ppp", String.valueOf(recommendFlag));
             }
         });
 
+        // recommendFlag == 2: query the "posts" by searching items' name
         bt_search = rootView.findViewById(R.id.bt_search);
         bt_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +107,7 @@ public abstract class PostListFragment extends Fragment {
             }
         });
 
+        // recommendFlag == 3: query the "posts" by searching items' owner
         button_user = rootView.findViewById(R.id.button_user);
         button_user.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,14 +133,14 @@ public abstract class PostListFragment extends Fragment {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Post post = postSnapshot.getValue(Post.class);
                     List<Double> pricesList = post.estimatedPrices;
-                    if(pricesList != null) {
+                    if(pricesList != null) { // when an item has an estimated price
                         double priceSum = 0.0;
                         for(int i = 0; i < pricesList.size(); i++) {
                             double curPrice = pricesList.get(i);
                             priceSum += curPrice;
                         }
                         double priceAvg = priceSum / pricesList.size();
-                        // update minPrice and maxPrice
+                        // keep tracking the max and min prices
                         if (priceAvg < minPrice)
                             minPrice = priceAvg;
                         if (priceAvg > maxPrice)
@@ -143,9 +149,7 @@ public abstract class PostListFragment extends Fragment {
                         noPostFlag = 0;
                     }
                 }
-                Log.e("uuu", "end of onDataChange");
-                Log.e("uuu", String.valueOf(noPostFlag));
-                // user hasn't posted yet
+                // user hasn't posted yet, set to the default price range: [20, 80]
                 if (noPostFlag == 1) {
                     minPrice = 20.0;
                     maxPrice = 80.0;
@@ -155,7 +159,6 @@ public abstract class PostListFragment extends Fragment {
                     // if the range of minPrice and maxPrice isn't big enough
                     minPrice = Math.min(Math.max(minPrice - 20, 0.0), minPrice * 0.5);
                     maxPrice = Math.max(maxPrice + 20.0, maxPrice * 1.5);
-//                avgPricesList = avgPriceList;
                 }
             }
 
@@ -181,11 +184,10 @@ public abstract class PostListFragment extends Fragment {
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
 
-        Log.e("pricequery", String.valueOf(minPrice)+" "+String.valueOf(maxPrice));
-
         // Set up FirebaseRecyclerAdapter with the Query
 
-//        avgPricesList
+        // execute different query for different recommendFlag
+        // see detailed recommendFlag definition above
         if (recommendFlag == 0) {
             postsQuery = getQuery(mDatabase);
         } else if(recommendFlag == 1) {
@@ -233,8 +235,6 @@ public abstract class PostListFragment extends Fragment {
                 });
 
                 // Determine if the current user has liked this post and set UI accordingly
-
-
                 // Bind Post to ViewHolder, setting OnClickListener for the star button
                 viewHolder.bindToPost(model, new View.OnClickListener() {
                     @Override
@@ -242,7 +242,6 @@ public abstract class PostListFragment extends Fragment {
                         // Need to write to both places the post is stored
                         DatabaseReference globalPostRef = mDatabase.child("posts").child(postRef.getKey());
                         DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(postRef.getKey());
-
                         // Run two transactions
                     }
                 });
@@ -251,12 +250,6 @@ public abstract class PostListFragment extends Fragment {
         mRecycler.setAdapter(mAdapter);
         Log.e("pricequery", "finish create the start activity");
     }
-
-    // [START post_stars_transaction]
-
-
-    // [END post_stars_transaction]
-
 
     @Override
     public void onStart() {
@@ -278,8 +271,6 @@ public abstract class PostListFragment extends Fragment {
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
-
-    public abstract double[] getQuery3(DatabaseReference databaseReference);
 
     public abstract Query getQueryFromPrice(DatabaseReference databaseReference, double min, double max);
 

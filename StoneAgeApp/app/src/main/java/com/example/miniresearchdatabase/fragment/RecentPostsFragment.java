@@ -21,91 +21,30 @@ public class RecentPostsFragment extends PostListFragment {
     double maxPrice = 0.0;
     public RecentPostsFragment() {}
 
-    @Override
-    public double[] getQuery3(DatabaseReference databaseReference) {
-        final String userId = getUid();
-        databaseReference = databaseReference.child("user-posts").child(userId);
-        final double[] res = new double[2];
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Double> avgPriceList = new LinkedList<>();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Post post = postSnapshot.getValue(Post.class);
-                    List<Double> pricesList = post.estimatedPrices;
-                    if(pricesList != null) {
-                        double priceSum = 0.0;
-                        for(int i = 0; i < pricesList.size(); i++) {
-                            double curPrice = pricesList.get(i);
-                            priceSum += curPrice;
-                        }
-                        double priceAvg = priceSum / pricesList.size();
-                        // update minPrice and maxPrice
-                        if (priceAvg < minPrice)
-                            minPrice = priceAvg;
-                        if (priceAvg > maxPrice)
-                            maxPrice = priceAvg;
-                        avgPriceList.add(priceAvg);
-                        Log.e("pricequery", String.valueOf(priceAvg));
-                        Log.e("pricequery", "minPrice:"+String.valueOf(minPrice)+" maxPrice:"+String.valueOf(maxPrice));
-                        Log.e("pricequery", "--------------------------");
-                    }
-                }
-                // if the range of minPrice and maxPrcie isn't big enough
-                if (minPrice - 20.0 > 0.0)
-                    minPrice = minPrice - 20.0;
-                else
-                    minPrice = 0.0;
-                maxPrice = maxPrice + 20.0;
-//                avgPricesList = avgPriceList;
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        Log.e("pricequery", String.valueOf(minPrice)+" "+String.valueOf(maxPrice));
-
-        return null;
-    }
-
-
+    // query the items in collection "posts" by limiting the max price and the min price of items
     @Override
     public Query getQueryFromPrice(DatabaseReference databaseReference, double min, double max) {
-        Log.e("pricequery", "min:"+String.valueOf(min)+" max:"+String.valueOf(max));
         Query minMaxPricePostsQuery = databaseReference.child("posts").orderByChild("avgPrice").startAt(min).endAt(max);
-
         return minMaxPricePostsQuery;
     }
 
+    // query the items in collection "posts" by titles of items
     @Override
     public Query getQueryBySearch(DatabaseReference databaseReference, String searchText) {
         Query minMaxPricePostsQuery = databaseReference.child("posts").orderByChild("title")
                 .startAt(searchText)
                 .endAt(searchText + "\uf8ff");
-
-//        Log.e("getQueryBySearch", minMaxPricePostsQuery.);
         return minMaxPricePostsQuery;
     }
 
+    // query the items in collection "posts" by names of owners
     @Override
     public Query getQueryBySearchUser(DatabaseReference databaseReference, String searchText) {
         Query minMaxPricePostsQuery = databaseReference.child("posts").orderByChild("author")
                 .startAt(searchText)
                 .endAt(searchText + "\uf8ff");
-//        Log.e("getQueryBySearch", minMaxPricePostsQuery.);
         return minMaxPricePostsQuery;
     }
-
-//    @Override
-//    public Query getQueryFromPrice(DatabaseReference databaseReference, double minPrice, double maxPrice) {
-//
-//        Log.e("pricequery", "minPrice:"+String.valueOf(minPrice)+" maxPrice:"+String.valueOf(maxPrice));
-//        Query minMaxPricePostsQuery = databaseReference.child("posts").orderByChild("avgPrice").startAt(minPrice).endAt(maxPrice);
-//
-//        return minMaxPricePostsQuery;
-//    }
 
     @Override
     public Query getQuery(DatabaseReference databaseReference) {
@@ -115,34 +54,13 @@ public class RecentPostsFragment extends PostListFragment {
         // due to sorting by push() keys
 
         Query recentPostsQuery = databaseReference.child("posts").limitToFirst(100);
-
         final String userId = getUid();
         DatabaseReference databaseReference2 = databaseReference.child("user-posts").child(userId);
-
         databaseReference2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Post post = postSnapshot.getValue(Post.class);
-
-//                    // get the key of current post and store for future use
-//                    DatabaseReference marker2postReference = postSnapshot.getRef();
-//                    final String postkey = marker2postReference.getKey();
-//                    // get current position for distance computing
-//                    double postLatitude = post.latitude;
-//                    double postLongitude = post.longitude;
-//                    if (!marker2post.containsValue(postkey)) {
-//                        LatLng postPoint = new LatLng(postLatitude, postLongitude);
-//                        options.position(postPoint);
-//                        options.title(post.title);
-//                        options.snippet("Author: " + post.author + " Address: " + post.address
-//                                + " " + post.body);
-//                        Marker mId = mMap.addMarker(options);
-//                        // store marker id and post key for future use
-//                        Log.w("marker", mId.getId() + " " + postkey);
-//                        marker2post.put(mId, postkey);
-//                        post2marker.put(postkey, mId);
-//                    }
                 }
             }
 
@@ -151,11 +69,6 @@ public class RecentPostsFragment extends PostListFragment {
 
             }
         });
-
-
         return recentPostsQuery;
     }
-
-
-
 }

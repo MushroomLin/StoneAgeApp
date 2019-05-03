@@ -18,13 +18,7 @@ public class MyPostsFragment extends PostListFragment {
     }
 
     @Override
-    public double[] getQuery3(DatabaseReference databaseReference) {
-        return null;
-    }
-
-    @Override
     public Query getQuery(DatabaseReference databaseReference) {
-
         // All my posts
         return databaseReference.child("user-posts")
                 .child(getUid());

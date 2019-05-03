@@ -39,7 +39,6 @@ public class UserInformationFragment extends Fragment {
     private static final String TAG = "UserInformationFragment";
 
     // [START define_database_reference]
-
     private DatabaseReference mDatabase;
     // [END define_database_reference]
     private TextView UserNameTextView;
@@ -50,12 +49,10 @@ public class UserInformationFragment extends Fragment {
     private FrameLayout UserInformationLayout;
     private RelativeLayout MeMenuLayout;
     private RelativeLayout EditMenuItem;
-//  private RelativeLayout LikeMenuItem;
     private RelativeLayout PostMenuItem;
     private RelativeLayout OfferMenuItem;
     private RelativeLayout SignoutMenuItem;
     public UserInformationFragment() {
-
         // Required empty public constructor
     }
 
@@ -76,17 +73,12 @@ public class UserInformationFragment extends Fragment {
         UserAvatarImageView = UserInformationLayout.findViewById(R.id.AvatarImageView);
 
         // Menu Part
-
         MeMenuLayout = rootView.findViewById(R.id.MeMenuLayout);
         EditMenuItem = MeMenuLayout.findViewById(R.id.EditMenuItem);
         PostMenuItem = MeMenuLayout.findViewById(R.id.PostMenuItem);
         OfferMenuItem = MeMenuLayout.findViewById(R.id.OfferMenuItem);
-//        LikeMenuItem = MeMenuLayout.findViewById(R.id.LikeMenuItem);
         SignoutMenuItem = rootView.findViewById(R.id.SignoutMenuItem);
-        // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(getUid());
-
-        // [END create_database_reference]
 
         EditMenuItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,12 +127,6 @@ public class UserInformationFragment extends Fragment {
                     Log.w("TAG",Double.toString(user.rate));
                     UserNameTextView.setText(user.username);
                     UserEmailTextView.setText(user.email);
-
-//                    UserAddressTextView.setText("Address: "+user.address);
-
-//                    UserPhoneTextView.setText("Phone: "+user.phone);
-
-//                    UserIntroductionTextView.setText('"'+user.intro+'"');
 
                     UserRateTextView.setText(String.format("%.1f",user.rate)+"/5.0");
                     UserRatingBar.setRating((float)user.rate);
