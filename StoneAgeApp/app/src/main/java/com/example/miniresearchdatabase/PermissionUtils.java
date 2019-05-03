@@ -12,6 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 /**
+ *  Reference: https://developers.google.com/maps/documentation/android-sdk
+ */
+
+
+/**
  * Utility class for access to runtime permissions.
  */
 public abstract class PermissionUtils {

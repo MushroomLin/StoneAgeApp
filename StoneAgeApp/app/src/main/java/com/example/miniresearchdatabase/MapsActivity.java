@@ -48,6 +48,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * Reference: https://developers.google.com/maps/documentation/android-sdk
+ */
+
 
 public class MapsActivity extends AppCompatActivity
         implements
@@ -76,17 +80,23 @@ public class MapsActivity extends AppCompatActivity
     // used to set multiple markers on the map
     private MarkerOptions options = new MarkerOptions();
     private Query mPostReference;
+    // next two hashmaps used to store the id of marker and post
+    // these two hashmaps build the one to one relation between marker and post
     private HashMap<Marker, String> marker2post = new HashMap<Marker, String>();
     private HashMap<String, Marker> post2marker = new HashMap<String, Marker>();
+    // used to record current location
     private double currentLatitude = 0.0;
     private double currentLongitude = 0.0;
+    // record current zoomLevel
     float currentZoomLevel = (float) 13.7;
+    // record current location info
     Location mLastKnownLocation;
 
-    private Marker lastLocation = null;
+    private Marker lastLocation = null; // record last clicked or selected location info
     private int onlyShowNearby = 0; // click my location button again will show the far away posts
     private boolean savedState = false; // To record whether this activity has been initialized yet
     private final String KEY_LOCATION = "loc";
+    // used to draw a circle on map
     CircleOptions circleOptions = new CircleOptions();
     Circle circleAddress = null;
 
@@ -125,21 +135,27 @@ public class MapsActivity extends AppCompatActivity
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
+        // set the search bar on the map
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS));
-
+        // set search bar search event listener
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull com.google.android.libraries.places.api.model.Place place) {
+                // initialize the location of the marker
+                // set the color of user selected marker to blue
                 if (lastLocation == null) {
                     lastLocation = mMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                 }
                 else {
+                    // update the user selected marker
                     lastLocation.setPosition(place.getLatLng());
                 }
+                // draw the blue marker
                 lastLocation.setVisible(true);
                 lastLocation.setTitle(place.getAddress());
                 lastLocation.hideInfoWindow();
 //                lastLocation.showInfoWindow();
+                // move current map camera to the position user selected
                 mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 13.7f));
 //                drawCircle(place.getLatLng(), restrictDistance);
             }
@@ -201,7 +217,7 @@ public class MapsActivity extends AppCompatActivity
         mMap.setOnInfoWindowClickListener(this);
         enableMyLocation();
 
-
+        // restore savedState
         if (savedState) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), 14.0f));
         }
@@ -225,6 +241,7 @@ public class MapsActivity extends AppCompatActivity
                     // get current position for distance computing
                     double postLatitude = post.latitude;
                     double postLongitude = post.longitude;
+                    // draw the markers of posts and set the title and description of them
                     if (!marker2post.containsValue(postkey)) {
                         LatLng postPoint = new LatLng(postLatitude, postLongitude);
                         options.position(postPoint);
@@ -233,6 +250,7 @@ public class MapsActivity extends AppCompatActivity
                         Marker mId = mMap.addMarker(options);
                         // store marker id and post key for future use
                         // Log.w("marker", mId.getId() + " " + postkey);
+                        // store the info to the two maps to identify them
                         marker2post.put(mId, postkey);
                         post2marker.put(postkey, mId);
                     }
@@ -287,6 +305,8 @@ public class MapsActivity extends AppCompatActivity
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
+            // when click myself location button move camera to current location
+            // update nearby post markers at the same time
             mPostReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -300,6 +320,7 @@ public class MapsActivity extends AppCompatActivity
                             // get the key of current post and store for future use
                             DatabaseReference marker2postReference = postSnapshot.getRef();
                             final String postkey = marker2postReference.getKey();
+                            // click again and show the nearby markers
                             if (marker2post.containsValue(postkey)) {
                                 if (onlyShowNearby % 2 == 0)
                                     post2marker.get(postkey).setVisible(false);
@@ -423,6 +444,7 @@ public class MapsActivity extends AppCompatActivity
         else return true;
     }
 
+    // used to draw circles on map
     private void drawCircle(LatLng point, int distance){
 
         // Instantiating CircleOptions to draw a circle around the marker
